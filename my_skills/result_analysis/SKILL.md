@@ -20,6 +20,13 @@ If not, fix the evaluation first. Do not draw conclusions from weak evidence.
 
 Strip away interpretation. List undeniable facts with numbers and units. De-fuzzify vague words like "significant" or "clear trend" by demanding a quantitative definition.
 
+Statistics checklist (apply before treating any number as evidence):
+
+- **Seeds**: results must be mean ± std over ≥3 seeds. A single run is an anecdote, not evidence.
+- **Difference vs. variance**: a claimed improvement must exceed run-to-run variance. If variance is unknown, that is missing evidence — say so.
+- **Sample size**: if n is too small for the claim (e.g. evaluating on a handful of examples), flag it; do not compute or imply significance.
+- **Missing baseline or control**: stop here and request it, per Step 0.
+
 ## Step 2: Competing Hypotheses
 
 Propose at least two mutually exclusive hypotheses (H1, H2, ...). Each needs:
@@ -47,9 +54,11 @@ Choose one:
 
 If two consecutive rounds only patch small issues and never touch the core hypothesis, force a direction-level verdict before a third patch.
 
+Tracking: record `patch_round: N` in the analysis file's Verdict section. Increment N on every iteration that only patches small issues; reset to 0 when the core hypothesis changes. At N=2, the next verdict must be direction-level (Kill / Pivot / Continue) — no third patch.
+
 ## Step 6: Mandatory Visualization
 
-When numeric data exists, the conclusion must include a generated chart:
+When numeric data exists, the conclusion must include a generated chart — unless the data is trivial (≤3 numbers, or a chart would not change the conclusion; use a plain table then). Never produce a chart that adds no information over the numbers themselves.
 
 - matplotlib / seaborn
 - Colorblind-safe palette
