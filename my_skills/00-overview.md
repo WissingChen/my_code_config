@@ -37,8 +37,8 @@ last_updated: "2026-07-18"
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | research_manager | — | ✓ | ✓ | ✓ | ✓ |
 | research_progress | ✓ | — | ✓(handoff) | — | — |
-| result_analysis | ✓ | ✓(handoff) | — | — | ✓ |
-| write_md | ✓ | — | — | — | — |
+| result_analysis | ✓ | — | — | — | — |
+| write_md | — | — | ✓ | — | — |
 | academic-paper-writing | ✓(citation) | — | — | — | — |
 
 ## 4. 委托指南

@@ -59,8 +59,7 @@ This is a palate, not a recipe.
 - **Avoid AI-flavored punctuation.** Em dashes (—) and colons abused as
   dramatic pivots ("X is not Y: it is Z") telegraph GPT-generated prose.
   Replace em dashes with commas, periods, or semicolons. Use colons only
-  for lists and formal definitions, never as a shortcut for "because" or
-  "namely."
+  for lists and formal definitions, never for "because" or "namely."
 
 ## Figures & Tables
 
@@ -91,26 +90,24 @@ This is a palate, not a recipe.
 ## Citation Ethics
 
 Before citing, **verify** (search, confirm year, confirm claim), then **archive**
-to `.kilo/knowledge/papers/` following [research_manager](research_manager) §2.7
-format. Update `knowledge/papers/00-overview.md` index table. A citation is a
-promise; do not make it lightly.
+to `.kilo/knowledge/papers/` as `author-year-title.md` per
+[research_manager](../research_manager/SKILL.md) §2. Update
+`knowledge/papers/00-overview.md` once it holds more than 5 files (§4).
+A citation is a promise; do not make it lightly.
 
 In Related Work, *synthesize* by idea, not chronology:
 &gt; "The dominant paradigm splits into two branches: those that model uncertainty
 &gt; explicitly [12, 34, 45] and those that learn deterministic surrogates
 &gt; [7, 19, 56]. Both share a common limitation:..."
 
-When criticizing: surgical, not dismissive.
-Bad: "[23] fails to handle occlusions."
-Good: "[23] handles occlusions by assuming a static background, which restricts
-its applicability to dynamic scenes."
+When criticizing: surgical, not dismissive. Bad: "[23] fails to handle
+occlusions." Good: "[23] handles occlusions by assuming a static
+background, which restricts its applicability to dynamic scenes."
 
 &gt;50% references from the last 5 years in fast-moving fields. Never omit the
 seminal work everyone cites.
 
 ## The Reviewer's Mind
-
-Make their job easy. They are tired, overworked, and want to be convinced.
 
 - **5-minute test**: Problem, insight, main result — clear in 5 minutes from
   the title, abstract, and first figure.
@@ -133,12 +130,11 @@ informative than success cases.
 
 ## Reproducibility as Respect
 
-A top-tier paper is a gift to the community. Report:
-Framework, hardware, training time, batch size, optimizer, LR schedule,
-data augmentation, loss function, random seeds. Dataset size, splits,
-preprocessing, metric definitions. Code URL or "available upon request"
-with timeline. Hidden tricks (warm-up, init order) are reproducibility
-failures, not cleverness.
+A top-tier paper is a gift to the community. Report: framework, hardware,
+training time, batch size, optimizer, LR schedule, data augmentation, loss
+function, random seeds; dataset size, splits, preprocessing, metric
+definitions; code URL or "available upon request" with timeline. Hidden
+tricks (warm-up, init order) are reproducibility failures, not cleverness.
 
 ## Final Polish
 

@@ -23,7 +23,7 @@ Search the **arxiv API** and **Semantic Scholar API** via `webfetch` for the cla
 
 - If you find direct work, raise a red flag.
 - If you find nothing, state "no directly relevant work found" explicitly.
-- Update `knowledge/papers/00-overview.md` and per-paper files.
+- Archive papers to `knowledge/papers/` as `author-year-title.md`; create/update `00-overview.md` only once the directory holds more than 5 files (research_manager §4).
 
 ## 4. Gate 3: Kill Criteria
 

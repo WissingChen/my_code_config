@@ -28,6 +28,19 @@ Templates to use:
 - **Warning** box: risks, critical caveats.
 - **Data Table** box: metrics, parameters, comparisons.
 
+```html
+<!-- Info -->
+<div style="background:#3498db1a; border-left:4px solid #3498db; padding:8px 12px; margin:8px 0;">...</div>
+
+<!-- Warning -->
+<div style="background:#e67e221a; border-left:4px solid #e67e22; padding:8px 12px; margin:8px 0;">...</div>
+
+<!-- Data Table -->
+<div style="background:#2c3e500d; border:1px solid #2c3e50; padding:8px 12px; margin:8px 0;">Markdown table.</div>
+```
+
+GitHub strips inline styles; boxes render in VS Code, Typora, and site generators that allow raw HTML.
+
 ## 4. Semantic Color Palette
 
 One color, one meaning:
