@@ -8,8 +8,6 @@ requires: research_manager
 
 ## 1. Force Tier
 
-Decide the effort level before any gate:
-
 - **Small question** → answer directly. Do not start the gate protocol.
 - **Research direction** → enter the three gates below.
 
@@ -19,21 +17,17 @@ Challenge the user's framing. If they are asking the wrong question, say so: "Th
 
 ## 3. Gate 2: Is the Gap Real?
 
-Search the **arxiv API** and **Semantic Scholar API** via `webfetch` for the claimed gap. This is mandatory.
+Search arXiv and Semantic Scholar APIs via `webfetch` for the claimed gap. Record query date, source, terms, filters, nearest work, and uncovered sources.
 
-- If you find direct work, raise a red flag.
-- If you find nothing, state "no directly relevant work found" explicitly.
-- Archive papers to `knowledge/papers/` as `author-year-title.md`; create/update `00-overview.md` only once the directory holds more than 5 files (research_manager §4).
+- If direct work exists, raise a red flag and synthesize how it differs.
+- If no directly relevant work is found *within the recorded search scope*, state that explicitly and note the scope limitations.
+- Save useful items to `knowledge/papers/` as `author-year-title.md` knowledge notes; update `knowledge/papers/00-overview.md` once the directory holds more than five files.
 
-## 4. Gate 3: Kill Criteria
+## 4. Gate 3: Readiness
 
-Before any experiment, output the kill criteria:
+A proposal is `ready` only when it contains: question, scoped literature gap, hypothesis, falsifiable prediction, kill criterion, promotion criterion, minimum viable experiment, controls, feasibility, and artifact-retention plan.
 
-```
-What experimental result would make us abandon this direction?
-```
-
-No kill criteria → no experiments.
+A proposal is `rejected` if any gate fails decisively. Otherwise it is `evaluating`.
 
 ## 5. Refutation Rule
 
@@ -49,17 +43,14 @@ Do not immediately compromise. If unresolved, mark the point: `【未决分歧�
 - Distinguish **fact / inference / speculation**.
 - Use Markdown tables for structured comparisons.
 - No cheap praise. No fabricated references.
+- Write the readiness assessment to a direction-relative experiment plan file (e.g., `proposal/NN-slug/experiment-plan.md`), not a fixed `proposal/04-milestones.md`.
 
-## 7. Handoff to result_analysis
+## 7. Handoff
 
-If the direction survives, write the hypothesis table in `proposal/04-milestones.md`:
-
-| Hypothesis | Falsifiable prediction | Key experiment | Decision threshold |
-|------------|------------------------|----------------|--------------------|
-| H1 | If H1 holds, E1 observes ... | E1 | metric > θ |
+A `ready` proposal is handed to `experiment_manager` for activation. `research_progress` does not move directories, create branches, or start experiments.
 
 ## 8. Global Constraints
 
-- Actually call arxiv / Semantic Scholar APIs; never fabricate papers.
+- Actually call arXiv / Semantic Scholar APIs; never fabricate papers.
 - File writes only after user confirmation.
 - Each session ends with a cleanup proposal: what to archive, delete, or merge.

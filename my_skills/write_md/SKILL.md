@@ -1,6 +1,6 @@
 ---
 name: write_md
-description: Markdown readability and visual formatting. Load when the user asks to improve readability, format a document, add visual boxes, or make a Markdown page scannable. Handles language, structure, and a tight presentation layer.
+description: Markdown readability and visual formatting. Load when the user asks to improve readability, format a document, add visual boxes, or make a Markdown page scannable. Handles language, structure, and a renderer-aware presentation layer.
 ---
 
 # write_md — Readable Markdown
@@ -17,29 +17,22 @@ description: Markdown readability and visual formatting. Load when the user asks
 - **Conclusion first**: the first paragraph states the point.
 - **Key numbers bold**: readers scanning should see the decisive numbers.
 - **30-second scan test**: a tired reader must grasp the gist in 30 seconds.
+- **Figure-text rhythm**: long documents must not contain a full-screen wall of text; break it with tables, diagrams, or boxes. Every non-text element must carry information — no forced visuals in short or self-evident documents.
 
 ## 3. Presentation Layer
 
 Box budget: **≤3 per document**. If a box does not change what the reader sees first, do not use it.
 
-Templates to use:
+Renderer-aware formatting (default target: local reading in VS Code / Typora / Obsidian):
 
-- **Info** box: background, context.
-- **Warning** box: risks, critical caveats.
-- **Data Table** box: metrics, parameters, comparisons.
+- **Local renderers**: raw HTML boxes with inline styles render correctly; this is the default choice.
+- **GitHub**: inline styles are stripped; fall back to plain Markdown, blockquotes, or alerts (`> [!NOTE]`) only when the document will be viewed there.
+- **Manuscripts**: no UI-style boxes by default.
 
 ```html
-<!-- Info -->
+<!-- Default for local renderers; strip for GitHub targets -->
 <div style="background:#3498db1a; border-left:4px solid #3498db; padding:8px 12px; margin:8px 0;">...</div>
-
-<!-- Warning -->
-<div style="background:#e67e221a; border-left:4px solid #e67e22; padding:8px 12px; margin:8px 0;">...</div>
-
-<!-- Data Table -->
-<div style="background:#2c3e500d; border:1px solid #2c3e50; padding:8px 12px; margin:8px 0;">Markdown table.</div>
 ```
-
-GitHub strips inline styles; boxes render in VS Code, Typora, and site generators that allow raw HTML.
 
 ## 4. Semantic Color Palette
 
@@ -55,12 +48,17 @@ One color, one meaning:
 | Neutral | `#7f8c8d` |
 | Framework | `#2c3e50` |
 
-## 5. Diagrams
+## 5. Diagrams and Figures
 
-Standard flowcharts, sequence diagrams, and architecture diagrams are handled by `result_analysis` (Mermaid + matplotlib). `write_md` only supplies HTML boxes for free-layout visual emphasis.
+Standard flowcharts, sequence diagrams, architecture diagrams, and data figures are produced by `result_visualization`. `write_md` owns need judgment and integration: during a readability pass, identify positions where a diagram or table communicates better than prose, decide placement, callouts, and caption context, then delegate production to `result_visualization`.
 
-## 6. Global Constraints
+## 6. Final Report Readability Pass
+
+After scientific content and visuals are fixed, apply a final pass: conclusion-first structure, consistent terminology, figure/table callouts, caption placement, and a 30-second scan path. Do not alter statistical claims, evidence verdicts, or retention decisions.
+
+## 7. Global Constraints
 
 - No decorative formatting.
 - Never replace a plain table with a boxed table unless emphasis is needed.
+- File writes only after user confirmation.
 - End each formatting session by proposing what to delete or merge.
