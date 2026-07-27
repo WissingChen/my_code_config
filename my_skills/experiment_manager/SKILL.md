@@ -4,6 +4,11 @@ description: Direction-level experiment execution and artifact workflow. Load wh
 requires: research_manager
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Experiment Manager
 
 `experiment_manager` operates the experiment branch, assembles reports, and enforces output hygiene. It does not interpret evidence or render visuals.

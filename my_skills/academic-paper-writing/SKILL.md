@@ -3,6 +3,11 @@ name: academic-paper-writing
 description: Top-tier CS/AI/Robotics manuscript writing taste. Triggers on drafting, revising, or polishing academic papers in computer vision, machine learning, robotics, image processing, and related fields.
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Academic Writing — Evidence-Bound Manuscripts
 
 ## Core Premise

@@ -4,6 +4,11 @@ description: Evidence interpretation, experimental-data analysis, and statistica
 requires: research_manager
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Result Analysis — Interpret Evidence, Recommend Direction
 
 `result_analysis` owns statistical analysis and evidence verdicts. It does not generate visual artifacts, mutate research state, or commit/merge.

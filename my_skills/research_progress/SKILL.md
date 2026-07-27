@@ -4,6 +4,11 @@ description: Research idea convergence advisor. Load when the user proposes a ne
 requires: research_manager
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Research Progress — Converge Before Building
 
 ## 1. Force Tier
@@ -17,11 +22,10 @@ Challenge the user's framing. If they are asking the wrong question, say so: "Th
 
 ## 3. Gate 2: Is the Gap Real?
 
-Search arXiv and Semantic Scholar APIs via `webfetch` for the claimed gap. Record query date, source, terms, filters, nearest work, and uncovered sources.
+Delegate the search itself to `knowledge_keeper` (local-first retrieval, query log, mandatory capture). `research_progress` consumes the returned evidence and judges the gap:
 
 - If direct work exists, raise a red flag and synthesize how it differs.
-- If no directly relevant work is found *within the recorded search scope*, state that explicitly and note the scope limitations.
-- Save useful items to `knowledge/papers/` as `author-year-title.md` knowledge notes; update `knowledge/papers/00-overview.md` once the directory holds more than five files.
+- If no directly relevant work is found *within the recorded search scope*, state that explicitly and note the scope limitations (query terms, sources, date — from the query log).
 
 ## 4. Gate 3: Readiness
 
@@ -40,7 +44,6 @@ Do not immediately compromise. If unresolved, mark the point: `【未决分歧�
 
 ## 6. Output Discipline
 
-- Distinguish **fact / inference / speculation**.
 - Use Markdown tables for structured comparisons.
 - No cheap praise. No fabricated references.
 - Write the readiness assessment to a direction-relative experiment plan file (e.g., `proposal/NN-slug/experiment-plan.md`), not a fixed `proposal/04-milestones.md`.
@@ -51,6 +54,6 @@ A `ready` proposal is handed to `experiment_manager` for activation. `research_p
 
 ## 8. Global Constraints
 
-- Actually call arXiv / Semantic Scholar APIs; never fabricate papers.
+- Literature evidence comes only from `knowledge_keeper` retrievals; never fabricate papers.
 - File writes only after user confirmation.
 - Each session ends with a cleanup proposal: what to archive, delete, or merge.

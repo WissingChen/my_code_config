@@ -3,6 +3,11 @@ name: write_md
 description: Markdown readability and visual formatting. Load when the user asks to improve readability, format a document, add visual boxes, or make a Markdown page scannable. Handles language, structure, and a renderer-aware presentation layer.
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # write_md — Readable Markdown
 
 ## 1. Language Layer

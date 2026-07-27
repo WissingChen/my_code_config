@@ -3,6 +3,11 @@ name: research_manager
 description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md pointer layer, archive SUMMARY.md rules, and final REPORT.md requirements.
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Research Project Manager
 
 Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `research_manager` owns directory moves, archive naming, and state transitions. It does not run experiments or generate artifacts.
@@ -30,7 +35,7 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 - Direction unit: `NN-slug/` (two-digit prefix, lowercase hyphenated). Preserve the ID across moves.
 - Exceptions: `global.md`, `00-overview.md`, `SUMMARY.md`, `REPORT.md`, and dated archive directories do not use `NN-slug`.
 - Archive entries: `YYYY-MM-DD-NN-slug/`.
-- Knowledge notes: `author-year-title.md` or `source-year-topic.md`.
+- Knowledge notes: `author-year-title.md` or `source-year-topic.md`; the knowledge query log is `knowledge/papers/00-query-log.md` (owned by `knowledge_keeper`).
 
 ## 3. global.md (Pointer Layer)
 
@@ -79,6 +84,7 @@ At the start of a session, read `global.md` and the target direction's `00-overv
 | Request | Load |
 |---|---|
 | Converge a research idea | `research_progress` |
+| Search literature or capture to the knowledge base | `knowledge_keeper` |
 | Start/monitor/close experiments | `experiment_manager` |
 | Analyze experimental evidence | `result_analysis` |
 | Produce charts or diagrams | `result_visualization` |

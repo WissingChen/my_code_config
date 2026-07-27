@@ -4,6 +4,11 @@ description: Charts, evidence tables, process diagrams, and figure validation fo
 requires: research_manager
 ---
 
+## Output Contract
+
+- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
+- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+
 # Result Visualization — Encode Evidence Without Distortion
 
 `result_visualization` owns visual encoding and figure production. It does not invent uncertainty, run hypothesis tests, or issue direction verdicts.
