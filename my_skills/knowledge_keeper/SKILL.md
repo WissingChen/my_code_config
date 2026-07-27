@@ -36,24 +36,35 @@ On a local hit, answer from the cached notes and say the source is the local kno
 
 Any paper actually used (cited in a reply or document) must be saved immediately as `knowledge/papers/author-year-title.md`. Deduplicate by arXiv ID or DOI; if a note exists, update it instead of creating a copy. Searching without capturing is forbidden — that is what causes repeated searches and API bans.
 
-Note template (minimal fields):
+Note template — paper-centric, not question-centric:
 
 ```
 # Title — Authors (Year)
-link: <url or arXiv ID>
-relevance: <which direction/proposal this serves>
+link: <url or arXiv ID>   pdf: <pdfs/... or "not cached">
+added: <YYYY-MM-DD>   source-query: "<the query that found it>"
 
-## Takeaway
-One paragraph: the conclusion, and how strong the evidence is.
+## Summary
+What the paper itself does: problem, method, core conclusion, evidence
+strength. 3-5 sentences, independent of any use case.
 
-## Reusable points
-- Method / dataset / result worth reusing, one bullet each.
+## Key details
+- Method essentials / datasets / main numeric results / experimental
+  setup, one bullet each.
+- Bar: a future reader with a *different* question should rarely need
+  to re-fetch the original.
 
-## Caveats
-- Limitations or untested claims. Mark speculation as [speculation].
+## Limitations
+- Weaknesses and unverified claims. Mark speculation as [speculation].
+
+## Relevance log
+- <YYYY-MM-DD>  <direction/proposal>: <how it was used>
 ```
 
-Do not paste the abstract verbatim; write the takeaway in plain language.
+Rules:
+
+- **Summary and Key details describe the paper, not the current question.** Notes written only for today's question force re-retrieval when the question changes — that defeats the knowledge base.
+- The Relevance log is append-only: when an existing note serves a new direction, add one line; never create a duplicate note.
+- Do not paste the abstract verbatim; write in plain language.
 
 ## 4. Index
 
