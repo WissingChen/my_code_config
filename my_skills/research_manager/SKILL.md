@@ -20,6 +20,7 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 ├── proposal/          # evaluating or ready directions
 ├── project/           # active directions on an experiment branch
 ├── archive/           # rejected, falsified, validated, superseded, abandoned
+├── reports/           # generated dated status snapshots
 └── knowledge/         # external references (knowledge notes)
 ```
 
@@ -64,7 +65,21 @@ Archive outcomes:
 - **superseded**: core question or hypothesis changed materially
 - **abandoned**: non-scientific stop reason (resource, priority, etc.)
 
-## 6. Budgets and Cleanup
+## 6. Status Reports
+
+On request ("汇报", "status report"), generate a dated snapshot at `.kilo/reports/YYYY-MM-DD-status.md`. Status documents are generated, never hand-maintained; consecutive snapshots are diffed to show change.
+
+Required sections:
+
+- Headline: ≤3 lines synthesizing the period
+- Plan: each evaluating/ready direction with state and one-liner (from `proposal/NN-slug/00-overview.md`)
+- Active progress: per active direction, latest `ENN` verdict and distance to kill/promotion criteria — data delegated from `experiment_manager` (run reports live on `exp/NN-slug` branches)
+- Closed this period: outcomes and lessons (from `archive/*/SUMMARY.md`)
+- Next steps and risks: backlog (`global.md`) plus judgment
+
+Every claim must trace to an existing source. Generated reports are exempt from line budgets.
+
+## 7. Budgets and Cleanup
 
 Hard limits apply to human-maintained operational research documents:
 
@@ -75,14 +90,15 @@ Exempt: manuscripts, generated reports/data, code, bibliographies, and indivisib
 
 Propose archive/delete/merge only when concrete stale content is found. Preserve raw scientific evidence unless its retention policy allows deletion.
 
-## 7. Read Discipline
+## 8. Read Discipline
 
 At the start of a session, read `global.md` and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
 
-## 8. Skill Delegation
+## 9. Skill Delegation
 
 | Request | Load |
 |---|---|
+| Generate a status report or progress briefing | `research_manager` (§6) |
 | Converge a research idea | `research_progress` |
 | Search literature or capture to the knowledge base | `knowledge_keeper` |
 | Start/monitor/close experiments | `experiment_manager` |

@@ -1,6 +1,6 @@
 ---
 title: "技能组总览 — Research Skill Family"
-last_updated: "2026-07-20"
+last_updated: "2026-07-29"
 ---
 
 # 技能组总览
@@ -33,7 +33,7 @@ last_updated: "2026-07-20"
 | Active | `project/NN-slug/` on `exp/NN-slug` | `experiment_manager` 执行 | 继续、转向、证伪、验证 |
 | Rejected/Falsified/Validated/Superseded/Abandoned | `archive/YYYY-MM-DD-NN-slug/` | `research_manager` 应用 | 最终报告为主交付物 |
 
-实验循环：每次 `ENN` 跑完先形成 `ENN-experiment-report.md`，通过价值门后再决定是否 checkpoint。关闭方向时综合为一份图文并茂的 `REPORT.md`。
+实验循环：每次 `ENN` 跑完先形成 `ENN-experiment-report.md`，通过价值门后再决定是否 checkpoint。关闭方向时综合为一份图文并茂的 `REPORT.md`。需要汇报时由 `research_manager` 生成带日期的状态快照至 `.kilo/reports/YYYY-MM-DD-status.md`，永不手工维护，相邻快照可直接 diff。
 
 ## 3. 交叉引用矩阵
 
@@ -52,6 +52,7 @@ last_updated: "2026-07-20"
 
 | 请求领域 | 加载技能 |
 |----------|----------|
+| 项目状态汇报、进展快照 | `research_manager` |
 | 课题收敛、研究想法论证 | `research_progress` |
 | 论文/资料检索、知识库落库 | `knowledge_keeper` |
 | 开始/管理/关闭实验、生成报告 | `experiment_manager` |
