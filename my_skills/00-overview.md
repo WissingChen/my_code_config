@@ -9,7 +9,7 @@ last_updated: "2026-07-29"
 
 ## 0. 一句话定位
 
-8 个技能覆盖研究全生命周期：收敛想法、管理知识、执行实验、解析证据、可视化、表达文档、成稿论文。
+9 个技能覆盖研究全生命周期：收敛想法、管理知识、执行实验、解析证据、可视化、表达文档、成稿论文、生成展示页。
 
 ## 1. 技能清单
 
@@ -23,6 +23,7 @@ last_updated: "2026-07-29"
 | `result_visualization` | 图表与流程图 | "画图/plot"、"流程图"、"出图" |
 | `write_md` | 可读性排版 | "排版"、"美化文档"、"加盒子" |
 | `academic-paper-writing` | 论文写作 | "写论文"、"润色"、"改 Introduction" |
+| `slide_deck` | HTML 展示页（代替 PPT） | "做个展示"、"slides"、"代替 PPT" |
 
 ## 2. 标准生命周期
 
@@ -37,16 +38,17 @@ last_updated: "2026-07-29"
 
 ## 3. 交叉引用矩阵
 
-| 被引 →<br>引用 ↓ | manager | progress | keeper | experiment | analysis | visualization | write_md | academic |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| research_manager | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| research_progress | ✓ | — | handoff | handoff | — | — | — | — |
-| knowledge_keeper | ✓ | — | — | — | — | — | — | — |
-| experiment_manager | ✓ | ✓ | — | ✓ | ✓ | ✓ | — |
-| result_analysis | ✓ | — | ✓ | — | handoff | — | — |
-| result_visualization | ✓ | — | ✓ | ✓ | — | — | ✓ |
-| write_md | — | — | ✓ | — | — | — | ✓ |
-| academic-paper-writing | ✓(citation) | — | — | — | ✓ | — | — |
+| 被引 →<br>引用 ↓ | manager | progress | keeper | experiment | analysis | visualization | write_md | academic | slides |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| research_manager | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| research_progress | ✓ | — | handoff | handoff | — | — | — | — | — |
+| knowledge_keeper | ✓ | — | — | — | — | — | — | — | — |
+| experiment_manager | ✓ | ✓ | — | — | ✓ | ✓ | ✓ | — | — |
+| result_analysis | ✓ | — | ✓ | — | — | handoff | — | — | — |
+| result_visualization | ✓ | — | ✓ | ✓ | — | — | — | ✓ | — |
+| write_md | — | — | ✓ | — | — | — | — | ✓ | — |
+| academic-paper-writing | ✓(citation) | — | — | — | ✓ | — | — | — | — |
+| slide_deck | ✓ | — | — | — | handoff | handoff | — | — | — |
 
 ## 4. 委托指南
 
@@ -60,6 +62,7 @@ last_updated: "2026-07-29"
 | 数据图表、流程图、论文配图 | `result_visualization` |
 | 文档排版、报告可读性 | `write_md` |
 | 论文写作、稿件打磨 | `academic-paper-writing` |
+| 项目展示、HTML 幻灯片 | `slide_deck` |
 
 ## 5. 设计原则
 

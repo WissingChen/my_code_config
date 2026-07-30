@@ -106,3 +106,4 @@ At the start of a session, read `global.md` and the target direction's `00-overv
 | Produce charts or diagrams | `result_visualization` |
 | Format or present Markdown | `write_md` |
 | Write or polish a paper | `academic-paper-writing` |
+| Create an HTML slide deck or presentation | `slide_deck` |
