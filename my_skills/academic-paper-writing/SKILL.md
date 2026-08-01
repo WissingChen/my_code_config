@@ -5,8 +5,12 @@ description: Top-tier CS/AI/Robotics manuscript writing taste. Triggers on draft
 
 ## Output Contract
 
-- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
-- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+- 先说结论，再给必要依据和下一步。
+- 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
+- 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
+- 不写套话、廉价肯定、重复总结和固定收尾。
 
 # Academic Writing — Evidence-Bound Manuscripts
 
@@ -16,7 +20,7 @@ A strong paper is built on audited evidence, clear claims, and a structure that 
 
 ## Narrative Arc
 
-1. **Opening**: Identify the precise gap. Avoid generic statements. Cite the most recent relevant work that still falls short.
+1. **Opening**: Identify the precise gap. Avoid generic statements. Anchor on the strongest credible work that still falls short; then cite the closest recent direct work. Never pad the gap with weak papers.
 2. **Insight**: State the re-framing in one crisp sentence. If you cannot, the paper is not yet focused.
 3. **Method**: Show the idea before the equations. Figures should communicate the core mechanism in 30 seconds.
 4. **Experiments**: Build from evidence:
@@ -55,13 +59,16 @@ Required reporting: effect size, uncertainty interval, and practical significanc
 
 - Test the hard thing: remove or replace the claimed essential component. Report the effect size and uncertainty; do not require a fixed drop threshold.
 - Include a replacement ablation: compare against the simplest baseline addressing the same problem.
+- Main comparisons must include the strongest credible method, not only weak direct competitors that are easy to beat.
 - Hyperparameter sensitivity: report the range and whether the effect is stable or brittle, without relying on a `sharp peak` narrative.
 
 ## Citation Ethics
 
-Before citing, verify (search, confirm year, confirm claim), then archive to `.kilo/knowledge/papers/` as `author-year-title.md` per [research_manager](../research_manager/SKILL.md). A citation is a promise; do not make it lightly.
+Before citing, delegate retrieval, verification (year, claim), and capture to `.kilo/knowledge/papers/` to `knowledge_keeper`. A citation is a promise; do not make it lightly.
 
-In Related Work, synthesize by idea, not chronology. When criticizing, be surgical: describe the assumption that restricts applicability, not a dismissive summary.
+Before drafting, read the direction's anchor set and minimum quality bar, and answer: whose problem definition do we follow, whose experimental/theoretical standard do we follow, who is the closest competitor, and do our results actually clear that bar. If the last answer is no, the problem is unfinished research, not writing.
+
+In Related Work, synthesize by idea, not chronology. Do not treat all related papers as equals — anchor papers, direct competitors, and background get different weight. When criticizing, be surgical: describe the assumption that restricts applicability, not a dismissive summary.
 
 ## The Reviewer's Mind
 

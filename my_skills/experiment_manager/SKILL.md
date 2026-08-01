@@ -6,8 +6,12 @@ requires: research_manager
 
 ## Output Contract
 
-- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
-- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+- 先说结论，再给必要依据和下一步。
+- 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
+- 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
+- 不写套话、廉价肯定、重复总结和固定收尾。
 
 # Experiment Manager
 
@@ -17,7 +21,7 @@ Git commits, branch deletion, merges, and other lifecycle mutations require expl
 
 ## 1. Open a Direction
 
-Require a ready proposal containing: question, hypothesis, falsifiable prediction, kill criteria, promotion criteria, minimum viable experiment, controls, and output-retention policy.
+Require a ready proposal containing: question, hypothesis, falsifiable prediction, kill criteria, promotion criteria, minimum viable experiment, controls, output-retention policy, anchor set, and minimum quality bar (including the strong baselines that must be compared against).
 
 Record: `base_branch`, `base_commit`, direction ID, branch name (`exp/NN-slug`), and worktree path. Create the branch; prefer a dedicated worktree so untracked outputs cannot leak across branches. Move the direction from `proposal/` to `project/` only within the experiment branch.
 
@@ -86,7 +90,7 @@ Apply only the final report bundle plus index transition to the recorded base br
 
 ## 6. Close as Validated
 
-Create `promote/NN-slug` from the target base. Synthesize the same illustrated final report with promotion criteria, validated scope, key evidence, limitations, and traceability to retained experiment IDs. Selectively apply only effective implementation, required tests, minimal configuration, and the report bundle. Exclude superseded variants, debug helpers, temporary scripts, exploratory abstractions, and intermediate outputs. Review the promotion diff independently; merge the promotion branch, never `exp/NN-slug` directly. Close the experiment branch/worktree after promotion is verified.
+Create `promote/NN-slug` from the target base. Synthesize the same illustrated final report with promotion criteria, validated scope, key evidence, limitations, and traceability to retained experiment IDs. The report must state, in plain terms: what we achieved relative to the anchor set, where we still fall short of the minimum quality bar, and what level of claim the current results can support. Selectively apply only effective implementation, required tests, minimal configuration, and the report bundle. Exclude superseded variants, debug helpers, temporary scripts, exploratory abstractions, and intermediate outputs. Review the promotion diff independently; merge the promotion branch, never `exp/NN-slug` directly. Close the experiment branch/worktree after promotion is verified.
 
 ## 7. Pivot
 

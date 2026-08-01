@@ -5,8 +5,12 @@ description: Markdown readability and visual formatting. Load when the user asks
 
 ## Output Contract
 
-- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
-- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+- 先说结论，再给必要依据和下一步。
+- 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
+- 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
+- 不写套话、廉价肯定、重复总结和固定收尾。
 
 # write_md — Readable Markdown
 
@@ -16,6 +20,8 @@ description: Markdown readability and visual formatting. Load when the user asks
 - **One sentence, one meaning**: break stacked abstractions.
 - **Concrete verbs over abstract nouns**: "the model drops recall" beats "performance degradation is observed."
 - **Explain on first use**: every concept introduced must be explainable in plain language.
+- **Say it straight**: every paragraph's first sentence carries the point; rewrite headings that are abstract nouns into statements; never wrap internal process names (gate, readiness, handoff, lifecycle) in front of the reader — say what is confirmed, what is missing, what happens next.
+- **Precision exception**: in manuscripts, necessary technical terms stay — explain the meaning in plain words first, then give the exact term.
 
 ## 2. Structure Layer
 
@@ -66,4 +72,4 @@ After scientific content and visuals are fixed, apply a final pass: conclusion-f
 - No decorative formatting.
 - Never replace a plain table with a boxed table unless emphasis is needed.
 - File writes only after user confirmation.
-- End each formatting session by proposing what to delete or merge.
+- Propose cleanup (delete/merge) only when concrete stale or duplicate content is found — not as a fixed sign-off.

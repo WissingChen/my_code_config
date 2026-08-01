@@ -6,8 +6,12 @@ requires: research_manager
 
 ## Output Contract
 
-- Label every claim as **fact** (with source) or **speculation** (explicitly marked, e.g. `[speculation]`). Never state speculation as fact — this is a hard red line.
-- Plain language: conclusion first; explain any jargon in one short sentence on first use; no filler phrases or padding; prefer tables or lists when they aid scanning.
+- 先说结论，再给必要依据和下一步。
+- 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
+- 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
+- 不写套话、廉价肯定、重复总结和固定收尾。
 
 # Research Progress — Converge Before Building
 
@@ -20,16 +24,22 @@ requires: research_manager
 
 Challenge the user's framing. If they are asking the wrong question, say so: "The real question might be X." Do not dig along a bad axis.
 
-## 3. Gate 2: Is the Gap Real?
+## 3. Gate 2: What Have Existing Works Actually Achieved?
 
-Delegate the search itself to `knowledge_keeper` (local-first retrieval, query log, mandatory capture). `research_progress` consumes the returned evidence and judges the gap:
+Delegate the search itself to `knowledge_keeper` (local-first retrieval, query log, mandatory capture, per-paper quality judgments). `research_progress` consumes the returned evidence and judges what room remains — not merely whether a gap exists:
 
-- If direct work exists, raise a red flag and synthesize how it differs.
-- If no directly relevant work is found *within the recorded search scope*, state that explicitly and note the scope limitations (query terms, sources, date — from the query log).
+- **Direct work exists ≠ the direction is dead.** Distinguish: same problem + same core idea + solid evidence + complete scope (real conflict — pivot unless we bring a clearly new understanding, scope, or theory) from same problem but weak idea, thin experiments, or shaky theory (a competitor that sets a floor, not a ceiling — say exactly where it falls short and how we exceed it).
+- **"They did it badly" is not a contribution.** Doing the same problem is fine only if we add something: clearer mechanism, more credible evidence, broader or more realistic scope, new theory, or systematic counter-evidence to the original claim.
+- If no directly relevant work is found *within the recorded search scope*, state that explicitly with scope limitations (query terms, sources, date). Never claim "first".
+- Require from `knowledge_keeper`: the strongest anchor candidates, the closest direct work with its quality judgment, reading depth behind each judgment, and the search scope.
+
+A direction needs an **anchor set**, not one paper: which work sets the bar for the core idea, which sets the bar for experiments or theory, and which is the closest direct work. One paper may fill several roles. If no strong paper exists in the exact problem, borrow an experimental/theoretical standard from a high-quality adjacent work and say why it applies.
 
 ## 4. Gate 3: Readiness
 
-A proposal is `ready` only when it contains: question, scoped literature gap, hypothesis, falsifiable prediction, kill criterion, promotion criterion, minimum viable experiment, controls, feasibility, and artifact-retention plan.
+A proposal is `ready` only when it contains: question, scoped literature gap, hypothesis, falsifiable prediction, kill criterion, promotion criterion, minimum viable experiment, controls, feasibility, artifact-retention plan, **anchor set**, and **minimum quality bar**.
+
+The minimum quality bar states plainly: how clear the core idea must be, which strong baselines must be beaten or matched, which datasets/conditions/theory questions must be covered, and which results would count only as engineering gains rather than supporting the claim. Without an anchor set and quality bar, the proposal stays `evaluating`.
 
 A proposal is `rejected` if any gate fails decisively. Otherwise it is `evaluating`.
 
@@ -56,4 +66,4 @@ A `ready` proposal is handed to `experiment_manager` for activation. `research_p
 
 - Literature evidence comes only from `knowledge_keeper` retrievals; never fabricate papers.
 - File writes only after user confirmation.
-- Each session ends with a cleanup proposal: what to archive, delete, or merge.
+- Propose cleanup (archive/delete/merge) only when concrete stale or duplicate content is found — not as a fixed sign-off.
