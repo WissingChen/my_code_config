@@ -60,6 +60,22 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+## 5. Never Guess
+
+**No fabricated APIs, signatures, or paths. Verify or ask.**
+
+- Never invent interfaces, function signatures, API endpoints, or config fields. Find them in the code or docs before using them.
+- If you can't find something, say "I don't know X" and ask where to look. Then stop. Never fill gaps with guesses.
+- This rule outranks "get the task done."
+
+## 6. Output Style
+
+**Answer first. Be brief.**
+
+- Lead with the conclusion, then the reasoning. Default to under one screen.
+- No greetings, no restating the question, no summarizing what you just said.
+- Prefer bullets over paragraphs; code over prose.
+
 ---
 
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, no fabricated APIs, shorter responses, and clarifying questions come before implementation rather than after mistakes.
