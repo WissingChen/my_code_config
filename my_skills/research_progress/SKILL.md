@@ -37,9 +37,17 @@ A direction needs an **anchor set**, not one paper: which work sets the bar for 
 
 ## 4. Gate 3: Readiness
 
-A proposal is `ready` only when it contains: question, scoped literature gap, hypothesis, falsifiable prediction, kill criterion, promotion criterion, minimum viable experiment, controls, feasibility, artifact-retention plan, **anchor set**, and **minimum quality bar**.
+A proposal is `ready` only when it contains: question, scoped literature gap, hypothesis, falsifiable prediction, **mechanism hypothesis with observable intermediate signals**, a baseline-to-expectation comparison, kill criterion, promotion criterion, minimum viable experiment, controls, feasibility, artifact-retention plan, **anchor set**, and **minimum quality bar**.
 
-The minimum quality bar states plainly: how clear the core idea must be, which strong baselines must be beaten or matched, which datasets/conditions/theory questions must be covered, and which results would count only as engineering gains rather than supporting the claim. Without an anchor set and quality bar, the proposal stays `evaluating`.
+The minimum quality bar states plainly: how clear the core idea must be, which strong baselines must be beaten or matched, which datasets/conditions/theory questions must be covered, and which results would count only as engineering gains rather than supporting the claim. The prediction must state not only the expected final metric relative to the baseline, but also why the change should produce it and which intermediate measurements would confirm or challenge that mechanism. Without an anchor set, quality bar, or mechanism-level prediction, the proposal stays `evaluating`.
+
+The experiment plan must define, before implementation:
+
+- the baseline result and its uncertainty;
+- the expected result range for the new method;
+- the expected mechanism and observable intermediate signals;
+- alternative explanations that would produce similar final metrics;
+- the measurement or ablation that distinguishes those explanations.
 
 A proposal is `rejected` if any gate fails decisively. Otherwise it is `evaluating`.
 

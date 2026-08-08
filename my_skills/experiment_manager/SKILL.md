@@ -1,6 +1,6 @@
 ---
 name: experiment_manager
-description: Direction-level experiment execution and artifact workflow. Load when a user starts, runs, checkpoints, or closes experiments. Delegates evidence interpretation to result_analysis and visualization to result_visualization; owns branch/worktree lifecycle, run reports, output hygiene, and promotion.
+description: Direction-level experiment execution, expectation tracking, and artifact workflow. Load when a user starts, runs, checkpoints, or closes experiments. Delegates evidence interpretation to result_analysis and visualization to result_visualization; owns branch/worktree lifecycle, run reports, output hygiene, and promotion.
 requires: research_manager
 ---
 
@@ -21,13 +21,13 @@ Git commits, branch deletion, merges, and other lifecycle mutations require expl
 
 ## 1. Open a Direction
 
-Require a ready proposal containing: question, hypothesis, falsifiable prediction, kill criteria, promotion criteria, minimum viable experiment, controls, output-retention policy, anchor set, and minimum quality bar (including the strong baselines that must be compared against).
+Require a ready proposal containing: question, hypothesis, falsifiable prediction, mechanism hypothesis with observable intermediate signals, baseline result and uncertainty, expected result range, kill criteria, promotion criteria, minimum viable experiment, controls, output-retention policy, anchor set, and minimum quality bar (including the strong baselines that must be compared against). Expected results and mechanisms must be recorded before running the experiment; do not infer the prediction after seeing the result.
 
 Record: `base_branch`, `base_commit`, direction ID, branch name (`exp/NN-slug`), and worktree path. Create the branch; prefer a dedicated worktree so untracked outputs cannot leak across branches. Move the direction from `proposal/` to `project/` only within the experiment branch.
 
 ## 2. Run Loop
 
-Give each run an `ENN` ID. Change one controlled factor where feasible.
+Give each run an `ENN` ID. Change one controlled factor where feasible. Before execution, freeze the baseline, expected result range, expected intermediate signals, and the mechanism that connects the intervention to the expected change.
 
 Delegate evidence interpretation to `result_analysis` and visuals to `result_visualization`. Before the value gate, produce one illustrated `ENN-experiment-report.md` (schema in §4).
 
@@ -55,15 +55,17 @@ Every completed `ENN` run produces `ENN-experiment-report.md` containing:
 - Base commit and controlled change
 - Setup, data, controls, and reproducibility parameters
 - Data-quality and adequacy audit
-- Key results table
+- Baseline / expected / actual results table, with uncertainty and the pre-registered expectation for every primary metric
+- Mechanism prediction versus observed intermediate signals
 - Selected diagnostic/evidence charts with captions
 - Statistical analysis and uncertainty
+- Deviation and failure-mechanism analysis: for every missed expectation, enumerate plausible causes, evidence for and against each, and the next discriminating test
 - Fact / inference / speculation
 - Experiment value: `informative` | `reusable` | `none`
 - Direction verdict and next action
 - Retain/discard manifest
 
-The report is the input to the value gate. Informative/reusable reports enter an atomic checkpoint.
+The report is the input to the value gate. A lower score than the baseline does not by itself justify `falsified` or `none`: first determine whether the intervention failed to produce the predicted mechanism, produced it but exposed an invalid causal link, or was masked by implementation, optimization, data, or evaluation issues. Informative/reusable reports enter an atomic checkpoint. A next version is not justified unless it tests a named explanation and changes one discriminating factor; repeated metric-driven tweaks without an updated mechanism are not valuable iteration.
 
 ## 5. Close as Falsified
 
@@ -75,6 +77,7 @@ Synthesize valuable run reports into one illustrated `REPORT.md` containing:
 - Methods and evaluation design
 - Results with selected tables and figures
 - Statistical analysis
+- Integrated baseline / expected / actual comparison and mechanism-based failure analysis
 - Competing explanations and failure analysis
 - Excluded/invalid runs and reasons
 - Final verdict and evidence boundary

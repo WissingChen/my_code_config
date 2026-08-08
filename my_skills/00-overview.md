@@ -71,6 +71,7 @@ last_updated: "2026-07-29"
 1. **Quality over relevance**: 检索产出不是相关性列表。`knowledge_keeper` 对每篇被依赖的论文给出角色（anchor/competitor/adjacent/background）、质量（strong/usable/weak）和阅读深度；会议等级、作者、引用只是辅助信号，不能代替全文判断。判断规则集中在 `knowledge_keeper/paper-quality.md`。
 1. **Direct work ≠ dead direction**: 有人做过同题不自动否定课题——看它是高质量完整解决（真冲突）还是占坑但做得差（设下限不设上限）。但"别人做得差"本身不是贡献，必须说清我们多带来什么。
 1. **Anchor set and quality bar gate readiness**: 提案 ready 必须有锚点集（想法标准、实验/理论标准、最近直接工作，可分属不同论文）和最低质量线（必须比较哪些强对照、覆盖哪些条件）；缺失则保持 evaluating。
+1. **Baseline → expectation → actual is the analysis loop**: 新方案必须在实验前写明相对 baseline 的预期结果、机制假设和可观测中间信号；实验后综合比较三者，解释偏差和失败机制。表面指标变差不能直接证明方向无效，也不能据此进行没有新机制假设的 v2/v3 迭代。
 1. **Output contract is duplicated by design**: 直白表达契约逐字内嵌在每个 SKILL.md 中（agent 只加载单个技能，共 9 个）；修改契约必须同步全部 9 处。
 2. **Experiment value, not success, determines checkpoints**: 价值为 `informative` 或 `reusable` 才 checkpoint；`none` 只记录排除原因。
 3. **Experiment branches are never merged directly**: 失败方向只返回最终报告包；成功方向通过干净的 `promote/NN-slug` 分支进入主线。

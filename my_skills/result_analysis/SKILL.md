@@ -1,6 +1,6 @@
 ---
 name: result_analysis
-description: Evidence interpretation, experimental-data analysis, and statistical verdicts. Load when the user asks to analyze results, interpret data, decide whether to kill/pivot/continue a direction, or evaluate numeric evidence. Delegates chart generation to result_visualization.
+description: Evidence interpretation, baseline-expected-actual comparison, mechanism diagnosis, and statistical verdicts. Load when the user asks to analyze results, interpret data, decide whether to kill/pivot/continue a direction, or evaluate numeric evidence. Delegates chart generation to result_visualization.
 requires: research_manager
 ---
 
@@ -34,7 +34,18 @@ Before interpreting any data, answer:
 
 If not, fix the evaluation first. Do not draw conclusions from weak evidence.
 
-## 2. Evidence Audit (Fact Layer)
+## 2. Pre-Registered Expectation
+
+Before inspecting actual outcomes, recover the experiment-time record of:
+
+- baseline metric and uncertainty;
+- expected metric range for the intervention;
+- expected mechanism, causal link, and observable intermediate signals;
+- alternative explanations and the measurements intended to distinguish them.
+
+If these were not recorded before the run, mark the expectation as post hoc and lower the evidential weight of any apparent confirmation. Do not rewrite the expected result to fit the actual result.
+
+## 3. Evidence Audit (Fact Layer)
 
 Strip away interpretation. List facts with numbers and units. De-fuzzify vague words like "significant" by demanding a quantitative definition.
 
@@ -45,8 +56,26 @@ Audit:
 - Descriptive statistics before inference
 - Controls and baselines: are they drawn from the strongest credible work (the anchor set), or only from weak competitors that are easy to beat? Is the evaluation protocol comparable to the anchor's; if not, is the difference justified?
 - Sample size relative to the claim
+- Intermediate measurements relevant to the proposed mechanism, not only the final score
 
-## 3. Statistical Analysis
+## 4. Baseline / Expected / Actual Analysis
+
+For every primary metric and important diagnostic, make the three-way comparison explicit:
+
+| Quantity | Baseline | Expected | Actual | Deviation | Interpretation |
+|---|---:|---:|---:|---:|---|
+| Primary metric / mechanism signal | ... | ... | ... | ... | ... |
+
+Then answer, in order:
+
+1. Did the actual result improve over the baseline, and is the difference practically and statistically credible?
+2. Did the expected intermediate signals appear?
+3. If the final result missed expectation, did the intervention fail to create the mechanism, did the mechanism appear but not translate to the metric, or did implementation/evaluation noise prevent a fair test?
+4. What evidence rules out each competing explanation, and what remains unresolved?
+
+A result worse than the baseline is evidence about the proposed mechanism, not a complete verdict about the direction. Diagnose the degradation before recommending `falsified`, `pivot`, or a new version. Surface non-monotonic effects, subgroup failures, optimization trade-offs, interference with the baseline pipeline, and metric mismatch where applicable.
+
+## 5. Statistical Analysis
 
 Choose tests or models from the design, not a fixed recipe. Report:
 
@@ -58,7 +87,7 @@ Choose tests or models from the design, not a fixed recipe. Report:
 
 Avoid universal thresholds like `≥3 seeds` or variance rules; calibrate checks to the actual randomness source, design, effect size, and controls.
 
-## 4. Competing Hypotheses and Confidence
+## 6. Competing Hypotheses and Confidence
 
 Propose at least two mutually exclusive hypotheses with mechanism and falsification condition. Use qualitative confidence before/after unless a formal Bayesian model supports numeric priors/posteriors.
 
@@ -66,7 +95,17 @@ Propose at least two mutually exclusive hypotheses with mechanism and falsificat
 |---|---|---|---|---|
 | H1 | ... | +/- ... | ... | ... |
 
-## 5. Verdict and Recommendation
+## 7. Failure Diagnosis and Next Experiment
+
+When actual results miss the expected range, produce a failure table:
+
+| Candidate explanation | Supporting evidence | Contradicting evidence | Confidence | Discriminating next test |
+|---|---|---|---|---|
+| ... | ... | ... | ... | ... |
+
+Do not write "the direction does not work" from a surface metric alone. A useful next experiment must target the highest-impact unresolved explanation, alter a discriminating factor, and state the new expected mechanism and result before running. If no plausible explanation can be tested cheaply or no mechanism-level prediction survives, recommend stopping or pivoting with that evidence boundary stated plainly.
+
+## 8. Verdict and Recommendation
 
 Output:
 
@@ -79,7 +118,7 @@ Hand the verdict to `experiment_manager` or `research_manager`; never write dire
 
 Supply the evidence and statistics sections of each run report and the final direction report; distinguish facts, estimates, uncertainty, interpretation, and verdict.
 
-## 6. Visualization Handoff
+## 9. Visualization Handoff
 
 Request a chart or evidence table only when it adds information beyond a compact textual result. The handoff must state: purpose, source data/version, observational unit, variables, grouping/faceting, summary operation, valid uncertainty representation, target claim, and artifact class. Then delegate generation to `result_visualization`.
 
