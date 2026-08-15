@@ -84,10 +84,10 @@ Style is guided by principles, not a fixed theme; the user iterates on rendered 
 
 用户命名保存的风格模板放在 `templates/<风格名>/`，索引与维护规则见 `templates/README.md`。
 
-- 用户点名某个已保存风格时：先读该模板的 `STYLE.md`，按 `template.html` 的骨架复刻；不凭记忆重写样式。
+- 用户点名某个已保存风格时：先读该模板的 `STYLE.md`，按其风格 DNA 与组件词汇**参考风格**，按内容拓扑从模式库选择或组合布局；`template.html` 只是一种模式的实例，不凭记忆重写样式、不硬套骨架。
 - 用户要求保存新风格时：从已通过视觉 QA 的 slide 提取 CSS tokens 与组件骨架，新建 `templates/<风格名>/STYLE.md` + `template.html`，在 `templates/README.md` 登记，并对 `template.html` 做一次截图 QA。
 - 风格的后续修订回写到模板文件（单一事实源），套用页面只替换内容、不改模板 token。
-- 当前模板：**国自然基金风格**（机制流程图 / pipeline 单页）、**瑞士国际主义风格**（整套 deck 视觉体系：网格 + 极细巨字 + 单一 accent）。索引见 `templates/README.md`。
+- 当前模板：**国自然基金风格**（技术路线插图视觉语言：面板/色彩/箭头语法 + 5 种布局模式）、**瑞士国际主义风格**（整套 deck 视觉体系：网格 + 极细巨字 + 单一 accent）。索引见 `templates/README.md`。
 
 ## 7. Output Discipline
 
