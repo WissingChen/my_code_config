@@ -125,7 +125,18 @@ Rules:
 
 Create or update `knowledge/papers/00-overview.md` once the directory holds more than five notes (per `research_manager` section 4). Index entries: one line per paper — citation, quality field, one-sentence takeaway, linked direction.
 
-## 7. Boundaries
+## 7. Implementation-Level Retrieval for Direct Work
+
+For the closest direct work of a direction (per `research_progress` Gate 2), retrieval must go beyond abstract-level claims and return implementation-level facts where available:
+
+- Actual inputs/outputs, datasets, label requirements, training objective, and inference path.
+- Core modules as implemented in released code; paper–code consistency; compute budget behind headline numbers.
+- Failed ablations, negative results, and limitations the authors themselves report.
+- Code availability and license; whether needed intermediate signals are exposed.
+
+Depth bounds the claim: `abstract` depth supports "worth reading" only; feasibility or gap claims require `full` or `code` depth. Record reading depth per paper in the note header and report it back with the retrieval.
+
+## 8. Boundaries
 
 - `knowledge_keeper` retrieves, captures, indexes, and judges single-paper quality. It does not judge whether a literature gap is real or whether a direction is worth doing — that verdict belongs to `research_progress`.
 - Actually call arXiv for metadata/search and a citation-capable API such as Semantic Scholar or OpenAlex for cited-by traversal; never fabricate papers, citation edges, or citations.

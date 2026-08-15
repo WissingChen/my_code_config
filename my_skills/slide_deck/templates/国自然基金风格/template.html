@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国自然基金风格 — pipeline 模板</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --ink: #17203a;
+  --muted: #5b6577;
+  --line: #dde2ec;
+  --accent: #2456d6;
+  --fig-navy: #1f3a63;
+  --fig-blue: #2e6fb7;
+  --fig-blue-soft: #eaf2fb;
+  --fig-blue-line: #c2d6ee;
+  --fig-green: #5f9e46;
+  --fig-green-deep: #3f6f2f;
+  --fig-green-soft: #eff7e7;
+  --fig-green-line: #c2dfae;
+  --fig-orange: #e8833a;
+  --fig-orange-soft: #fdf0e2;
+  --fig-gray: #59637a;
+  --pad-x: 64px;
+  --pad-y: 40px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #2b2f36; overflow: hidden;
+  font-family: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink); }
+.slide { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+.frame {
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  padding: var(--pad-y) var(--pad-x) 56px;
+  display: flex; flex-direction: column; position: relative;
+  font-size: 23px; line-height: 1.5;
+  border-top: 6px solid var(--accent);
+}
+.kicker { color: var(--accent); font-weight: 700; letter-spacing: .12em; font-size:20px; margin-bottom: 10px; }
+h1 { font-size: 40px; line-height: 1.28; margin-bottom: 6px; }
+h1 .sub { display: block; font-size: 24px; color: var(--muted); font-weight: 500; margin-top: 8px; }
+.rule { height: 3px; width: 96px; background: var(--accent); border-radius: 2px; margin: 14px 0 22px; }
+.body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.body.center { justify-content: center; }
+.foot { position: absolute; bottom: 18px; left: var(--pad-x); right: var(--pad-x);
+  font-size:16.5px; color: #a0a8b6; display: flex; justify-content: space-between;
+  border-top: 1px solid var(--line); padding-top: 8px; }
+/* ===== 国自然基金风格：以下为模板核心 CSS，复制时连同 --fig-* tokens 一起搬运 ===== */
+.syn { display: flex; gap: 12px; width: 100%; align-items: stretch; flex: 0 0 auto; }
+.syn-panel { border-radius: 14px; display: flex; flex-direction: column; min-width: 0; }
+.syn-bar { background: var(--fig-navy); color: #fff; text-align: center; font-weight: 800; font-size: 21px; padding: 8px 12px; letter-spacing: .05em; }
+.syn-inputs { flex: 0 0 300px; background: var(--fig-green-soft); border: 1.5px solid var(--fig-green-line); padding: 13px 14px; gap: 10px; }
+.syn-title { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 21px; color: var(--fig-green-deep); }
+.syn-title svg { width: 26px; height: 26px; }
+.syn-in { background: #fff; border: 1px solid var(--fig-green-line); border-radius: 10px; padding: 9px 12px; display: flex; gap: 11px; align-items: center; }
+.syn-in > svg { flex: 0 0 36px; width: 36px; height: 36px; color: var(--fig-green); }
+.syn-in b { font-size: 19px; display: block; margin-bottom: 2px; }
+.syn-in b i { font-style: italic; color: var(--fig-green-deep); font-family: "STIX Two Math", "Times New Roman", serif; }
+.syn-in span { font-size: 15px; color: var(--muted); line-height: 1.4; display: block; }
+.syn-mem { margin-top: auto; background: #fff; border: 1px dashed var(--fig-green); border-radius: 10px; padding: 8px 12px; display: flex; gap: 10px; align-items: center; font-size: 15px; line-height: 1.35; color: var(--fig-green-deep); }
+.syn-mem svg { flex: 0 0 26px; width: 26px; height: 26px; color: var(--fig-green); }
+.syn-arrow { flex: 0 0 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.syn-arrow .lbl { font-size: 15px; font-weight: 700; color: var(--fig-orange); line-height: 1.3; text-align: center; }
+.syn-engine { flex: 1; border: 1.5px solid var(--fig-blue-line); background: #fff; overflow: hidden; }
+.syn-cond { background: #dce7f6; color: var(--fig-navy); text-align: center; font-weight: 700; font-size: 16.5px; padding: 5px 12px; }
+.syn-flow { flex: 1; display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr; gap: 10px 4px; padding: 14px 16px; align-content: center; }
+.syn-step { border: 1.5px solid var(--fig-blue); border-radius: 12px; background: var(--fig-blue-soft); padding: 10px 12px; }
+.syn-step .hd { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.syn-num { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; background: var(--fig-blue); color: #fff; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.syn-step .hd b { font-size: 18.5px; line-height: 1.2; }
+.syn-step .bd { display: flex; gap: 9px; align-items: center; }
+.syn-step .bd svg { flex: 0 0 32px; width: 32px; height: 32px; color: var(--fig-navy); }
+.syn-step .bd p { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+.syn-mini { display: flex; gap: 5px; margin-top: 8px; }
+.syn-mini span { flex: 1; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--fig-navy); background: #fff; border: 1px solid var(--fig-blue-line); border-radius: 7px; padding: 2px 2px; white-space: nowrap; }
+.syn-fa { color: var(--fig-blue); font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.syn-fa-lbl { flex-direction: column; gap: 1px; }
+.syn-fa-lbl span { font-size: 13px; color: var(--fig-navy); font-weight: 700; }
+.syn-v { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--fig-orange); font-weight: 800; font-size: 22px; }
+.syn-v i { font-style: normal; font-size: 13.5px; font-weight: 700; }
+.syn-attr { flex: 0 0 348px; border: 1.5px solid #c9cfdb; background: #fff; overflow: hidden; }
+.syn-attr .attrsub { background: #eceff4; color: var(--fig-navy); text-align: center; font-size: 15px; font-weight: 600; padding: 5px 12px; }
+.syn-attr .rows { display: flex; flex-direction: column; gap: 9px; padding: 12px 14px; }
+.attr-row { display: flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.attr-tag { flex: 0 0 44px; color: #fff; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; letter-spacing: .3em; }
+.attr-tag.t1 { background: var(--fig-navy); }
+.attr-tag.t2 { background: var(--fig-blue); }
+.attr-tag.t3 { background: var(--fig-gray); }
+.attr-body { padding: 7px 12px; font-size: 14.5px; line-height: 1.4; }
+.attr-body .f { font-family: "STIX Two Math", "Times New Roman", serif; font-size: 16.5px; color: var(--ink); }
+.attr-body p { color: var(--muted); margin-top: 2px; }
+.syn-out { margin: auto 14px 12px; border-top: 1px dashed #c9cfdb; padding-top: 9px; }
+.syn-out .t { text-align: center; font-size: 14.5px; font-weight: 700; color: var(--fig-navy); margin-bottom: 7px; }
+.syn-out .chips { display: flex; gap: 8px; }
+.syn-out .chips span { flex: 1; text-align: center; color: #fff; font-weight: 700; font-size: 14.5px; border-radius: 8px; padding: 5px 4px; }
+.syn-banner { flex: 0 0 auto; align-self: center; margin-top: 14px; background: #fff; border: 1.5px solid var(--fig-blue); border-radius: 999px; padding: 9px 28px; font-size: 19px; font-weight: 600; color: var(--fig-navy); }
+.syn-banner .b-t { color: var(--fig-blue); font-weight: 800; }
+.syn-banner .o-t { color: var(--fig-orange); font-weight: 800; }
+</style>
+</head>
+<body>
+<!-- 基准实例：任务—环境—本体协同的具身交互行为生成（room2manip slide 12） -->
+<section class="slide"><div class="frame">
+  <div class="kicker">我们的方案 APPROACH · PIPELINE</div>
+  <h1>预期方案：任务—环境—本体协同的具身交互行为生成<span class="sub">以（任务 τ × 环境 s × 本体 b）三元组为生成单元：实例化 → 检验 → 生成 → 归因 → 定向再生</span></h1>
+  <div class="rule"></div>
+  <div class="body center">
+    <div class="syn">
+      <div class="syn-panel syn-inputs">
+        <div class="syn-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l8.8 4.8-8.8 4.8L3.2 8z"/><path d="M4.6 12.4L12 16.5l7.4-4.1"/><path d="M4.6 16.1L12 20.2l7.4-4.1"/></svg>协同输入单元</div>
+        <div class="syn-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16" rx="2"/><rect x="9" y="2.5" width="6" height="4" rx="1.2"/><path d="M9 14l2 2 4-4.5"/></svg>
+          <div><b>任务 <i>τ</i></b><span>跨房间任务规范：目标物与成功条件 · L1–L5 难度 / 耦合标签</span></div>
+        </div>
+        <div class="syn-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M12 3.5V12h8.5"/><path d="M3.5 15.5H9v5"/></svg>
+          <div><b>环境 <i>s</i></b><span>多源场景生成：统一 Scene Graph · navmesh · room_graph</span></div>
+        </div>
+        <div class="syn-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21h11"/><rect x="9.5" y="18" width="5" height="3" rx="1"/><circle cx="12" cy="15.8" r="1.7"/><path d="M11.2 14.4L7.6 9.6"/><circle cx="7" cy="8.2" r="1.7"/><path d="M8.4 7.4l5.8-2.8"/><path d="M14.2 4.6l3.2 1.5M14.2 4.6l1-3.4"/></svg>
+          <div><b>本体 <i>b</i></b><span>Stretch：导航 / 搜索 / 抓取 / 放置技能 · workspace · 碰撞构型</span></div>
+        </div>
+        <div class="syn-mem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.6" rx="7.4" ry="2.7"/><path d="M4.6 5.6v12.8c0 1.5 3.3 2.7 7.4 2.7s7.4-1.2 7.4-2.7V5.6"/><path d="M4.6 12c0 1.5 3.3 2.7 7.4 2.7s7.4-1.2 7.4-2.7"/></svg>
+          <span>执行证据写回 <b>FailureBank</b>：失败类型 · p̂(success) · 轨迹</span>
+        </div>
+      </div>
+      <div class="syn-arrow">
+        <svg viewBox="0 0 60 40" style="width:54px"><path d="M2 14h34V5l20 15-20 15v-9H2z" fill="#e8833a"/></svg>
+        <div class="lbl">三元组</div>
+      </div>
+      <div class="syn-panel syn-engine">
+        <div class="syn-bar">具身交互行为生成引擎</div>
+        <div class="syn-cond">共同条件：任务 τ · 环境 s · 本体 b · 当前策略 π</div>
+        <div class="syn-flow">
+          <div class="syn-step" style="grid-column:1;grid-row:1">
+            <div class="hd"><span class="syn-num">1</span><b>协同实例化</b></div>
+            <div class="bd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.3" cy="9.3" r="5.3"/><circle cx="14.7" cy="9.3" r="5.3"/><circle cx="12" cy="14.3" r="5.3"/></svg><p>τ×s×b 联合采样，批量生成候选三元组</p></div>
+          </div>
+          <div class="syn-fa" style="grid-column:2;grid-row:1">→</div>
+          <div class="syn-step" style="grid-column:3;grid-row:1">
+            <div class="hd"><span class="syn-num">2</span><b>一致性检验</b></div>
+            <div class="bd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8l7 2.7v5.3c0 4.7-3 8.1-7 10.1-4-2-7-5.4-7-10.1V5.5z"/><path d="M8.8 11.6l2.2 2.2 4.2-4.4"/></svg><p>六维门控 A(s,τ,b)：导航·操作·耦合，滤除不可行</p></div>
+          </div>
+          <div class="syn-fa" style="grid-column:4;grid-row:1">→</div>
+          <div class="syn-step" style="grid-column:5;grid-row:1">
+            <div class="hd"><span class="syn-num">3</span><b>行为生成</b></div>
+            <div class="bd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.5" cy="18.5" r="1.8"/><path d="M6.8 17.6c3.5-2.4 3.2-8.6 8-9.6 2.6-.6 4.2.6 5.4 2.6" stroke-dasharray="3 2.4"/><path d="M20.6 11l-3.5.3M20.6 11l-.3-3.5"/></svg><p>高层策略 + 技能 rollout，输出行为与轨迹</p></div>
+          </div>
+          <div class="syn-v" style="grid-column:1;grid-row:2">↑<i>闭环再生</i></div>
+          <div class="syn-v" style="grid-column:5;grid-row:2">↓<i>失配经验</i></div>
+          <div class="syn-step" style="grid-column:1;grid-row:3">
+            <div class="hd"><span class="syn-num">5</span><b>定向再生成</b></div>
+            <div class="bd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 3.6V8h-4.4"/></svg><p>按主导失配源修复三元组，证据写回 FailureBank</p></div>
+            <div class="syn-mini"><span>改任务</span><span>改环境</span><span>适配本体</span></div>
+          </div>
+          <div class="syn-fa syn-fa-lbl" style="grid-column:2/5;grid-row:3">←<span>主导失配源</span></div>
+          <div class="syn-step" style="grid-column:5;grid-row:3">
+            <div class="hd"><span class="syn-num">4</span><b>失配归因</b></div>
+            <div class="bd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.8" r="2"/><path d="M12 6.8v2.7"/><path d="M12 9.5L5 19.5M12 9.5l7 10M12 9.5v10"/></svg><p>期望 vs 实际：11 类失败归入三类失配</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="syn-arrow">
+        <svg viewBox="0 0 60 40" style="width:54px"><path d="M2 14h34V5l20 15-20 15v-9H2z" fill="#e8833a"/></svg>
+        <div class="lbl">失配向量</div>
+      </div>
+      <div class="syn-panel syn-attr">
+        <div class="syn-bar">三类失配归因</div>
+        <div class="attrsub">比较三项归一化失败计数的主导项</div>
+        <div class="rows">
+          <div class="attr-row"><div class="attr-tag t1">任务</div><div class="attr-body"><div class="f">ε<sub>τ</sub> = N<sub>τ</sub> / N<sub>all</sub></div><p>目标 / 成功条件失当：object_not_found · target_lost</p></div></div>
+          <div class="attr-row"><div class="attr-tag t2">环境</div><div class="attr-body"><div class="f">ε<sub>s</sub> = N<sub>s</sub> / N<sub>all</sub></div><p>布局阻断 · 间隙不足：nav_unreachable · doorway_collision</p></div></div>
+          <div class="attr-row"><div class="attr-tag t3">本体</div><div class="attr-body"><div class="f">ε<sub>b</sub> = N<sub>b</sub> / N<sub>all</sub></div><p>技能 / 运动学超限：grasp_unreachable · place_unstable</p></div></div>
+        </div>
+        <div class="syn-out">
+          <div class="t">输出主导失配源 arg max(ε<sub>τ</sub>, ε<sub>s</sub>, ε<sub>b</sub>)</div>
+          <div class="chips"><span style="background:var(--fig-navy)">任务失配</span><span style="background:var(--fig-blue)">环境失配</span><span style="background:var(--fig-gray)">本体失配</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="syn-banner">以<span class="b-t">执行证据</span>检验三元组协同，以<span class="o-t">主导失配源</span>驱动定向再生成 —— 随策略进化持续产出「刚好做不好」的交互任务</div>
+  </div>
+  <div class="foot"><span>国自然基金风格 · 基准实例（room2manip slide 12，2026-08-13）</span><span>1 / 1</span></div>
+</div></section>
+</body>
+</html>

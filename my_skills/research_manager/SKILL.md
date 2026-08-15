@@ -30,7 +30,8 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 
 | State | Location | Owner | Entry/Exit |
 |---|---|---|---|
-| Evaluating | `proposal/NN-slug/` | `research_progress` recommends | Pass or fail the three gates |
+| Evaluating | `proposal/NN-slug/` | `research_progress` recommends | Reality gates pass or fail |
+| Blocked | `proposal/NN-slug/` | `research_progress` flags | Data, interface, code, or resource facts unverified; no experiment design while blocked |
 | Ready | `proposal/NN-slug/` | `research_manager` records | User GO starts experiments |
 | Active | `project/NN-slug/` on `exp/NN-slug` | `experiment_manager` operates | Continue, pivot, falsify, or validate |
 | Rejected/Falsified/Validated/Superseded/Abandoned | `archive/YYYY-MM-DD-NN-slug/` | `research_manager` applies | Final report is primary deliverable |
@@ -50,10 +51,13 @@ Index only. Keep it ≤80 lines:
 - Directory index (proposal, project, archive, knowledge, external index)
 - Backlog
 
-## 4. Overviews
+## 4. Overviews and Source-of-Truth Hierarchy
 
-- **Direction-level**: every `proposal/NN-slug/` and `project/NN-slug/` keeps a `00-overview.md` as the entry point.
+Truth precedence when documents conflict: `AGENTS.md` (owner-maintained process policy) → `global.md` (current goal/pointers) → direction `00-overview.md` (current state) → registered experiment plan (frozen expectations) → run reports (observed evidence) → knowledge notes (external evidence) → generated status reports (disposable views, never authoritative).
+
+- **Direction-level**: every `proposal/NN-slug/` and `project/NN-slug/` keeps a `00-overview.md` as the entry point. It records **current state only** — status, main question, primary hypothesis, main contradiction, current evidence, dominant uncertainty, next decision, parked questions (idea parking lot; parked items never auto-activate), superseded assumptions. History lives in run reports, not appended here.
 - **Collection-level**: create or update a directory's `00-overview.md` only after it holds more than five entries.
+- `AGENTS.md` at the project root, when present, is maintained by the project owner only; agents must not edit it, and it stores decision policy — never experiment results, paper notes, or evolving discussion. A template ships at the skill-repo root as `AGENTS_template.md`.
 
 ## 5. Archive Rules and Final Report
 
@@ -76,7 +80,7 @@ On request ("汇报", "status report"), generate a dated snapshot at `.kilo/repo
 Required sections:
 
 - Headline: ≤3 lines synthesizing the period
-- Plan: each evaluating/ready direction with state and one-liner (from `proposal/NN-slug/00-overview.md`)
+- Plan: each evaluating/blocked/ready direction with state and one-liner (from `proposal/NN-slug/00-overview.md`)
 - Active progress: per active direction, latest `ENN` verdict and distance to kill/promotion criteria — data delegated from `experiment_manager` (run reports live on `exp/NN-slug` branches)
 - Closed this period: outcomes and lessons (from `archive/*/SUMMARY.md`)
 - Next steps and risks: backlog (`global.md`) plus judgment
@@ -108,6 +112,8 @@ At the start of a session, read `global.md` and the target direction's `00-overv
 | Start/monitor/close experiments | `experiment_manager` |
 | Analyze experimental evidence | `result_analysis` |
 | Produce charts or diagrams | `result_visualization` |
-| Format or present Markdown | `write_md` |
+| Format Markdown, plan report visuals, or render a report HTML version | `write_md` |
 | Write or polish a paper | `academic-paper-writing` |
 | Create an HTML slide deck or presentation | `slide_deck` |
+
+Long-report tasks auto-compose: `experiment_manager` orchestrates `result_analysis` (evidence + visual audit) → `write_md` (visual planning) → `result_visualization` (production) → `experiment_manager` (embed + render-verify) → `write_md` (final readability).

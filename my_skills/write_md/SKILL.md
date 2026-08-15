@@ -1,6 +1,7 @@
 ---
 name: write_md
-description: Markdown readability and visual formatting. Load when the user asks to improve readability, format a document, add visual boxes, or make a Markdown page scannable. Handles language, structure, and a renderer-aware presentation layer.
+description: Markdown readability, visual planning, and report HTML rendering. Load for any long research report (two passes: visual planning before figures, final readability after), when the user asks to improve readability or format a document, or when a report needs a self-contained HTML reading version. Handles language, structure, and a renderer-aware presentation layer.
+requires: research_manager
 ---
 
 ## Output Contract
@@ -12,7 +13,7 @@ description: Markdown readability and visual formatting. Load when the user asks
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# write_md — Readable Markdown
+# write_md — Readable Markdown, Planned Visuals
 
 ## 1. Language Layer
 
@@ -30,7 +31,14 @@ description: Markdown readability and visual formatting. Load when the user asks
 - **30-second scan test**: a tired reader must grasp the gist in 30 seconds.
 - **Figure-text rhythm**: long documents must not contain a full-screen wall of text; break it with tables, diagrams, or boxes. Every non-text element must carry information — no forced visuals in short or self-evident documents.
 
-## 3. Presentation Layer
+## 3. Two-Pass Involvement in Reports
+
+`write_md` runs twice for every long report — never only at the end:
+
+1. **Visual planning pass (before figures exist)**: read the draft structure, identify positions where a diagram, chart, or table communicates better than prose, and hand a placement list (position, purpose, claim, artifact class) to `experiment_manager` / `result_analysis` for delegation to `result_visualization`. This pass breaks the "figures must exist before write_md runs" deadlock.
+2. **Final readability pass (after visuals are embedded)**: conclusion-first structure, consistent terminology, figure/table callouts, caption placement, 30-second scan path, and §4a-style render verification that every referenced figure actually displays. Do not alter statistical claims, evidence verdicts, or retention decisions.
+
+## 4. Presentation Layer
 
 Box budget: **≤3 per document**. If a box does not change what the reader sees first, do not use it.
 
@@ -45,7 +53,7 @@ Renderer-aware formatting (default target: local reading in VS Code / Typora / O
 <div style="background:#3498db1a; border-left:4px solid #3498db; padding:8px 12px; margin:8px 0;">...</div>
 ```
 
-## 4. Semantic Color Palette
+## 5. Semantic Color Palette
 
 One color, one meaning:
 
@@ -59,15 +67,24 @@ One color, one meaning:
 | Neutral | `#7f8c8d` |
 | Framework | `#2c3e50` |
 
-## 5. Diagrams and Figures
+## 6. Diagrams and Figures
 
-Standard flowcharts, sequence diagrams, architecture diagrams, and data figures are produced by `result_visualization`. `write_md` owns need judgment and integration: during a readability pass, identify positions where a diagram or table communicates better than prose, decide placement, callouts, and caption context, then delegate production to `result_visualization`.
+Standard flowcharts, sequence diagrams, architecture diagrams, and data figures are produced by `result_visualization`. `write_md` owns need judgment (§3 first pass) and integration: placement, callouts, and caption context.
 
-## 6. Final Report Readability Pass
+## 7. Report HTML Rendering
 
-After scientific content and visuals are fixed, apply a final pass: conclusion-first structure, consistent terminology, figure/table callouts, caption placement, and a 30-second scan path. Do not alter statistical claims, evidence verdicts, or retention decisions.
+Distinct from `slide_deck` (horizontal presentation decks). When the user asks for a readable HTML version of a report, generate one self-contained scrolling HTML file from the final `REPORT.md` and retained figures:
 
-## 7. Global Constraints
+- Self-contained: inline CSS, no CDN or external fonts; images base64-embedded by default.
+- Auto table-of-contents with section anchors; conclusion-first summary block at top.
+- Figures embedded with captions and click-to-zoom; Mermaid pre-rendered or replaced by inline SVG so the file works offline.
+- Print-friendly: browser print produces a clean document.
+- Regenerate from sources after content changes; never hand-maintain a parallel HTML copy.
+- Default path: alongside the report or `.kilo/reports/YYYY-MM-DD-<slug>-report.html`.
+
+Do not convert short or ephemeral documents to HTML by default: quick discussions stay Markdown; full direction reports get Markdown + HTML; formal presentations go to `slide_deck`; manuscripts stay Markdown/LaTeX with PDF/SVG figures.
+
+## 8. Global Constraints
 
 - No decorative formatting.
 - Never replace a plain table with a boxed table unless emphasis is needed.
