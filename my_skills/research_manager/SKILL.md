@@ -20,7 +20,8 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 
 ```
 .kilo/
-├── global.md          # pointer layer only
+├── global.md          # pointer layer only (index → progress + TODO.md)
+├── TODO.md            # project backlog; single source, links to module TODOs
 ├── proposal/          # evaluating or ready directions
 ├── project/           # active directions on an experiment branch
 ├── archive/           # rejected, falsified, validated, superseded, abandoned
@@ -39,17 +40,20 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 ## 2. Naming
 
 - Direction unit: `NN-slug/` (two-digit prefix, lowercase hyphenated). Preserve the ID across moves.
-- Exceptions: `global.md`, `00-overview.md`, `SUMMARY.md`, `REPORT.md`, and dated archive directories do not use `NN-slug`.
+- Exceptions: `global.md`, `TODO.md`, `00-overview.md`, `SUMMARY.md`, `REPORT.md`, and dated archive directories do not use `NN-slug`.
 - Archive entries: `YYYY-MM-DD-NN-slug/`.
 - Knowledge notes: `author-year-title.md` or `source-year-topic.md`; the knowledge query log is `knowledge/papers/00-query-log.md` (owned by `knowledge_keeper`).
 
-## 3. global.md (Pointer Layer)
+## 3. global.md and TODO.md (Pointer + Backlog)
 
-Index only. Keep it ≤80 lines:
+`global.md` is index only, no inline backlog. Keep it ≤60 lines:
 
 - Goal / non-goals / success criteria
 - Directory index (proposal, project, archive, knowledge, external index)
-- Backlog
+- Pointer to `TODO.md` and current project progress
+
+`TODO.md` (same directory) holds the project backlog. It links to module-level
+TODOs (e.g. `tto_pp/TODO.md`) instead of duplicating them. Keep it ≤150 lines.
 
 ## 4. Overviews and Source-of-Truth Hierarchy
 
@@ -57,7 +61,7 @@ Truth precedence when documents conflict: `AGENTS.md` (owner-maintained process 
 
 - **Direction-level**: every `proposal/NN-slug/` and `project/NN-slug/` keeps a `00-overview.md` as the entry point. It records **current state only** — status, main question, primary hypothesis, main contradiction, current evidence, dominant uncertainty, next decision, parked questions (idea parking lot; parked items never auto-activate), superseded assumptions. History lives in run reports, not appended here.
 - **Collection-level**: create or update a directory's `00-overview.md` only after it holds more than five entries.
-- `AGENTS.md` at the project root, when present, is maintained by the project owner only; agents must not edit it, and it stores decision policy — never experiment results, paper notes, or evolving discussion. A template ships at the skill-repo root as `AGENTS_template.md`.
+- `AGENTS.md` at the project root, when present, is maintained by the project owner only; agents must not edit it, and it stores decision policy — never experiment results, paper notes, or evolving discussion.
 
 ## 5. Archive Rules and Final Report
 
@@ -83,7 +87,7 @@ Required sections:
 - Plan: each evaluating/blocked/ready direction with state and one-liner (from `proposal/NN-slug/00-overview.md`)
 - Active progress: per active direction, latest `ENN` verdict and distance to kill/promotion criteria — data delegated from `experiment_manager` (run reports live on `exp/NN-slug` branches)
 - Closed this period: outcomes and lessons (from `archive/*/SUMMARY.md`)
-- Next steps and risks: backlog (`global.md`) plus judgment
+- Next steps and risks: backlog (`TODO.md`) plus judgment
 
 Every claim must trace to an existing source. Generated reports are exempt from line budgets.
 
@@ -91,7 +95,7 @@ Every claim must trace to an existing source. Generated reports are exempt from 
 
 Hard limits apply to human-maintained operational research documents:
 
-- `global.md` ≤80 lines
+- `global.md` ≤60 lines; `TODO.md` ≤150 lines
 - Any single operational `SKILL.md` or direction document ≤150 lines
 
 Exempt: manuscripts, generated reports/data, code, bibliographies, and indivisible tables.
@@ -100,7 +104,7 @@ Propose archive/delete/merge only when concrete stale content is found. Preserve
 
 ## 8. Read Discipline
 
-At the start of a session, read `global.md` and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
+At the start of a session, read `global.md`, `TODO.md`, and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
 
 ## 9. Skill Delegation
 
