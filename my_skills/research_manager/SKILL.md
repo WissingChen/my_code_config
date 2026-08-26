@@ -1,6 +1,6 @@
 ---
 name: research_manager
-description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md pointer layer, archive SUMMARY.md rules, and final REPORT.md requirements.
+description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md index layer, archive SUMMARY.md rules, and final REPORT.md requirements.
 ---
 
 ## Output Contract
@@ -20,7 +20,7 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 
 ```
 .kilo/
-├── global.md          # pointer layer only (index → progress + TODO.md)
+├── global.md          # pure index (→ progress + TODO.md); no goals or rules
 ├── TODO.md            # project backlog; single source, links to module TODOs
 ├── proposal/          # evaluating or ready directions
 ├── project/           # active directions on an experiment branch
@@ -44,24 +44,25 @@ Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `
 - Archive entries: `YYYY-MM-DD-NN-slug/`.
 - Knowledge notes: `author-year-title.md` or `source-year-topic.md`; the knowledge query log is `knowledge/papers/00-query-log.md` (owned by `knowledge_keeper`).
 
-## 3. global.md and TODO.md (Pointer + Backlog)
+## 3. global.md and TODO.md (Index + Backlog)
 
-`global.md` is index only, no inline backlog. Keep it ≤60 lines:
+`global.md` is a pure index, agent-maintained. Keep it ≤60 lines:
 
-- Goal / non-goals / success criteria
 - Directory index (proposal, project, archive, knowledge, external index)
 - Pointer to `TODO.md` and current project progress
+
+No goals, rules, or explanations here — those are owner-written in `AGENTS.md` (see §4).
 
 `TODO.md` (same directory) holds the project backlog. It links to module-level
 TODOs (e.g. `tto_pp/TODO.md`) instead of duplicating them. Keep it ≤150 lines.
 
 ## 4. Overviews and Source-of-Truth Hierarchy
 
-Truth precedence when documents conflict: `AGENTS.md` (owner-maintained process policy) → `global.md` (current goal/pointers) → direction `00-overview.md` (current state) → registered experiment plan (frozen expectations) → run reports (observed evidence) → knowledge notes (external evidence) → generated status reports (disposable views, never authoritative).
+Truth precedence when documents conflict: `AGENTS.md` (owner-written goal and process policy) → `global.md` (index/pointers) → direction `00-overview.md` (current state) → registered experiment plan (frozen expectations) → run reports (observed evidence) → knowledge notes (external evidence) → generated status reports (disposable views, never authoritative).
 
 - **Direction-level**: every `proposal/NN-slug/` and `project/NN-slug/` keeps a `00-overview.md` as the entry point. It records **current state only** — status, main question, primary hypothesis, main contradiction, current evidence, dominant uncertainty, next decision, parked questions (idea parking lot; parked items never auto-activate), superseded assumptions. History lives in run reports, not appended here.
 - **Collection-level**: create or update a directory's `00-overview.md` only after it holds more than five entries.
-- `AGENTS.md` at the project root, when present, is maintained by the project owner only; agents must not edit it, and it stores decision policy — never experiment results, paper notes, or evolving discussion.
+- `AGENTS.md` at the project root is hand-written by the project owner; agents are strictly read-only. It stores the project goal, non-goals, success criteria, toolchain/compiler, key constraints, and decision policy — never experiment results, paper notes, or evolving discussion. The most an agent may do is copy `AGENTS_template.md` to the project root as `AGENTS.md` on request; everything after that is owner-maintained.
 
 ## 5. Archive Rules and Final Report
 
@@ -104,7 +105,7 @@ Propose archive/delete/merge only when concrete stale content is found. Preserve
 
 ## 8. Read Discipline
 
-At the start of a session, read `global.md`, `TODO.md`, and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
+At the start of a session, read `AGENTS.md` (if present), `global.md`, `TODO.md`, and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
 
 ## 9. Skill Delegation
 
