@@ -1,6 +1,6 @@
 ---
 name: experiment_manager
-description: Direction-level experiment execution, expectation tracking, and artifact workflow. Load when a user starts, runs, checkpoints, or closes experiments. Requires a registered main contradiction per run, enforces convergence accounting, assembles reports with verified visuals, and owns branch/worktree lifecycle, output hygiene, and promotion.
+description: Direction-level experiment execution, expectation tracking, and artifact workflow. Load when a user starts, runs, checkpoints, or closes experiments. Requires each run to target the direction's current central question, enforces convergence accounting, assembles reports with verified visuals, and owns branch/worktree lifecycle, output hygiene, and promotion. Evidence interpretation belongs to result_analysis; visual production to result_visualization.
 requires: research_manager
 ---
 
@@ -9,109 +9,127 @@ requires: research_manager
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Experiment Manager
+# Experiment Manager — 管实验的开张、运行和收尾
 
-`experiment_manager` operates the experiment branch, assembles reports, and enforces output hygiene. It does not interpret evidence or render visuals.
+管实验分支、组报告、管产物。不解读证据（归 `result_analysis`），不画图（归 `result_visualization`）。
 
-Git commits, branch deletion, merges, and other lifecycle mutations require explicit user authorization.
+提交、合并、删分支等改动 Git 历史的操作，都要用户明确授权。
 
-## 1. Open a Direction
+## 1. 开张：什么实验值得开
 
-Require a ready proposal containing: question, hypothesis, falsifiable prediction, mechanism hypothesis with observable intermediate signals, baseline result and uncertainty, expected result range, kill criteria, promotion criteria, minimum viable experiment, controls, output-retention policy, anchor set, minimum quality bar (including the strong baselines that must be compared against), **the direction's current main contradiction, and a speculation ledger**. Expected results and mechanisms must be recorded before running the experiment; do not infer the prediction after seeing the result.
+只接 `research_progress` 判"通过"的提案，且要带齐：研究问题、假设、可证伪的预期、机制假设和可观测的中间信号、baseline 结果和不确定度、预期结果区间、什么情况下停手、什么结果算做成、最小可行实验、对照、产物保留规则、参照文献、质量底线（含必须对比的强 baseline）、**这个方向当前最主要的矛盾**、猜想清单。
 
-Record: `base_branch`, `base_commit`, direction ID, branch name (`exp/NN-slug`), and worktree path. Create the branch; prefer a dedicated worktree so untracked outputs cannot leak across branches. Move the direction from `proposal/` to `project/` only within the experiment branch.
+预期和机制必须在跑之前写下来，不许看到结果再回头编。
 
-## 2. Run Loop
+缺项怎么办：缺研究问题、可证伪预期、停手/做成标准、baseline、主要矛盾 → 提案根本不成立，退回 `research_progress`（这些定义了实验本身）。缺对照、产物保留规则、参照文献、质量底线 → 要求补齐，补齐前不开分支。
 
-Give each run an `ENN` ID. Each run must bind **one primary hypothesis and the current main contradiction**. Change one controlled factor where feasible. Before execution, freeze: baseline, expected result range, expected intermediate signals, the causal chain connecting intervention to outcome, and the outcome→action branches (result A/B/ambiguous each map to a named action).
+清单不是凑格子：每一项都要能说出它防的是什么坑，说不出的先问清楚再开。
 
-Reject a run request that states no decision it would change, or that tunes peripheral details while the core implementation chain remains unclosed. New ideas surfacing mid-loop go to the direction's parking-lot list; they never auto-activate.
+记录：`base_branch`、`base_commit`、方向 ID、分支名（`exp/NN-slug`）、worktree 路径。
 
-Delegate evidence interpretation to `result_analysis` and visuals to `result_visualization`. Before the value gate, produce one illustrated `ENN-experiment-report.md` (schema in §4). **A long report is not complete until the visual audit was executed and every selected figure was produced, embedded, and render-verified** (§4a).
+分支纪律：
 
-Classify value separately from direction outcome:
+- 分支名和 worktree 路径逐个向用户报，确认后才创建；一次一个方向一个分支，不擅自多开。
+- 所有实验只在用户指定的分支/worktree 里跑；产物只落在两处——worktree 内，或 §3 清单登记的外部路径。出现"不知道存在哪"的产物就是管理失败：先找回来，登记或删掉。
+- 优先用独立 worktree，免得未跟踪的产物漏到别的分支。方向从 `proposal/` 挪到 `project/` 只在实验分支上做。
 
-| Experiment value | Meaning | Action |
+## 2. 运行循环
+
+每次运行给一个 `ENN` 编号。每次运行必须绑**一个主要假设和当前最主要的矛盾**，可行时只改一个受控变量。跑之前冻结：baseline、预期结果区间、预期的中间信号、从干预到结果的因果链、结果 A/B/模糊各自对应什么动作。
+
+拒绝两种运行请求：说不出这次结果会改变什么决定的；核心实现链还没闭合就去调外围细节的。循环中冒出的新想法记进暂存清单，不自动变成实验。
+
+证据解读委托 `result_analysis`，画图委托 `result_visualization`。在判断价值之前，先出一份带图的 `ENN-experiment-report.md`（结构见 §4）。**长报告只有在视觉检查执行过、每张选中的图都实际生成、嵌入、渲染验证过之后才算完成**（§4a）。
+
+实验价值和方向结局分开评：
+
+| 实验价值 | 含义 | 动作 |
 |---|---|---|
-| `informative` | Materially updates hypothesis or next decision | Atomic checkpoint |
-| `reusable` | Yields direction-independent verified asset | Atomic checkpoint |
-| `none` | Invalid, redundant, or decision-neutral | Record exclusion; clean outputs |
+| `有信息` | 实质更新了假设或下一步决定 | 存档 |
+| `可复用` | 产出了与方向无关的可用资产 | 存档 |
+| `无价值` | 无效、重复、或改不改变决定都一样 | 记录排除原因，清理产物 |
 
-For `none`, do not commit the run report. Record its ID and reason in the direction report's excluded-runs table, remove only its outputs, and restore to the latest valuable checkpoint using non-destructive, user-authorized Git operations.
+边界示例：结果落在事先登记的区间内，只要缩小了解释范围就仍算 `有信息`；只是复现了一个已存档的 baseline 数字算 `无价值`（资产已存在）；跑崩了但暴露评测数据泄漏算 `有信息`（它推翻了之前的运行），跑崩只是因为配置笔误算 `无价值`。
 
-After each run, carry the convergence ledger (from `result_analysis` §6) into the direction `00-overview.md`: active explanations, dominant uncertainty, main contradiction, parked questions, next decision. If two consecutive runs fail to reduce a decision-relevant uncertainty, halt the run sequence and send the direction back to `research_progress` for re-scoping.
+`无价值`的运行不提交报告。在方向报告的排除表里记下编号和原因，只清理它的产物，用用户授权的非破坏性 Git 操作回到最近的有价值存档点。
 
-## 3. Output Hygiene
+每次运行后，把收敛记录（来自 `result_analysis` §6）搬进方向的 `00-overview.md`：还活着的解释、当前最大不确定性、主要矛盾、暂存的问题、下一步决定。**连续两次运行都没能缩小任何影响决定的不确定性，就停下，把方向退回 `research_progress` 重新划范围**——实验序列必须在收敛，不是空转。
 
-Maintain a retention whitelist from the first run. Allow in Git: small decision tables, minimal configurations, analysis scripts, and final figures. Exclude: checkpoints, caches, dataset copies, full logs, prediction dumps, temporary figures, intermediate features, and reproducible bulk outputs.
+## 3. 什么进 Git，什么不进
 
-Valuable large artifacts live externally. Track in a manifest: `uri`, `checksum`, `producer_commit`, `retention_reason`, and expiry/review date. Clean disposable outputs after every run; never rely on branch deletion to remove committed large objects.
+从第一次运行就维护保留白名单。允许进 Git：小的决策表格、最小配置、分析脚本、最终的图。禁止：模型权重、缓存、数据集副本、完整日志、预测输出、临时图、中间特征、可以重新跑出来的批量产物。
 
-## 4. Run Report Schema
+有价值的大文件放外部，登记清单：`uri`、`checksum`、产出它的 commit、保留理由、复查日期。每次运行后清掉一次性产物；不要指望删分支来清掉已提交的大文件。
 
-Every completed `ENN` run produces `ENN-experiment-report.md` containing:
+## 4. 运行报告的结构
 
-- Question, experiment ID, and the main contradiction targeted
-- Base commit and controlled change
-- Setup, data, controls, and reproducibility parameters
-- Data-quality and adequacy audit
-- Baseline / expected / actual results table, with uncertainty and the pre-registered expectation for every primary metric
-- Mechanism prediction versus observed intermediate signals, and which causal link held or broke
-- Selected diagnostic/evidence charts with captions
-- Statistical analysis and uncertainty
-- Deviation and failure-mechanism analysis: for every missed expectation, enumerate plausible causes, evidence for and against each, and the next discriminating test
-- Convergence ledger (before/after) and parked-questions list
-- Fact / inference / speculation
-- Experiment value: `informative` | `reusable` | `none`
-- Direction verdict and next action
-- Visual manifest and retain/discard manifest
+每份完成的 `ENN` 运行产出一 `ENN-experiment-report.md`，包含：
 
-## 4a. Visual Acceptance Checklist
+- 研究问题、实验编号、针对的主要矛盾
+- 基础 commit 和这次改动的受控变量
+- 设置、数据、对照、可复现参数
+- 数据质量和充分性检查
+- baseline / 预期 / 实际结果表，带不确定度；每个主要指标都要有事先登记的预期
+- 机制预期 vs 观测到的中间信号，哪一环因果链成立、哪一环断了
+- 选中的诊断/证据图，带说明
+- 统计分析和不确定度
+- 偏差和失败机制分析：每个没达预期的地方，列出可能原因、各自的支持和反对证据、下一个能区分的测试
+- 收敛记录（前后对比）和暂存问题清单
+- 事实 / 推断 / 猜测分开写
+- 实验价值：`有信息` | `可复用` | `无价值`
+- 方向判定和下一步动作
+- 图的清单和保留/丢弃清单
 
-Before a run or final report counts as complete:
+某一节确实没有内容，就写为什么没有，不许填套话凑齐结构。
 
-- The visual audit (from `result_analysis` §9) is recorded: candidates considered, selected, rejected with reasons.
-- Every selected figure was actually delegated to and produced by `result_visualization` — data charts keep reproducible `.py` source, vector `.svg/.pdf`, and `.png` preview as one artifact bundle.
-- Markdown actually references each figure file; links resolve; the figure renders (open or screenshot-check, no broken paths).
-- Captions state comparison, observational unit, uncertainty semantics, and takeaway.
-- No full-screen text walls in long reports; when no figure was selected, the reason "text/table is more accurate" is on record.
+填好的实例（含 §4a 验收记录）：`references/example-run-report.md`。
 
-## 5. Close as Falsified
+## 4a. 图的验收清单
 
-Synthesize valuable run reports into one illustrated `REPORT.md` containing: executive conclusion; original question, hypothesis, decision thresholds, and main contradiction; experiment map and traceability table; methods and evaluation design; results with selected tables and figures; statistical analysis; integrated baseline / expected / actual comparison and mechanism-based failure analysis; competing explanations and failure analysis; excluded/invalid runs and reasons; final verdict and evidence boundary; revised belief, reusable findings, and limitations; code/artifact provenance and retention status; replacement path.
+一份运行报告或最终报告算完成之前：
 
-Report bundle: `REPORT.md`, `SUMMARY.md` pointer, `figures/` (selected evidence figures only), `data/` (compact source tables only), `scripts/` (minimal plotting source when required for reproducibility). Remove duplicate previews, diagnostics, intermediate renderings, and exploratory implementation.
+- 视觉检查（来自 `result_analysis` §9）有记录：考虑过哪些图、选了哪些、拒绝了哪些及原因。
+- 每张选中的图都实际委托 `result_visualization` 产出——数据图保留可复现的 `.py` 源文件、矢量 `.svg/.pdf` 和 `.png` 预览，作为一套产物。
+- Markdown 确实引用了每个图文件；链接能解析；图能渲染（用 `slide_deck` §5 的无头 Chromium 截图命令检查，或手动打开；不许有断链）。
+- 图注写明：比的是什么、观测单位、不确定度的含义、结论。
+- 长报告不许整屏文字墙；一张图都没选时，要把"文字/表格更准确"的理由记下来。
 
-Before finalizing, verify: every headline conclusion points to a table, figure, or explicit numeric result; every retained visual is referenced in the text with uncertainty semantics; the report distinguishes facts, inference, speculation, and excluded evidence; the §4a visual checklist passed; provenance points to base and experiment commits that survive branch deletion.
+## 5. 收尾：被证伪
 
-Apply only the final report bundle plus index transition to the recorded base branch; do not merge or cherry-pick exploratory code. When authorized, delete the experiment branch/worktree and disposable external artifacts.
+把有价值的运行报告合成一份带图的 `REPORT.md`：结论先行；原始问题、假设、判定阈值、主要矛盾；实验地图和追溯表；方法和评测设计；结果（选中的表和图）；统计分析；baseline / 预期 / 实际的综合对比和基于机制的失败分析；竞争性解释及其失败分析；被排除/无效的运行及原因；最终判定和证据边界；修正后的认识、可复用的发现、局限；代码和产物的来源与保留状态；后继路径。
 
-## 6. Close as Validated
+报告包：`REPORT.md`、`SUMMARY.md` 指针、`figures/`（只放选中的证据图）、`data/`（只放紧凑的源数据表）、`scripts/`（复现必需的最小画图脚本）。删掉重复的预览、诊断图、中间产物和探索性实现。
 
-Create `promote/NN-slug` from the target base. Synthesize the same illustrated final report with promotion criteria, validated scope, key evidence, limitations, and traceability to retained experiment IDs. The report must state, in plain terms: what we achieved relative to the anchor set, where we still fall short of the minimum quality bar, and what level of claim the current results can support. Selectively apply only effective implementation, required tests, minimal configuration, and the report bundle. Exclude superseded variants, debug helpers, temporary scripts, exploratory abstractions, and intermediate outputs. Review the promotion diff independently; merge the promotion branch, never `exp/NN-slug` directly. Close the experiment branch/worktree after promotion is verified.
+收尾前核对：每个标题级结论都能指到一张表、一张图或一个具体数字；每张保留的图都在正文被引用且写了不确定度含义；报告区分事实、推断、猜测和被排除的证据；§4a 清单通过；来源指向的 commit 在分支删除后仍然存在。
 
-## 7. Pivot
+只把最终报告包和索引变更合回记录的 base 分支；探索性代码不合并、不摘樱桃。授权后删实验分支/worktree 和一次性外部产物。
 
-Archive the old core hypothesis as `superseded` and create a new proposal ID when the research question changes materially. Do not silently mutate project history.
+## 6. 收尾：验证通过
 
-## 8. Extract Reusable Fixes
+从目标 base 开 `promote/NN-slug`（分支名同样先报用户确认）。合成同样的带图终版报告，外加：做成标准、验证过的适用范围、关键证据、局限、可追溯到的保留实验编号。报告要用大白话写清：相对参照文献做到了什么、离质量底线还差什么、现在的结果撑得起什么级别的声明。**只把有效的内容合回去，绝不全盘合并**：只挑有效实现、必需的测试、最小配置和报告包；排除被取代的变体、调试辅助、临时脚本、探索性抽象和中间产物。promotion diff 独立过一遍，确认里面每一行都有留下的理由；合并 promote 分支，绝不直接合 `exp/NN-slug`。验证合入成功后关实验分支/worktree。
 
-Promote direction-independent bug fixes through a separate clean fix branch with tests, even if the research direction is later falsified.
+## 7. 转向
 
-## 9. Report Assembly and Cross-Skill Contracts
+研究问题实质改变时：旧核心假设归档为 `superseded`，开新提案编号。不许悄悄改写项目历史。
 
-| Report component | Owner |
+## 8. 把通用修复捞出去
+
+与方向无关的 bug 修复，走单独的干净 fix 分支（带测试）合入——即使这个研究方向后来被证伪，修复照样保留。
+
+## 9. 报告分工与技能间约定
+
+| 报告成分 | 负责 |
 |---|---|
-| Run metadata, provenance, manifests, visual acceptance check, branch traceability | `experiment_manager` |
-| Adequacy audit, statistics, causal-link diagnosis, convergence ledger, experiment value, direction verdict | `result_analysis` |
-| Tables, charts, qualitative panels, process/risk/decision diagrams, visual validation | `result_visualization` |
-| Visual placement plan (pre-figure pass) and final Markdown readability pass | `write_md` |
-| State transition, archive index, `SUMMARY.md` pointer | `research_manager` |
+| 运行元信息、来源追溯、产物清单、图的验收、分支可追溯 | `experiment_manager` |
+| 充分性检查、统计、因果链诊断、收敛记录、实验价值、方向判定 | `result_analysis` |
+| 表格、图、定性面板、流程/风险/决策图、视觉验证 | `result_visualization` |
+| 图的排布方案（画图之前）和最终 Markdown 可读性 | `write_md` |
+| 状态流转、归档索引、`SUMMARY.md` 指针 | `research_manager` |
 
-Standard outputs: `Proposal readiness: rejected | blocked | evaluating | ready`; `Experiment value: informative | reusable | none`; `Direction verdict: inconclusive | continue | pivot | falsified | validated`; `Lifecycle recommendation: no-change | activate | archive-as-* | promote`; `Visual artifact class: diagnostic | evidence | explanatory`; `Visual retention: discard-after-run | retain-with-checkpoint | retain-with-final-record`.
+标准输出词汇：`提案状态: 否决 | 卡住 | 评估中 | 通过`；`实验价值: 有信息 | 可复用 | 无价值`；`方向判定: 无结论 | 继续 | 转向 | 证伪 | 验证通过`；`生命周期建议: 不动 | 激活 | 归档为-* | 转正`；`图的类别: 诊断 | 证据 | 解释`；`图的保留: 用完即弃 | 随存档保留 | 随终版保留`。
 
-`experiment_manager` orchestrates report assembly and verifies all required sections before checkpointing or closing. No skill may silently rewrite another skill's scientific judgment.
+`experiment_manager` 负责组织报告拼装、在存档或收尾前核对各节齐全。任何技能不许悄悄改写另一个技能的科学判断。

@@ -1,6 +1,6 @@
 ---
 name: knowledge_keeper
-description: Knowledge-base retrieval, citation-graph expansion, and capture for papers and external sources. Load when the user asks to search literature, look up a paper, summarize a paper into the knowledge base, or reuse previously found references. Enforces local-first retrieval, forward citation chasing from key papers, a query log, and mandatory capture.
+description: Knowledge-base retrieval, citation-graph expansion, and capture for papers and external sources. Load when the user asks to search literature, look up a paper, summarize a paper into the knowledge base, or reuse previously found references. Enforces local-first retrieval, forward citation chasing from key papers, a query log, and mandatory capture. Judging whether a literature gap is real or a direction is worth doing belongs to research_progress.
 requires: research_manager
 ---
 
@@ -9,135 +9,132 @@ requires: research_manager
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Knowledge Keeper — Search Once, Capture Always
+# Knowledge Keeper — 只查一次，查到就存
 
-The knowledge base lives in the project's `.kilo/knowledge/papers/`. Its purpose: never pay twice for the same search.
+知识库在项目 `.kilo/knowledge/papers/`。存在理由：同一次检索不许花第二遍钱。
 
-## 1. Local-First Protocol
+## 1. 先查本地
 
-Before any API or web call:
+调任何 API 或网页之前：
 
-1. Grep `.kilo/knowledge/papers/` note files for the topic.
-2. Check `knowledge/papers/00-query-log.md` for a similar past query.
+1. 在 `.kilo/knowledge/papers/` 的笔记里 grep 这个主题。
+2. 查 `knowledge/papers/00-query-log.md` 有没有类似的过往检索。
 
-On a local hit, answer from the cached notes and say the source is the local knowledge base. Do not call the API again.
+本地命中就直接用缓存笔记回答，并说明来源是本地知识库，不再调 API。
 
-## 2. Query Log
+## 2. 检索日志
 
-`knowledge/papers/00-query-log.md` records every external query:
+`knowledge/papers/00-query-log.md` 记录每一次外部检索：
 
-| Date | Query / seed paper | Discovery path | Source | Hits | Notes created |
+| 日期 | 查询词 / 种子论文 | 发现路径 | 来源 | 命中数 | 新建笔记 |
 |---|---|---|---|---|---|
 
-- A keyword query or citation traversal with the same seed paper, direction, and source within **7 days** (adjustable) must not be re-run; reuse the logged results and state the original search date.
-- Update the log on every external search, including searches that return nothing — empty results are also worth caching.
+- 同一查询词、同一引用遍历（同种子、同方向、同来源）**7 天内**（可调）不许重跑；复用日志里的结果并说明原检索日期。
+- 每次外部检索都更新日志，包括什么都没查到的——空结果同样值得缓存。
 
-Keyword search is only the entry point. Once key papers are identified, citation-graph expansion in section 3 is mandatory. A search report returns candidates with roles and discovery paths, not a flat list of N papers.
+## 3. 入口：关键词只是起点
 
-## 3. Citation-Graph Expansion
+关键词检索漏掉关键论文是常态，不是意外。三条纪律：
 
-For every key paper (an anchor, a strong direct competitor, or a field-defining work), search both directions:
+1. **种子优先**。开始前先问用户手里有没有已知的关键论文——有就直接当种子，跳过关键词摸索，直接进 §4 的引用网扩展。用户常常一下子就能指出那篇论文，关键词检索半天摸不到。
+2. **关键词是迭代品**。首轮命中后，从命中论文的标题和摘要里收这个领域的真实术语，换词再查至少一轮。一份没换过查询词的检索报告，视为片面。
+3. **按基准/榜单查时**，关键词只是入口——很多评测过某基准的工作从不在标题摘要里提它（已验证的漏检：Spatial-MLLM，arXiv 2505.23747）。这时把基准自己的论文当种子走 §4，再交叉核对官方榜单/模型库，再补至少一个相邻宽查询和一个上位概念查询。
 
-1. **Backward:** inspect its references to recover foundations, prior formulations, and experimental standards.
-2. **Forward:** query papers that cite it. This is mandatory because later direct competitors, corrections, replications, and extensions may not share the original keywords.
+## 4. 顺着引用网扩
 
-Forward search protocol:
+对每篇关键论文（参照工作、强的直接竞争、领域定义性工作），两个方向都要查：
 
-1. Resolve the key paper to a stable identifier (DOI, arXiv ID, Semantic Scholar paper ID, or OpenAlex ID); do not rely on title matching alone.
-2. Fetch its citing papers through a citation-capable source such as Semantic Scholar or OpenAlex. Record the key paper, direction (`cited-by`), source, query date, and result count in the query log.
-3. Screen citing papers by title and abstract for: direct reuse of the problem or setting, extension of the method, independent evaluation or replication, contradiction or correction, and surveys that expose another branch of the literature. Citation count alone is not a relevance signal.
-4. Prioritize directness first, then evidence value and recency. Keep older influential papers when they define a standard; do not return only highly cited or only recent work.
-5. For each strong candidate, inspect why and where it cites the key paper when full text is available. A bibliography hit alone does not prove substantive dependence.
-6. Repeat forward expansion one more hop only when a candidate becomes a new anchor or reveals a distinct relevant branch. Stop when a hop yields no new direct work or only redundant/background papers.
+1. **往回**：翻它的参考文献，捞出奠基工作、先前表述和实验标准。
+2. **往前**：查引用了它的论文。这是强制的——后来的直接竞争者、修正、复现、改进往往完全不共用原来的关键词。
 
-Benchmark-centric search: when the search target is a benchmark or leaderboard (e.g., "which works evaluate on VSI-Bench"), keyword search by benchmark name is only the entry point — many evaluators never name the benchmark in the title or abstract (verified miss: Spatial-MLLM, arXiv 2505.23747):
+前向检索的步骤：
 
-1. Treat the benchmark's own paper as a key paper and run the full forward cited-by protocol above.
-2. Cross-check the benchmark's official leaderboard, model zoo, or evaluation-log archive for evaluated models that keyword search cannot surface.
-3. Run at least one broad adjacent query (e.g., "video spatial reasoning", "spatial intelligence") and one generality query (e.g., "spatial MLLM") to catch classic works that flank or predate the benchmark.
-4. Screen citing papers for entries that report numbers on the benchmark without naming it (detectable via result tables, same-lineage dataset names, or downstream surveys); flag high-citation citing papers for classic-work screening.
+1. 把种子论文解析成稳定 ID（DOI、arXiv ID、Semantic Scholar 或 OpenAlex ID），不许只靠标题匹配。
+2. 用 Semantic Scholar 或 OpenAlex 这类支持引用关系的源拉取引用它的论文。日志里记：种子、方向（`cited-by`）、来源、日期、结果数。
+3. **筛选时最优先"改进型"后继**：在 intro 里点名批评或扩展种子的工作（"X et al. … however …"）——它们几乎必然引用了种子，但关键词往往完全不同，这正是关键词检索漏掉关键论文的主要原因。其余按题摘筛：直接复用问题或设定的、独立评测或复现的、矛盾或修正的、能带出新分支的综述。引用数本身不是相关性信号。
+4. 先按直接程度排，再看证据价值和时间新旧。定义了标准的经典老论文要留；不许只返回高引或只返回新工作。
+5. 对每个强候选，能拿到全文就看它在哪、为什么引用种子——参考文献列表里出现一次不构成实质依赖。
+6. 只在候选变成新种子、或揭出一个不同的相关分支时，才再往前扩一跳。某一跳没有新的直接工作、只有重复或背景文献时停。
 
-Do not confuse the two directions in reports: **references** are works the key paper cites; **citing papers / cited-by results** are later works that cite the key paper. Report useful candidates with a discovery path such as `keyword -> key paper -> cited-by -> candidate`.
+报告里不许混淆两个方向：**参考文献**是种子引用的工作；**引用它的论文**是后来的工作。返回的候选要带来源角色和发现路径，如 `关键词 → 种子 → cited-by → 候选`，不许给一堆扁平的 N 篇列表。
 
-## 4. Mandatory Capture
+## 5. 用到就必存
 
-Any paper actually used (cited in a reply or document) must be saved immediately as `knowledge/papers/author-year-title.md`. Deduplicate by arXiv ID or DOI; if a note exists, update it instead of creating a copy. Searching without capturing is forbidden — that is what causes repeated searches and API bans.
+任何实际用到的论文（在回答或文档里引了）必须立刻存成 `knowledge/papers/作者-年份-标题.md`。去重按 arXiv ID 或 DOI；两个都没有就按规范化标题 + 一作 + 年份；还不确定就两份都留并互链，直到查清。笔记已存在就更新，不许建副本。只检索不落库是被禁止的——重复检索和 API 封号都是这么来的。
 
-Note template — paper-centric, not question-centric:
+笔记模板——以论文为中心，不以当前问题为中心：
 
 ```
-# Title — Authors (Year)
-link: <url or arXiv ID>   pdf: <pdfs/... or "not cached">
-added: <YYYY-MM-DD>   source-query: "<the query that found it>"
-discovered-via: <keyword | reference-of:<paper-id> | cited-by:<paper-id>>
-publication: <venue / preprint>   review-status: published | preprint | unknown
+# 标题 — 作者 (年份)
+link: <url 或 arXiv ID>   pdf: <pdfs/... 或 "not cached">
+added: <YYYY-MM-DD>   source-query: "<找到它的那次查询>"
+discovered-via: <关键词 | reference-of:<论文id> | cited-by:<论文id>>
+publication: <会议/期刊/预印本>   review-status: published | preprint | unknown
 assessment-depth: metadata | abstract | full | code | reproduced
 quality: strong | usable | weak | unassessed   quality-updated: <YYYY-MM-DD>
 
-## Verdict
-One plain sentence: is it worth following as an anchor, and why.
-Include the single most valuable point and the biggest problem.
+## 结论
+一句话：值不值得当参照工作跟进，为什么。
+带上最有价值的一点和最大的问题。
 
-## Summary
-What the paper itself does: problem, method, core conclusion, evidence
-strength. 3-5 sentences, independent of any use case.
+## 摘要
+论文本身做了什么：问题、方法、核心结论、证据强度。
+3-5 句，独立于任何使用场景。
 
-## Key details
-- Method essentials / datasets / main numeric results / experimental
-  setup, one bullet each.
-- Bar: a future reader with a *different* question should rarely need
-  to re-fetch the original.
+## 关键细节
+- 方法要点 / 数据集 / 主要数字结果 / 实验设置，每条一行。
+- 标准：带着*不同*问题的后来读者几乎不需要再去取原文。
 
-## External signals
-Venue/CCF level, author track record on this specific problem, adoption
-by others (with query date). Auxiliary only; never overrides full reading.
+## 外部信号
+会议等级、作者在这个具体问题上的履历、被采用情况（带查询日期）。
+只作辅助；永远压不过全文阅读。
 
-## Limitations
-- Weaknesses and unverified claims. Mark speculation as [speculation].
+## 局限
+- 弱点和未验证的声明。推测标 [speculation]。
 
-## Relevance log
-- <YYYY-MM-DD>  <direction/proposal>: role (anchor | competitor |
-  adjacent | background) + how it was used
+## 相关记录
+- <YYYY-MM-DD>  <方向/提案>：角色（参照 | 竞争 | 相邻 | 背景）+ 怎么用的
 ```
 
-Rules:
+规则：
 
-- **Summary and Key details describe the paper, not the current question.** Notes written only for today's question force re-retrieval when the question changes — that defeats the knowledge base.
-- The Relevance log is append-only: when an existing note serves a new direction, add one line; never create a duplicate note.
-- Do not paste the abstract verbatim; write in plain language.
+- **摘要和关键细节描述的是论文，不是当前的问题。** 只为今天的问题写的笔记，换个问题就得重新检索——那知识库就白建了。
+- 相关记录只追加：已有笔记服务新方向时加一行，绝不建重复笔记。
+- 不许照抄摘要原文，用自己的话写。
 
-## 5. Paper Quality Assessment
+## 6. 论文质量判断
 
-Retrieval is not a relevance list. Every paper that a direction actually depends on gets a per-paper quality judgment: role, quality, and reading depth (the three fields in the note header). Judge by the three layers in `paper-quality.md` — real relevance, intrinsic soundness (insight, evidence, theory), then external signals (venue/CCF, author track record, adoption) as auxiliary only.
+检索不是列相关清单。方向实际依赖的每篇论文都要有逐篇判断：角色、质量、阅读深度（笔记头三个字段）。按 `paper-quality.md` 的三层判：真实相关性、内在可靠性（洞见、证据、理论），外部信号（会议等级、作者履历、被采用情况）只作辅助。
 
-Rules:
+规则：
 
-- Depth bounds the claim: from an abstract you may say "worth reading", never "solid experiments".
-- Venue or famous authors cannot rescue weak evidence; unknown authors or preprints do not imply weak work.
-- A quality judgment is updateable: record `quality-updated` and the reason when it changes.
-- Load `paper-quality.md` when making or revising these judgments.
+- 深度限制说法：只读了摘要最多说"值得读"，不许说"实验扎实"。
+- 会议和名作者救不了弱证据；无名作者和预印本也不等于弱工作。
+- 质量判断可更新：改动时记 `quality-updated` 和原因。
+- 做或改这类判断时加载 `paper-quality.md`。
 
-## 6. Index
+## 7. 索引
 
-Create or update `knowledge/papers/00-overview.md` once the directory holds more than five notes (per `research_manager` section 4). Index entries: one line per paper — citation, quality field, one-sentence takeaway, linked direction.
+`knowledge/papers/` 超过五篇笔记后，建或更新 `00-overview.md`（按 `research_manager` §4）。索引每篇一行：引用、质量字段、一句话要点、关联方向。
 
-## 7. Implementation-Level Retrieval for Direct Work
+## 8. 对直接相关工作要挖到实现层
 
-For the closest direct work of a direction (per `research_progress` Gate 2), retrieval must go beyond abstract-level claims and return implementation-level facts where available:
+对方向最近的直接工作（`research_progress`"别人做到了哪"一步的消费对象），检索必须越过摘要级说法，尽量拿实现级事实：
 
-- Actual inputs/outputs, datasets, label requirements, training objective, and inference path.
-- Core modules as implemented in released code; paper–code consistency; compute budget behind headline numbers.
-- Failed ablations, negative results, and limitations the authors themselves report.
-- Code availability and license; whether needed intermediate signals are exposed.
+- 实际的输入/输出、数据集、标签需求、训练目标、推理路径。
+- 核心模块在开源代码里实际长什么样；论文和代码是否一致；头条数字背后的算力。
+- 作者自己报告的失败消融、负结果、局限。
+- 代码是否可用、什么协议；需要的中间信号是否暴露。
 
-Depth bounds the claim: `abstract` depth supports "worth reading" only; feasibility or gap claims require `full` or `code` depth. Record reading depth per paper in the note header and report it back with the retrieval.
+深度限制说法：`abstract` 深度只够说"值得读"；可行性和空白判断需要 `full` 或 `code` 深度。每篇的阅读深度记在笔记头，并随检索结果一并报回。这些事实的采集模板（含明确的缺口记录）：`references/impl-facts-template.md`。
 
-## 8. Boundaries
+## 9. 边界
 
-- `knowledge_keeper` retrieves, captures, indexes, and judges single-paper quality. It does not judge whether a literature gap is real or whether a direction is worth doing — that verdict belongs to `research_progress`.
-- Actually call arXiv for metadata/search and a citation-capable API such as Semantic Scholar or OpenAlex for cited-by traversal; never fabricate papers, citation edges, or citations.
-- File writes only after user confirmation.
+- `knowledge_keeper` 管检索、落库、索引、单篇质量判断。不判断文献空白是否成立、方向值不值得做——那是 `research_progress` 的事。
+- 元数据/搜索实际调 arXiv，引用遍历实际调 Semantic Scholar 或 OpenAlex；绝不编造论文、引用关系或引用内容。
+- 失败要暴露，不要编造得像：API 限流或报错时，验证响应的形状（不只看状态码），报告哪个查询失败了，受影响的结果标未验证——绝不用编的或凭记忆的结果填坑。
+- 写文件前先经用户确认。

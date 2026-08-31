@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- Minimal self-contained report skeleton for write_md §7. -->
+<!-- Rules: inline CSS only, no CDN/external fonts, figures base64-embedded, print-friendly. -->
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>REPORT-TITLE</title>
+<style>
+  :root {
+    --fg: #2c3e50; --muted: #7f8c8d; --accent: #3498db;
+    --maxw: 860px;
+  }
+  body { font-family: sans-serif; color: var(--fg); max-width: var(--maxw);
+         margin: 0 auto; padding: 2rem 1rem; line-height: 1.65; }
+  nav#toc { border-left: 4px solid var(--accent); padding: .5rem 1rem;
+            background: #3498db1a; margin-bottom: 2rem; }
+  nav#toc a { color: var(--accent); text-decoration: none; }
+  #conclusion { border-left: 4px solid var(--accent); padding: .5rem 1rem;
+                background: #3498db1a; font-weight: 600; }
+  figure { margin: 1.5rem 0; text-align: center; }
+  figure img { max-width: 100%; cursor: zoom-in; }
+  figcaption { color: var(--muted); font-size: .9em; text-align: left; }
+  table { border-collapse: collapse; margin: 1rem 0; }
+  th, td { padding: .3rem .8rem; border-bottom: 1px solid #ddd; }
+  @media print { nav#toc { display: none; } figure img { cursor: default; } }
+</style>
+</head>
+<body>
+
+<h1>REPORT-TITLE</h1>
+
+<div id="conclusion">
+  结论先行块：≤3 行，说清最终判断与证据边界。
+</div>
+
+<nav id="toc">
+  <strong>目录</strong>
+  <ol>
+    <li><a href="#sec-1">章节标题即论点</a></li>
+    <!-- one entry per section; anchors match section ids -->
+  </ol>
+</nav>
+
+<section id="sec-1">
+  <h2>章节标题即论点（不是主题词）</h2>
+  <p>正文。关键数字加粗：<strong>67.8% vs 61.2%</strong>。</p>
+
+  <figure>
+    <!-- figures base64-embedded: src="data:image/png;base64,..." -->
+    <img src="data:image/png;base64,..." alt="图：比较对象与观测单位">
+    <figcaption>图 N：比较对象；观测单位；不确定性语义；结论（caption 自包含）。</figcaption>
+  </figure>
+</section>
+
+<!-- Repeat <section> per chapter. Mermaid diagrams must be pre-rendered to inline SVG. -->
+</body>
+</html>

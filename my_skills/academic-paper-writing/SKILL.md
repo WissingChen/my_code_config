@@ -1,6 +1,7 @@
 ---
 name: academic-paper-writing
-description: Top-tier CS/AI/Robotics manuscript writing taste. Triggers on drafting, revising, or polishing academic papers in computer vision, machine learning, robotics, image processing, and related fields.
+description: Top-tier CS/AI/Robotics manuscript writing taste. Load when drafting, revising, or polishing academic papers in computer vision, machine learning, robotics, image processing, and related fields. Not for research reports or slides — those belong to write_md and slide_deck.
+requires: research_manager
 ---
 
 ## Output Contract
@@ -8,83 +9,100 @@ description: Top-tier CS/AI/Robotics manuscript writing taste. Triggers on draft
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Academic Writing — Evidence-Bound Manuscripts
+# Academic Writing — 每个声明都拴在证据上
 
-## Core Premise
+## 1. 核心前提
 
-A strong paper is built on audited evidence, clear claims, and a structure that lets the reader follow the reasoning. Prose may clarify but cannot strengthen claims beyond the evidence.
+好论文建立在审计过的证据、清楚的声明、让读者跟得上推理的结构之上。文字可以澄清声明，不能把声明撑到证据之外。
 
-## Narrative Arc
+## 2. 叙事弧线
 
-1. **Opening**: Identify the precise gap. Avoid generic statements. Anchor on the strongest credible work that still falls short; then cite the closest recent direct work. Never pad the gap with weak papers.
-2. **Insight**: State the re-framing in one crisp sentence. If you cannot, the paper is not yet focused.
-3. **Method**: Show the idea before the equations. Figures should communicate the core mechanism in 30 seconds.
-4. **Experiments**: Build from evidence:
-   - One dense table with the main result.
-   - An ablation that isolates the claimed reason for improvement, without universal thresholds.
-   - A generalization check on an unseen setting or dataset.
-   - A limitation figure showing where the method fails.
-5. **Ending**: Return to the opening gap, summarize what the evidence shows, and state the remaining boundary honestly.
+1. **开场**：指出精确的空缺。不写泛泛之言。锚在"最强但仍差一步"的可信工作上，再引最近的直接工作。绝不拿弱论文垫空缺。
+2. **洞见**：一句话说清重新提法。说不出来，说明论文还没聚焦。
+3. **方法**：先给想法再给公式。图要 30 秒内传达核心机制。
+4. **实验**：从证据搭起来：
+   - 一张信息密集的主结果表。
+   - 一个消融，隔离出声明的改进原因，不设通用阈值。
+   - 一个在未见过的设置或数据集上的泛化检查。
+   - 一张局限图，展示方法在哪失败。
+5. **收尾**：回到开场的空缺，总结证据显示了什么，如实说出剩下的边界。
 
-## The Voice
+## 2.5 写作场景与读者
 
-- Write for a brilliant colleague from an adjacent subfield.
-- Avoid hype words: "novel", "first", "significantly" (without effect size and uncertainty), "obviously", "clearly", "state-of-the-art".
-- Prefer verbs that describe mechanism: "enables", "reveals", "decouples", "bridges".
-- Alternate sentence length. Active voice for contributions; passive for established facts, rarely.
-- Define every symbol at first use. Reference every equation and figure in the text.
-- Avoid AI-flavored punctuation: em dashes and colons abused as dramatic pivots.
+动笔前先确认四件事：领域、目标会议/期刊、发表场景（主会 / 期刊扩展 / workshop / 学位论文）、读者群体（赶时间的审稿人、会细读的期刊读者、跨领域读者）。这四项决定篇幅策略、相关工作厚度、实验密度和语气。
 
-## Evidence Ceiling and Traceability
+本文件其余各节是通用规则；场景差异写在 `references/` 下的场景文件里，命中的场景在动笔前加载。没有匹配的场景文件时按通用规则写；用户反馈出来的场景偏好回写成新的场景文件（先经用户确认），不写一次性的现场规则。
 
-Draft claims only from promoted implementations and retained evidence records. Every quantitative claim must trace to an experiment ID and a retained artifact (figure, table, or log manifest). Do not select attractive runs from experiment branches.
+## 3. 语气
 
-Required reporting: effect size, uncertainty interval, and practical significance. Do not rely on p-values or single thresholds like `<1%`, `90% of gain`, or `sharp peak`.
+- 为隔壁子领域的聪明同事写。
+- 避开吹嘘词："novel"、"first"、不带效应量和不确定度的 "significantly"、"obviously"、"clearly"、"state-of-the-art"。
+- 优先用描述机制的动词："enables"、"reveals"、"decouples"、"bridges"。
+- 句子长短交错。贡献用主动语态；既定事实偶尔用被动。
+- 每个符号首次出现就定义。每个公式和图都在正文里引用。
+- 避开 AI 腔的标点：拿破折号和冒号当戏剧性转折滥用。
 
-## Figures and Tables
+## 4. 证据上限与可追溯
 
-- Figures are arguments, not decoration. Show flow and mechanism, not just layout.
-- Delegate figure production and visual validation to `result_visualization`; the paper skill decides narrative placement and caption argument.
-- Consistent iconography across all figures.
-- Error maps and distributions beat single scalars when heterogeneity matters.
-- Colorblind-safe palettes; grayscale readability is a discipline.
-- Tables: no vertical lines, aligned decimals, best result in bold, include parameters and cost metrics.
-- Captions are self-contained and define abbreviations.
+只从转正后的实现和保留的证据记录起草声明。每个定量声明必须能追到一个实验编号和一份保留的产物（图、表或日志清单）。不许从实验分支里挑好看的运行。来自文献的定量声明同样要追——追到一条 `knowledge_keeper` 笔记 ID，且其阅读深度撑得起这个声明；没有笔记就先委托落库，再写这句话。
 
-## Ablations and Sensitivity
+必报：效应量、不确定区间、实际意义。不依赖 p 值或 `<1%`、`90% of gain`、`尖峰` 这类单一阈值说法。
 
-- Test the hard thing: remove or replace the claimed essential component. Report the effect size and uncertainty; do not require a fixed drop threshold.
-- Include a replacement ablation: compare against the simplest baseline addressing the same problem.
-- Main comparisons must include the strongest credible method, not only weak direct competitors that are easy to beat.
-- Hyperparameter sensitivity: report the range and whether the effect is stable or brittle, without relying on a `sharp peak` narrative.
+## 5. 图和表
 
-## Citation Ethics
+- 图是论证，不是装饰。展示流程和机制，不只是摆布局。
+- 图的制作和视觉验证委托 `result_visualization`；本技能决定叙事位置和图注的论点。
+- 全套图用一致的图标语言。
+- 异质性重要时，误差图和分布图好过单个标量。
+- 色盲安全色板；灰度可读是纪律。
+- 表：不要竖线，小数点对齐，最优结果加粗，带上参数量和成本指标。
+- 图注自足，缩写要定义。
 
-Before citing, delegate retrieval, verification (year, claim), and capture to `.kilo/knowledge/papers/` to `knowledge_keeper`. A citation is a promise; do not make it lightly.
+## 6. 消融和敏感性
 
-Before drafting, read the direction's anchor set and minimum quality bar, and answer: whose problem definition do we follow, whose experimental/theoretical standard do we follow, who is the closest competitor, and do our results actually clear that bar. If the last answer is no, the problem is unfinished research, not writing.
+- 测难的那个：去掉或替换声明中起关键作用的组件。报告效应量和不确定度；不设固定的下降阈值。
+- 带一个替换消融：和解决同一问题的最简单 baseline 比。
+- 主要比较必须包含最强的可信方法，不只挑好打的弱对手。
+- 超参敏感性：报告范围、效应是稳定还是脆，不靠"尖峰"叙事。
 
-In Related Work, synthesize by idea, not chronology. Do not treat all related papers as equals — anchor papers, direct competitors, and background get different weight. When criticizing, be surgical: describe the assumption that restricts applicability, not a dismissive summary.
+## 7. 引用的规矩
 
-## The Reviewer's Mind
+引用之前，把检索、核实（年份、声明）、落库到 `.kilo/knowledge/papers/` 委托给 `knowledge_keeper`。引用是一个承诺，不许轻率给出。
 
-- **5-minute test**: problem, insight, main result — clear from the title, abstract, and first figure.
-- **Surprise test**: figures and tables tell a coherent story without the text.
-- **Objection test**: list every objection; preempt or acknowledge each as a limitation.
-- **Title test**: accessible to a non-specialist without being vague. Under 100 characters, no jargon, no abbreviations.
+动笔之前，读方向的参照文献和质量底线，回答：问题定义跟谁走、实验/理论标准跟谁走、最近的竞争对手是谁、我们的结果真的过得了那条线吗。最后一问答"否"，那就是研究没做完，不是写作问题。
 
-## Limitations and Reproducibility
+Related Work 按想法综合，不按编年。别把所有相关工作等权重——参照工作、直接竞争、背景文献权重不同。批评要精准：描述那个限制了适用范围的假设，不写不屑的概括。
 
-State limitations with the same precision as successes. Include a failure-case figure and explain why the failure occurs. Report framework, hardware, training time, batch size, optimizer, schedule, augmentation, loss, seeds, dataset size/splits/preprocessing, and metric definitions. Hidden tricks are reproducibility failures, not cleverness.
+## 8. 审稿人怎么想
 
-## Manuscript Storage
+四个测试应用在同一段虚构段落上的完整走查：`references/reviewer-walkthrough.md`。
 
-Store active manuscripts in the direction's `manuscript/` directory or an external repository linked from the direction overview. Generated manuscripts are exempt from the 150-line operational document budget.
+- **5 分钟测试**：问题、洞见、主结果——从标题、摘要、第一张图就能看出来。
+- **惊喜测试**：图和表抛开正文也能讲出连贯的故事。
+- **反驳测试**：列出每一条反驳；要么预先化解，要么承认并写进局限。
+- **标题测试**：非专业读者能懂且不空泛。100 字符以内，无术语，无缩写。
 
-## Final Polish
+## 9. 局限和可复现
 
-Read aloud. Listen for clunk, echo, drift, hype, math orphans, and figure orphans. Fix them. Then fix them again.
+说局限和说成果用同样的精度。带一张失败案例图，解释为什么失败。报告框架、硬件、训练时长、batch size、优化器、调度、增广、损失、种子、数据集规模/划分/预处理、指标定义。藏起来的技巧是可复现性的失败，不是聪明。
+
+## 10. 手稿存放
+
+进行中的手稿放在方向的 `manuscript/` 目录，或方向概览里链接的外部仓库。生成的手稿不受 150 行运营文档预算限制。与 `write_md` 的边界：它管报告可读性和 HTML 渲染；在手稿上它只套用语言层——起草、结构、面向审稿人的论证留在本技能。
+
+## 11. 最后打磨
+
+读出声。听磕绊、回声、漂移、吹嘘、没人引用的公式和图。修掉。然后再修一遍。
+
+## References
+
+| 文件 | 何时加载 |
+|---|---|
+| `references/reviewer-walkthrough.md` | 投稿前自查（§8 四个测试的完整走查） |
+| `references/scenario-conf-main.md` | CV/ML 主会（CVPR / NeurIPS / ICML 等） |
+| `references/scenario-journal.md` | 期刊或会议扩展版（TPAMI / IJCV 等） |
+| `references/scenario-short.md` | workshop / 短文（≤4 页） |

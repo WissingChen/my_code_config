@@ -9,120 +9,134 @@ requires: research_manager
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Result Analysis — Locate the Broken Link, Converge the Ledger
+# Result Analysis — 定位断掉的那一环，把账本收敛
 
-`result_analysis` owns statistical analysis and evidence verdicts. It does not generate visual artifacts, mutate research state, or commit/merge.
+管统计分析和证据判定。不画图、不改研究状态、不提交不合并。
 
-## 0. Separate Value from Verdict
+## 0. 价值和判定分开
 
-- **Experiment value**: `informative` | `reusable` | `none`
-- **Direction verdict**: `inconclusive` | `continue` | `pivot` | `falsified` | `validated`
+- **实验价值**：`有信息` | `可复用` | `无价值`
+- **方向判定**：`无结论` | `继续` | `转向` | `证伪` | `验证通过`
 
-`inconclusive` is valid when evidence is inadequate; do not force a false verdict.
+`无结论`在证据不够时是合法答案，不许硬编一个判定。
 
-Progress means: an explanation eliminated, a key uncertainty reduced, a causal link located, or a decision boundary clarified. **More observations, more phenomena, or more new ideas are not progress by themselves.** An experiment that raises five questions but closes the core hypothesis is convergent; one that produces many observations but changes no judgment is not.
+什么算进展：排除一个解释、缩小一个关键不确定性、定位一环因果、划清一个决策边界。**观测更多、现象更多、新想法更多，都不算进展。** 一次实验关掉了核心假设、哪怕同时引出五个新问题，是收敛；产生一堆观测但不改变任何判断，不是。
 
-## 1. Adequacy Check
+## 1. 证据够不够格
 
-Before interpreting any data, answer:
+解读任何数据之前先答：
 
-1. What claim can this experiment support, challenge, or discriminate?
-2. What metric or control would falsify or weaken that claim?
-3. Does the evaluation setup satisfy (1) and (2)?
+1. 这个实验能支持、挑战或区分什么主张？
+2. 什么指标或对照能否定或削弱这个主张？
+3. 现在的评测设置满足前两条吗？
 
-If not, fix the evaluation first. Do not draw conclusions from weak evidence.
+不满足就先修评测，不许从弱证据下结论。资源不够修不了，就判 `无结论`、写明缺口、把重新设计交给 `research_progress`——不许悄悄把声明降级去迁就弱的评测。
 
-## 2. Pre-Registered Expectation
+## 2. 找回事先登记的预期
 
-Before inspecting actual outcomes, recover the experiment-time record of: baseline metric and uncertainty; expected metric range; expected mechanism, causal link, and observable intermediate signals; alternative explanations and the measurements intended to distinguish them; the **main contradiction** the run targets.
+看实际结果之前，先翻出实验前登记的东西：baseline 指标和不确定度；预期区间；预期机制、因果链和可观测的中间信号；备选解释和用来区分它们的测量；这次运行针对的主要矛盾。
 
-If these were not recorded before the run, mark the expectation as post hoc and lower the evidential weight of any apparent confirmation. Do not rewrite the expected result to fit the actual result.
+这些没登记过的，标为"事后补的"，任何看似符合预期的结果都要降权。不许改写预期去贴合实际结果。
 
-## 3. Evidence Audit (Fact Layer)
+## 3. 只摆事实
 
-Strip away interpretation. List facts with numbers and units. De-fuzzify vague words like "significant" by demanding a quantitative definition.
+先剥掉解读，只列带数字和单位的事实。"显著"这类词必须给出定量定义才算数。
 
-Audit: observational unit and design (paired / repeated / independent); missingness, dependence, sampling, run-to-run randomness; descriptive statistics before inference; controls drawn from the anchor set rather than weak competitors, with protocol comparability justified; sample size relative to the claim; intermediate measurements relevant to the mechanism, not only the final score.
+逐项核对：观测单位和实验设计（配对/重复/独立）；缺失、相关性、采样、运行间随机性；先看描述统计再谈推断；对照从参照文献里的强工作选，不许挑软柿子，协议可比性要说明；样本量相对声明够不够；有没有测和机制相关的中间量，而不是只看最终分。
 
-## 4. Baseline / Expected / Actual Analysis
+## 4. 预期 vs 实际：哪一环断了
 
-For every primary metric and important diagnostic, make the three-way comparison explicit:
+每个主要指标和重要诊断量，三方对比摆明：
 
-| Quantity | Baseline | Expected | Actual | Deviation | Interpretation |
+| 量 | Baseline | 预期 | 实际 | 偏差 | 解读 |
 |---|---:|---:|---:|---:|---|
 
-Then **locate which link of the registered causal chain failed**, in order:
+然后按顺序定位登记过的因果链上断掉的是哪一环：
 
-| Link | Question | Action if broken |
+| 环节 | 问题 | 断了怎么办 |
 |---|---|---|
-| Experiment validity | Did implementation, data, or evaluation make the run invalid? | Fix the experiment; do not update the hypothesis |
-| Intervention | Did change A actually produce the predicted intermediate signal? | Redesign or fix A, not the theory |
-| Mechanism | The signal appeared — did it translate to the target capability? | Revise the mechanism hypothesis |
-| Goal | Does the metric change correspond to the real research goal? | Fix the evaluation or the question |
-| Value | Even if true, is the effect large enough to support the claim? | Continue, downgrade, or stop |
+| 实验有效性 | 实现、数据、评测有没有让这次运行作废？ | 修实验，不动假设 |
+| 干预 | 改动 A 真的产生了预期的中间信号吗？ | 修 A 或重设计 A，不动理论 |
+| 机制 | 信号出现了——传导到目标能力了吗？ | 修机制假设 |
+| 目标 | 指标变化对应真实研究目标吗？ | 修评测或修问题 |
+| 价值 | 就算是真的，效应大到撑得起声明吗？ | 继续、降级或停 |
 
-Only the first link permits prioritizing local engineering fixes. All other links route back to the main hypothesis. **Do not replace the main contradiction with a local anomaly** (an odd layer, a failing subgroup, an unstable loss term) unless evidence shows it explains the primary deviation or blocks the core chain. Otherwise it goes to the parking lot.
+后四环的判别决策树和填好的失败诊断实例：`references/causal-chain-diagnosis.md`。
 
-## 5. Statistical Analysis
+定位到哪一环只是开始，不是结论。指标差距是症状，不是诊断：在同一环里继续问为什么，直到落到一个能动手改的东西上——某个具体的中间信号没出现、某个假设在某个具体条件下不成立。诊断的深度决定修复的成本：本质抓对了，改法往往很简单；停在表面指标上，修的就是症状，问题换个地方还会冒出来。
 
-Choose tests or models from the design, not a fixed recipe. Report: estimates and effect sizes; uncertainty intervals; assumptions and checks; multiple-comparison handling where applicable; practical vs. statistical significance.
+只有第一环允许优先做局部工程修复；其他环都回到主假设。**不许拿局部异常（某层奇怪、某个子组崩了、某个 loss 项不稳）顶替主要矛盾**，除非有证据表明它解释了主要偏差或堵死了主链；否则进暂存清单。
 
-Avoid universal thresholds like `≥3 seeds` or variance rules; calibrate checks to the actual randomness source, design, effect size, and controls.
+## 5. 统计分析
 
-## 6. Competing Hypotheses and Convergence Ledger
+按设计选方法，不按固定菜谱。要报告：估计值和效应量；不确定区间；前提假设和检验；需要时的多重比较处理；实际意义 vs 统计显著。
 
-Propose at most 2–3 mutually exclusive hypotheses with mechanism and falsification condition — never an open-ended list. Then produce the convergence ledger:
+| 问题类型 | 分析路子 |
+|---|---|
+| 一个主要指标、独立运行 | 对运行级效应做估计和区间 |
+| 配对或重复测量 | 按单位重采样，或把单位当分组因子建模；重复测量绝不当独立样本 |
+| 多指标或多子组 | 只分析事先申报的主要集合；其余都是探索性的，标注清楚 |
+| 小样本、机制问题 | 描述统计 + 中间信号分析；不做推断性声明 |
+| 决策阈值问题 | 报告效应和区间相对决策边界的位置，不报 p 值 |
 
-| Item | Before run | After run |
+避免"≥3 seeds"这类通用阈值和方差规则；检查强度按实际的随机性来源、设计、效应量和对照来定。
+
+## 6. 竞争解释与收敛记录
+
+最多提 2–3 个互斥的解释，各带机制和否定条件——不许开无结尾的清单。然后出收敛记录：
+
+| 项 | 运行前 | 运行后 |
 |---|---|---|
-| Primary hypothesis | ... | supported / weakened / untested |
-| Active explanations | N | fewer, or justify why not |
-| Dominant uncertainty | ... | resolved; new dominant one is ... |
-| Main contradiction | ... | updated to ... |
-| Parked new questions | ... | recorded, not auto-activated |
-| Next decision | unknown | continue / pivot / stop / invalid |
+| 主要假设 | … | 被支持 / 被削弱 / 未检验 |
+| 活着的解释 | N 个 | 变少了，或说明为什么没变少 |
+| 最大不确定性 | … | 已解决；新的最大不确定性是… |
+| 主要矛盾 | … | 更新为… |
+| 暂存的新问题 | … | 已记录，不自动激活 |
+| 下一步决定 | 未知 | 继续 / 转向 / 停 / 无效 |
 
-Rules: the next experiment must shrink the explanation set, not the component count; new ideas default to the parking lot and only interrupt the main line if they invalidate the current question or change the decision; two consecutive rounds without reducing a decision-relevant uncertainty → stop the sequence and re-review the question itself; no "tweak and see" iterations without a named mechanism update.
+规则：下一个实验必须缩小解释集合，不是缩小组件数量；新想法默认进暂存清单，除非它推翻当前问题或改变决定才打断主线；连续两轮没能缩小任何影响决定的不确定性 → 停下，重审问题本身；不许没有写明机制更新的"调一调看看"。
 
-## 7. Failure Diagnosis and Next Experiment
+## 7. 失败诊断与下一个实验
 
-When actual results miss the expected range, produce a failure table:
+实际结果偏离预期区间时，出失败诊断表：
 
-| Candidate explanation | Supporting evidence | Contradicting evidence | Confidence | Discriminating next test |
+| 候选解释 | 支持证据 | 反对证据 | 置信度 | 能区分的下一个测试 |
 |---|---|---|---|---|
 
-Do not write "the direction does not work" from a surface metric alone. A useful next experiment targets the highest-impact unresolved explanation, alters one discriminating factor, and states the new expected mechanism and result before running. If no plausible explanation is cheaply testable or no mechanism-level prediction survives, recommend stopping or pivoting with the evidence boundary stated plainly.
+不许只看表面指标就写"这方向不行"。反过来也成立：指标涨了不等于收工——涨了也要说清是哪一环通了、哪个机制在起作用（消融或中间信号佐证），否则下次失败无从诊断，往新场景迁移时必然踩空。
 
-## 8. Verdict and Recommendation
+有用的下一个实验：瞄准影响最大的未决解释、只改一个有区分度的变量、跑之前写明新的预期机制和结果。如果没有便宜可测的解释、也没有机制级预期幸存，就建议停或转向，把证据边界写明白。
 
-Output: `retain`/`discard` recommendation for the run; checkpoint recommendation; next discriminating experiment (if `continue` or `inconclusive`); lifecycle recommendation (`no-change`, `archive-as-*`, `promote`).
+## 8. 判定与建议
 
-Hand the verdict to `experiment_manager` or `research_manager`; never write directly to `archive/`, move `project/` state, commit, or merge. Supply the evidence and statistics sections of each run report and the final direction report; distinguish facts, estimates, uncertainty, interpretation, and verdict.
+输出：这次运行的保留/丢弃建议；存档建议；下一个判别实验（判定为`继续`或`无结论`时）；生命周期建议（`不动` | `归档为-*` | `转正`）。
 
-## 9. Mandatory Visual Audit
+判定交给 `experiment_manager` 或 `research_manager`；不直接写 `archive/`、不动 `project/` 状态、不提交不合并。负责每份运行报告和终版报告的证据与统计部分；事实、估计、不确定度、解读、判定分开写。
 
-For every run report and final report, run a visual-needs audit before writing — skipping the audit is not allowed, though its outcome may be "text suffices":
+## 9. 必须做的视觉检查
 
-| Information type | Default encoding |
+每份运行报告和终版报告，动笔之前先做视觉需求检查——不许跳过，但检查结论可以是"文字够了"：
+
+| 信息类型 | 默认形式 |
 |---|---|
-| Method/module structure | architecture or flow diagram |
-| Where the implementation chain still relies on speculation | risk-chain diagram |
-| Difference vs. closest work | alignment matrix or structural contrast |
-| Multi-group numeric comparison | dot plot / distribution / small multiples |
-| Baseline–expected–actual | interval comparison chart |
-| How runs changed judgments over time | timeline or decision trajectory |
-| Where failures occur | failure-case panel or mechanism diagnostic |
-| Two or three trivial numbers | compact table, no forced chart |
+| 方法/模块结构 | 结构图或流程图 |
+| 实现链上仍靠猜想的环节 | 风险链图 |
+| 与最近工作的差异 | 对齐矩阵或结构对比 |
+| 多组数值比较 | 点图 / 分布图 / 小倍数图 |
+| baseline–预期–实际 | 区间对比图 |
+| 各次运行如何改变判断 | 时间线或决策轨迹图 |
+| 失败发生在哪 | 失败案例面板或机制诊断图 |
+| 两三个简单数字 | 紧凑表格，不硬画图 |
 
-Record in the report: figure candidates considered, selected, and rejected with reasons. Hand each selected figure to `result_visualization` with: purpose, source data/version, observational unit, variables, grouping/faceting, summary operation, valid uncertainty representation, target claim, artifact class. Do not alter the statistical claim in the handoff.
+报告里记录：考虑过哪些图、选了哪些、拒绝了哪些及原因，每行一条：`| 候选图 | 选中/拒绝 | 原因 |`。选中的图交给 `result_visualization` 时带齐：用途、数据来源/版本、观测单位和设计、变量/分组/分面/排序、汇总/变换方式、合法的不确定度表示、主张或对比、目标媒介和渲染器、图的类别和保留建议。交接中不许改动统计结论。
 
-## Output Constraints
+## 输出约束
 
-- No cheap affirmations. No unexamined causal claims.
-- Distinguish fact, inference, speculation, and excluded evidence.
-- File writes only after user confirmation.
-- Propose cleanup only on concrete stale or duplicate content.
+- 不廉价肯定，不下没审视过的因果结论。
+- 事实、推断、猜测、被排除的证据分开写。
+- 写文件前先经用户确认。
+- 只有发现具体的过时或重复内容才提议清理。

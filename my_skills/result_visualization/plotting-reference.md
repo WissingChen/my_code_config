@@ -60,7 +60,23 @@ plt.savefig('NN-plot-{desc}.png', dpi=300)
 
 Use PDF/SVG for durable vector use, PNG only when a preview or raster target is needed. Treat `NN-plot-{desc}.py`, `.pdf`, `.svg`, and `.png` sharing one prefix as one artifact bundle.
 
-## 3. Mermaid Templates
+## 3. Semantic Color Palette
+
+Single source of truth for semantic colors. One color, one meaning:
+
+| Role | Color |
+|------|-------|
+| Info | `#3498db` |
+| Success | `#27ae60` |
+| Emphasis | `#9b59b6` |
+| Caution | `#e67e22` |
+| Danger | `#e74c3c` |
+| Neutral | `#7f8c8d` |
+| Framework | `#2c3e50` |
+
+Implementation-chain status mapping: `已验证` → success green, `有依据` → info blue, `猜测` → caution orange, `不知道/卡住` → danger red, 无关 → neutral gray.
+
+## 4. Mermaid Templates
 
 **Flowchart**:
 
@@ -108,12 +124,12 @@ Keep a single diagram ≤15 nodes; split if larger.
 Rules:
 
 - Self-contained: inline styles only; no external fonts, scripts, or images.
-- Reuse the semantic palette from `write_md` §4 (`#3498db` info, `#27ae60` success, `#e67e22` caution, `#e74c3c` danger, `#2c3e50` framework).
+- Reuse the semantic palette in §3 of this file.
 - Always set `viewBox`; never rely on fixed pixel dimensions that overflow narrow views.
 - Same node budget as Mermaid; split larger schematics.
 - Record the artifact class (`diagnostic` / `evidence` / `explanatory`) in a file-header comment.
 
-## 4. File Naming
+## 5. File Naming
 
 | Product | Pattern | Example |
 |---|---|---|
@@ -125,12 +141,50 @@ Rules:
 
 `NN` is the current maximum prefix in the target directory + 1.
 
-## 5. Save Location and Overview Updates
+## 6. Save Location and Overview Updates
 
 Save to the active direction or a user-specified location, not unconditionally under `project/`. Record input path/version and relevant transformations in the plotting script so retained figures are reproducible.
 
 Update the direction `00-overview.md` for retained figures only. Update a collection overview only when that overview already exists. Never register disposable diagnostics.
 
-## 6. Report-Ready Captions
+## 7. Report-Ready Captions
 
 A caption must state: the comparison, observational unit, uncertainty semantics, and takeaway without overstating the analysis. Example: "Mean validation accuracy across 5 independent runs (points); shaded region spans the observed range, not a confidence interval."
+
+## 8. Handoff Payload Example
+
+Filled instance of the handoff contract (`SKILL.md` §5), from `result_analysis`:
+
+```text
+purpose: baseline–expected–actual comparison for the E03 primary metric
+source data / version: logs/e03/summary.csv @ commit a41c9e2 (3 seeds)
+observational unit / design: question; independent runs, no shared sampling
+variables / groups / facets / ordering: accuracy by subset (fixed, control), fixed first
+summary / transformation: mean per run; no further aggregation
+valid uncertainty representation: observed range across 3 runs — NOT a CI
+claim or comparison: fixed subset lands in the pre-registered 66–70; control falls below 60–62
+target medium / renderer: Markdown report; PDF vector + PNG preview
+artifact class / retention: evidence; retain-with-final-record
+```
+
+Do not alter the statistical claim when producing the figure; if a field is missing, ask — do not fill it from the data.
+
+## 9. Large Samples and Multi-Panel Composition
+
+- **Large samples**: above ~10k points, switch to density/hexbin or deterministic subsampling; record the seed and sampling fraction in the plotting script. Never silently drop points.
+- **Outliers**: show them or state the exclusion rule in the caption; no invisible clipping.
+- **Multi-panel**: one comparison per panel; shared axes use identical scales across panels; one shared legend; panel labels (a, b, c) referenced from the caption.
+- **Composition check**: if a figure needs more than ~4 panels to make one point, split it into two figures.
+
+## 10. Final Review Checklist
+
+Run before handing any figure to `experiment_manager`:
+
+- [ ] Axis labels and units present; scale and baseline honest (no unlabelled truncation)
+- [ ] Legend, ordering, and grouping match the handoff payload
+- [ ] Uncertainty shown only as delivered in the payload, with semantics stated
+- [ ] Colorblind-safe and readable in grayscale
+- [ ] Fonts actually available; no clipped text or marks
+- [ ] Caption states comparison, observational unit, uncertainty semantics, takeaway (§7)
+- [ ] Artifact bundle complete (`.py` + vector + preview sharing one prefix, §5)
+- [ ] Figure renders where it will be embedded; Markdown link resolves

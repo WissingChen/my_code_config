@@ -4,6 +4,24 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>瑞士国际主义风格 — 模板</title>
+<!-- ============================================================
+  组件定位索引（grep 选择器名即可定位对应 CSS 块与示例用法）
+  布局骨架 : #deck / .slide(.grey/.dark/.accent/.split) / .canvas-card / .split-half
+  页眉装饰 : .chrome-min / .rule / .dots(-fine/-bold) / .dot-mat / .ring-mat / .hatch
+  标题层级 : .h-hero(-zh) / .h-xl(-zh) / .h-md / .h-sub / .lead / .body(-sm) / .meta(-row)
+  大数字   : .kpi-hero / .kpi-big / .kpi-mid / .kpi-thin / .num-mega / .stat-card / .kpi-row-4
+  色块高亮 : .accent-block / .ink-block / .grey-block / .card-* / .mark / .underline-accent / .callout
+  流程步骤 : .pipeline-section / .pipeline[data-cols="3..6"] / .step(.accent-top)
+  网格子卡 : .grid-12 + .span-N / .grid-2-* / .grid-3 / .sub-grid-3-2 / .sub-card / .stack-row + .stack-block
+  图标图片 : .ico(-lg/-md/-sm) / .geo-* / .frame-img(.r-16x9/.r-4x3/.r-1x1) / .img-cap
+  图表     : .bar-chart / .h-bar-chart / .v-bar-chart
+  时间线   : .timeline-v + .tl-node / .timeline-h + .th-node
+  对比双栏 : .duo-compare
+  文本token: .t-cat / .t-meta / .t-helper / .t-body(-sm/-emp) / .t-h-prod
+  翻页导航 : #nav + 底部 JS go()（键盘 ←/→/PgUp/PgDn/Home/End，?slide=N 直跳）
+  背景动效 : canvas.ascii-bg（封面/封底深色区专用，插入即自动启动）
+  示例页   : P1 封面(accent 满屏) / P2 内容页(pipeline) / P3 数据页(KPI 行+柱图) / P4 封底(split-half)
+============================================================ -->
 <style>
 :root{
   /* 主题色：整页只允许一个 accent。换主题只改这一族变量 */

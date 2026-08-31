@@ -9,68 +9,68 @@ requires: research_manager
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Result Visualization — Encode Evidence Without Distortion
+# Result Visualization — 编码证据，不许扭曲
 
-`result_visualization` owns visual encoding and figure production — for experiment evidence **and for direction-discussion argument diagrams**. It does not invent uncertainty, run hypothesis tests, or issue direction verdicts.
+管视觉编码和图的制作——实验证据图，**也包括方向讨论用的论证图**。不编造不确定度、不做假设检验、不下方向判定。
 
-## 0. Argument Diagrams for Direction Discussions
+## 0. 方向讨论用的论证图
 
-When `research_progress` or `experiment_manager` delegates, produce diagrams that expose what prose hides:
+`research_progress` 或 `experiment_manager` 委托时，画能暴露文字藏住的缺口的图：
 
-- **Implementation-chain diagram**: input → data/signals → modules → tensors → training signal → inference → output → evaluation. Semantic status colors: green `confirmed`, blue `supported`, orange `assumed`, red `unknown/blocked`, gray irrelevant. Two consecutive orange/red arrows in the core path must remain visually prominent — never smoothed over.
-- **Related-work alignment diagram**: which stage of the chain our idea actually changes versus the closest direct work.
-- **Speculation-risk diagram**: ledger items positioned by speculation degree × impact.
-- **Decision diagram**: outcomes A/B/ambiguous each mapped to continue/pivot/stop actions.
+- **实现链图**：输入 → 数据/信号 → 模块 → 张量 → 训练信号 → 推理 → 输出 → 评测。语义状态色用 `plotting-reference.md` §3 的色板（`已验证` 绿、`有依据` 蓝、`猜测` 橙、`不知道/卡住` 红、无关 灰）。核心路径上连续两个橙/红箭头必须保持醒目——不许抹平。
+- **相关工作对齐图**：我们的想法到底改了链条的哪一段，对比最近的直接工作。
+- **猜想风险图**：猜想清单的条目按 猜测度 × 影响 摆位置。
+- **决策图**：结果 A/B/模糊各自映射到 继续/转向/停 的动作。
 
-These are `explanatory` artifacts retained with the direction's experiment plan, not disposable decorations.
+这些是`解释`类产物，随方向的实验计划保留，不是用完即弃的装饰。
 
-## 1. Data Charts and Evidence Tables
+## 1. 数据图和证据表
 
-Accept raw/tabular data or a handoff from `result_analysis`. Validate: data shape, observational unit, aggregation, missing values, and available uncertainty.
+接受原始/表格数据或 `result_analysis` 的交接。先验：数据形状、观测单位、聚合方式、缺失值、可用的不确定度。
 
-Select form from the analytical question:
+从分析问题选形式：
 
-| Question | Form |
+| 问题 | 形式 |
 |---|---|
-| Distribution | histogram, density, box, violin, strip |
-| Paired change | paired points/lines, slope graph |
-| Trend over steps | line with explicit uncertainty unit |
-| Comparison | dot plot, small multiples, bar only when few categories |
-| Relationship | scatter, heatmap, contour |
-| Calibration | reliability diagram, residual plot |
-| Sensitivity/ablation | ordered dot/bar, interaction plot |
-| Baseline–expected–actual | interval comparison with all three marked |
+| 分布 | 直方图、密度、箱线、小提琴、散点带 |
+| 配对变化 | 配对点/线、斜率图 |
+| 随步数趋势 | 折线 + 标明不确定度单位 |
+| 比较 | 点图、小倍数图；类别少才用柱状 |
+| 关系 | 散点、热图、等高线 |
+| 校准 | 可靠性图、残差图 |
+| 敏感性/消融 | 有序点/柱状、交互图 |
+| baseline–预期–实际 | 三个都标出的区间对比图 |
 
-Prefer showing distributions or raw points; do not hide heterogeneity behind aggregate bars. Use compact tables when the data are trivial or a chart adds no information. Do not invent error bars, CIs, significance markers, missing values, or sample sizes.
+优先展示分布或原始点；不许把异质性藏在聚合柱子后面。数据琐碎或图不带来信息时用紧凑表格。不许编造误差棒、置信区间、显著性标记、缺失值、样本量。
 
-## 2. Process and Architecture Diagrams
+## 2. 流程和结构图
 
-Handle Mermaid flowcharts, state diagrams, sequence diagrams, architecture diagrams, ER diagrams, and timelines without invoking statistical analysis. Require: purpose, entities/states, relationships/transitions, and target renderer. Split diagrams that exceed a readable node/edge budget. Use Mermaid for standard semantics; when Mermaid cannot express the layout, use self-contained inline SVG: reuse the semantic color palette, no external font or script dependencies, and label the artifact class. Do not use draw.io or other plugin-dependent formats.
+画 Mermaid 流程图、状态图、时序图、架构图、ER 图、时间线，不涉及统计分析。要求提供：用途、实体/状态、关系/转换、目标渲染器。节点/边超过可读预算就拆图。标准语义用 Mermaid；Mermaid 表达不了的布局用自包含内联 SVG：复用语义色板（`plotting-reference.md` §3）、不引外部字体或脚本、标注产物类别。不用 draw.io 等依赖插件的格式。
 
-## 3. Figure Production and Validation
+## 3. 图的制作和验收
 
-Generate reproducible source plus minimum outputs: PDF/SVG for vector use, PNG only when a preview or raster target is actually needed. Check axis labels and units, scale and baseline, legend, ordering, uncertainty semantics, colorblind/grayscale readability, font availability, clipping, and caption self-containment. **Verify the figure renders where it will be embedded (Markdown preview, HTML report, or deck) — a correct file on disk that never gets referenced does not count as delivered.**
+产出可复现源文件加最少输出：矢量用 PDF/SVG，确实需要预览或位图时才出 PNG。逐项检查：轴标签和单位、刻度和基线、图例、排序、不确定度含义、色盲/灰度可读性、字体可用性、裁切、图注自足性——清单见 `plotting-reference.md` §10。**必须验证图在将要嵌入的地方真的渲染出来（Markdown 预览、HTML 报告或 deck）——磁盘上一个正确但没人引用的文件不算交付。**
 
-Reject misleading defaults: unlabelled truncated axes, dual axes without strong justification, 3D decoration, rainbow maps, pie charts as the default comparison, and significance decoration unsupported by the analysis. Treat script/source and rendered outputs sharing one prefix as one artifact bundle.
+拒绝误导性默认：不标注的截断轴、没强理由的双轴、3D 装饰、彩虹色图、默认用饼图做比较、没有分析支撑的显著性装饰。脚本/源文件和渲染产物共用一个前缀，算一套产物。
 
-## 4. Artifact Lifecycle
+## 4. 产物的去留
 
-| Class | Purpose | Default retention |
+| 类别 | 用途 | 默认去留 |
 |---|---|---|
-| `diagnostic` | Debugging, data-quality checks, exploratory inspection | Do not commit; clean after the run |
-| `evidence` | Supports an experiment-value or direction verdict | Retain with a valuable run report; select minimum for final report |
-| `explanatory` | Communicates a stable process, architecture, argument, or manuscript claim | Retain with the experiment plan, current promoted system, or claim |
+| `诊断` | 调试、数据质量检查、探索性查看 | 不提交；运行后清理 |
+| `证据` | 支撑实验价值或方向判定 | 随有价值的运行报告保留；终版报告只选最少集合 |
+| `解释` | 表达稳定的流程、架构、论证或论文声明 | 随实验计划、转正后的系统或声明保留 |
 
-Label every generated artifact with its class and hand the retention recommendation to `experiment_manager`. A polished figure is not automatically valuable evidence. Both validated and falsified directions may retain selected visuals when they materially support the final report; report assets are curated evidence, not a dump of all generated figures.
+每个产物都标类别，去留建议交给 `experiment_manager`。画得漂亮的图不自动是有价值的证据。验证通过和被证伪的方向都可以保留选中的图，只要它们实质支撑终版报告；报告资产是精选的证据，不是所有产物的堆场。
 
-## 5. Handoff Contracts
+## 5. 交接约定
 
-From `result_analysis` or `write_md`: purpose/question, source data and version, observational unit and study design, variables/groups/facets/ordering, summary/transformation, valid uncertainty representation, claim or comparison, target medium and renderer, artifact class and retention recommendation. Produce the visual; do not alter the statistical claim.
+来自 `result_analysis` 或 `write_md` 的交接要有：用途/问题、源数据和版本、观测单位和设计、变量/分组/分面/排序、汇总/变换方式、合法的不确定度表示、主张或对比、目标媒介和渲染器、产物类别和去留建议。只负责把图画出来；不许改动统计结论。
 
-From `research_progress`: the implementation chain with per-arrow status labels, the alignment target (closest work), or the decision branches. Produce the argument diagram; do not alter the readiness judgment.
+来自 `research_progress` 的交接要有：带逐箭头状态标签的实现链、对齐目标（最近的工作）、或决策分支。只负责画论证图；不许改动"通过与否"的判断。
 
-For implementation guidance, see `plotting-reference.md`.
+实现指导见 `plotting-reference.md`。

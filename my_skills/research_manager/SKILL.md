@@ -1,6 +1,6 @@
 ---
 name: research_manager
-description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md index layer, archive SUMMARY.md rules, and final REPORT.md requirements.
+description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md index layer, archive SUMMARY.md rules, and final REPORT.md requirements. It does not run experiments (experiment_manager) or judge whether an idea is worth pursuing (research_progress).
 ---
 
 ## Output Contract
@@ -8,117 +8,121 @@ description: Research project skeleton and file lifecycle. Load when initializin
 - 先说结论，再给必要依据和下一步。
 - 默认短句和常用词；术语只在更准确时用，首次出现直接解释。
 - 内部状态、流程和检查表默认不展示；只有影响决定或用户明确要求时才展开。
-- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加 fact/speculation 标签。
+- 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
 
-# Research Project Manager
+# Research Manager — 管目录、状态和归档
 
-Lightweight skeleton: four directories, numeric ordering, and a pointer layer. `research_manager` owns directory moves, archive naming, and state transitions. It does not run experiments or generate artifacts.
+轻量骨架：四个目录、数字编号、一层索引。`research_manager` 负责目录搬动、归档命名、状态流转。不跑实验，不产出内容。
 
-## 1. Directory Layout and Canonical States
+## 1. 目录结构和状态
 
 ```
 .kilo/
-├── global.md          # pure index (→ progress + TODO.md); no goals or rules
-├── TODO.md            # project backlog; single source, links to module TODOs
-├── proposal/          # evaluating or ready directions
-├── project/           # active directions on an experiment branch
-├── archive/           # rejected, falsified, validated, superseded, abandoned
-├── reports/           # generated dated status snapshots
-└── knowledge/         # external references (knowledge notes)
+├── global.md          # 纯索引（→ 进度 + TODO.md）；不写目标和规则
+├── TODO.md            # 项目待办；单一来源，链接到各模块 TODO
+├── proposal/          # 评估中、卡住、已通过还没开工的方向
+├── project/           # 正在实验分支上跑的方向
+├── archive/           # 已结束的方向
+├── reports/           # 生成的带日期状态快照
+└── knowledge/         # 外部资料（知识笔记）
 ```
 
-| State | Location | Owner | Entry/Exit |
+| 状态 | 位置 | 谁负责 | 进出条件 |
 |---|---|---|---|
-| Evaluating | `proposal/NN-slug/` | `research_progress` recommends | Reality gates pass or fail |
-| Blocked | `proposal/NN-slug/` | `research_progress` flags | Data, interface, code, or resource facts unverified; no experiment design while blocked |
-| Ready | `proposal/NN-slug/` | `research_manager` records | User GO starts experiments |
-| Active | `project/NN-slug/` on `exp/NN-slug` | `experiment_manager` operates | Continue, pivot, falsify, or validate |
-| Rejected/Falsified/Validated/Superseded/Abandoned | `archive/YYYY-MM-DD-NN-slug/` | `research_manager` applies | Final report is primary deliverable |
+| 评估中 | `proposal/NN-slug/` | `research_progress` 建议 | 现实检查过或不过 |
+| 卡住 | `proposal/NN-slug/` | `research_progress` 标记 | 数据、接口、代码或资源没查清；卡住期间不做实验设计 |
+| 通过 | `proposal/NN-slug/` | `research_manager` 记录 | 用户说 GO 才开实验 |
+| 进行中 | `project/NN-slug/`（在 `exp/NN-slug` 分支上） | `experiment_manager` 操作 | 继续、转向、证伪或验证通过 |
+| 否决 / 证伪 / 验证通过 / 被取代 / 放弃 | `archive/YYYY-MM-DD-NN-slug/` | `research_manager` 执行 | 终版报告是主要交付物 |
 
-## 2. Naming
+## 2. 命名
 
-- Direction unit: `NN-slug/` (two-digit prefix, lowercase hyphenated). Preserve the ID across moves.
-- Exceptions: `global.md`, `TODO.md`, `00-overview.md`, `SUMMARY.md`, `REPORT.md`, and dated archive directories do not use `NN-slug`.
-- Archive entries: `YYYY-MM-DD-NN-slug/`.
-- Knowledge notes: `author-year-title.md` or `source-year-topic.md`; the knowledge query log is `knowledge/papers/00-query-log.md` (owned by `knowledge_keeper`).
+- 方向单位：`NN-slug/`（两位数字前缀，小写连字符）。搬动时 ID 不变。
+- 例外：`global.md`、`TODO.md`、`00-overview.md`、`SUMMARY.md`、`REPORT.md` 和带日期的归档目录不用 `NN-slug`。
+- 归档目录：`YYYY-MM-DD-NN-slug/`。
+- 知识笔记：`作者-年份-标题.md` 或 `来源-年份-主题.md`；检索日志是 `knowledge/papers/00-query-log.md`（归 `knowledge_keeper` 管）。
 
-## 3. global.md and TODO.md (Index + Backlog)
+## 3. global.md 和 TODO.md（索引 + 待办）
 
-`global.md` is a pure index, agent-maintained. Keep it ≤60 lines:
+`global.md` 是纯索引，由 agent 维护，≤60 行：
 
-- Directory index (proposal, project, archive, knowledge, external index)
-- Pointer to `TODO.md` and current project progress
+- 目录索引（proposal、project、archive、knowledge、外部索引）
+- 指向 `TODO.md` 和当前项目进度的指针
 
-No goals, rules, or explanations here — those are owner-written in `AGENTS.md` (see §4).
+这里不写目标、规则、解释——那些由项目所有者写在 `AGENTS.md`（见 §4）。
 
-`TODO.md` (same directory) holds the project backlog. It links to module-level
-TODOs (e.g. `tto_pp/TODO.md`) instead of duplicating them. Keep it ≤150 lines.
+`TODO.md`（同目录）放项目待办，链接到模块级 TODO（如 `tto_pp/TODO.md`），不复制内容。≤150 行。
 
-## 4. Overviews and Source-of-Truth Hierarchy
+## 4. 概览文件和谁说了算
 
-Truth precedence when documents conflict: `AGENTS.md` (owner-written goal and process policy) → `global.md` (index/pointers) → direction `00-overview.md` (current state) → registered experiment plan (frozen expectations) → run reports (observed evidence) → knowledge notes (external evidence) → generated status reports (disposable views, never authoritative).
+文件打架时的优先级：`AGENTS.md`（所有者写的目标和流程约定）→ `global.md`（索引/指针）→ 方向 `00-overview.md`（当前状态）→ 登记的实验计划（冻结的预期）→ 运行报告（观测证据）→ 知识笔记（外部证据）→ 生成的状态报告（一次性视图，永远不算数）。
 
-- **Direction-level**: every `proposal/NN-slug/` and `project/NN-slug/` keeps a `00-overview.md` as the entry point. It records **current state only** — status, main question, primary hypothesis, main contradiction, current evidence, dominant uncertainty, next decision, parked questions (idea parking lot; parked items never auto-activate), superseded assumptions. History lives in run reports, not appended here.
-- **Collection-level**: create or update a directory's `00-overview.md` only after it holds more than five entries.
-- `AGENTS.md` at the project root is hand-written by the project owner; agents are strictly read-only. It stores the project goal, non-goals, success criteria, toolchain/compiler, key constraints, and decision policy — never experiment results, paper notes, or evolving discussion. The most an agent may do is copy `AGENTS_template.md` to the project root as `AGENTS.md` on request; everything after that is owner-maintained.
+- **方向级**：每个 `proposal/NN-slug/` 和 `project/NN-slug/` 都有一个 `00-overview.md` 当入口。只记**当前状态**——状态、主要问题、主要假设、主要矛盾、当前证据、最大不确定性、下一步决定、暂存的问题（不自动激活）、被推翻的假设。历史写在运行报告里，不往这里追加。
+- **集合级**：一个目录超过五个条目后，才建或更新它的 `00-overview.md`。
+- 项目根的 `AGENTS.md` 由项目所有者手写，agent 严格只读。内容是项目目标、不做什么、成功标准、工具链、关键约束、决策约定——绝不放实验结果、论文笔记、进行中的讨论。agent 最多在被要求时把 `AGENTS_template.md` 复制为项目根的 `AGENTS.md`，之后全归所有者维护。
 
-## 5. Archive Rules and Final Report
+## 5. 归档规则和终版报告
 
-Close a direction only through `experiment_manager` or explicit user authorization. A closed active direction must leave a self-contained illustrated `REPORT.md` as its primary deliverable.
+结束一个方向只能经 `experiment_manager` 或用户明确授权。结束一个进行中的方向，必须留下一份自足的带图 `REPORT.md` 作为主要交付物。
 
-`SUMMARY.md` is a short outcome/index pointer only; do not duplicate the report.
+`SUMMARY.md` 只是短的结果/索引指针，不复制报告内容。
 
-Archive outcomes:
+五种结局：
 
-- **rejected**: failed before experiments
-- **falsified**: registered prediction reliably contradicted
-- **validated**: promoted; archived evidence retained
-- **superseded**: core question or hypothesis changed materially
-- **abandoned**: non-scientific stop reason (resource, priority, etc.)
+- **否决**：没进实验就失败
+- **证伪**：登记过的预期被稳定推翻
+- **验证通过**：已转正，证据保留
+- **被取代**：核心问题或假设实质改变
+- **放弃**：非科学原因（资源、优先级等）
 
-## 6. Status Reports
+没进过实验的否决/卡住方向由 `research_manager` 直接归档——没有实验分支，提案里的评审记录（`experiment-plan.md`）就是最终文档，不要求 `REPORT.md`。五种结局的完整走查：`references/lifecycle-trace.md`。
 
-On request ("汇报", "status report"), generate a dated snapshot at `.kilo/reports/YYYY-MM-DD-status.md`. Status documents are generated, never hand-maintained; consecutive snapshots are diffed to show change.
+## 6. 状态汇报
 
-Required sections:
+被请求时（"汇报"、"status report"）生成带日期的快照 `.kilo/reports/YYYY-MM-DD-status.md`。状态文档只生成、不手维护；相邻快照做 diff 展示变化。
 
-- Headline: ≤3 lines synthesizing the period
-- Plan: each evaluating/blocked/ready direction with state and one-liner (from `proposal/NN-slug/00-overview.md`)
-- Active progress: per active direction, latest `ENN` verdict and distance to kill/promotion criteria — data delegated from `experiment_manager` (run reports live on `exp/NN-slug` branches)
-- Closed this period: outcomes and lessons (from `archive/*/SUMMARY.md`)
-- Next steps and risks: backlog (`TODO.md`) plus judgment
+必备内容：
 
-Every claim must trace to an existing source. Generated reports are exempt from line budgets.
+- 头条：≤3 行概括本期
+- 在评方向：每个评估中/卡住/通过的方向，状态加一句话（来自 `proposal/NN-slug/00-overview.md`）
+- 进行中的进展：每个方向最近一次 `ENN` 的判定、离停手/做成标准的距离——数据由 `experiment_manager` 提供（运行报告在 `exp/NN-slug` 分支上）
+- 本期结束的方向：结局和教训（来自 `archive/*/SUMMARY.md`）
+- 下一步和风险：待办（`TODO.md`）加判断
 
-## 7. Budgets and Cleanup
+每个说法都要能指到已存在的来源。生成的报告不受行数预算限制。
 
-Hard limits apply to human-maintained operational research documents:
+## 7. 行数预算和清理
 
-- `global.md` ≤60 lines; `TODO.md` ≤150 lines
-- Any single operational `SKILL.md` or direction document ≤150 lines
+人维护的运营文档有硬上限：
 
-Exempt: manuscripts, generated reports/data, code, bibliographies, and indivisible tables.
+- `global.md` ≤60 行；`TODO.md` ≤150 行
+- 任何单个运营用 SKILL.md 或方向文档 ≤150 行
 
-Propose archive/delete/merge only when concrete stale content is found. Preserve raw scientific evidence unless its retention policy allows deletion.
+豁免：论文手稿、生成的报告/数据、代码、参考文献列表、拆不开的表格。
 
-## 8. Read Discipline
+超预算时：把细节拆到旁边的引用文件，使用点留一行指针；不许靠悄悄删规则来压缩。
 
-At the start of a session, read `AGENTS.md` (if present), `global.md`, `TODO.md`, and the target direction's `00-overview.md`. Follow only links relevant to the current task. Do not load the entire `.kilo/` tree.
+只在发现具体的过时或重复内容时才提议归档/删除/合并。过时：描述的状态已不再成立、且被更高优先级的文件取代。重复：同一事实在两个文件里维护——保留归口技能负责的那份，另一份换成指针。原始科学证据保留，除非它的保留规则允许删。
 
-## 9. Skill Delegation
+## 8. 读文件的规矩
 
-| Request | Load |
+会话开始时读：`AGENTS.md`（有的话）、`global.md`、`TODO.md`、目标方向的 `00-overview.md`。只顺着和当前任务相关的链接走，不整树加载 `.kilo/`。
+
+## 9. 找哪个技能
+
+| 需求 | 加载 |
 |---|---|
-| Generate a status report or progress briefing | `research_manager` (§6) |
-| Converge a research idea | `research_progress` |
-| Search literature or capture to the knowledge base | `knowledge_keeper` |
-| Start/monitor/close experiments | `experiment_manager` |
-| Analyze experimental evidence | `result_analysis` |
-| Produce charts or diagrams | `result_visualization` |
-| Format Markdown, plan report visuals, or render a report HTML version | `write_md` |
-| Write or polish a paper | `academic-paper-writing` |
-| Create an HTML slide deck or presentation | `slide_deck` |
+| 生成状态汇报 | `research_manager`（§6） |
+| 收敛一个研究想法 | `research_progress` |
+| 查文献、存知识库 | `knowledge_keeper` |
+| 开始/跟进/结束实验 | `experiment_manager` |
+| 分析实验证据 | `result_analysis` |
+| 画图、画图表 | `result_visualization` |
+| 排版 Markdown、规划报告配图、渲染 HTML 版 | `write_md` |
+| 写或改论文 | `academic-paper-writing` |
+| 做 HTML 幻灯片 | `slide_deck` |
+| 技能组自身的改进（新 reference、改规则） | `skill_rsi` |
 
-Long-report tasks auto-compose: `experiment_manager` orchestrates `result_analysis` (evidence + visual audit) → `write_md` (visual planning) → `result_visualization` (production) → `experiment_manager` (embed + render-verify) → `write_md` (final readability).
+长报告任务自动串起来：`experiment_manager` 组织 `result_analysis`（证据 + 视觉检查）→ `write_md`（配图规划）→ `result_visualization`（制作）→ `experiment_manager`（嵌入 + 渲染验证）→ `write_md`（最终可读性）。
