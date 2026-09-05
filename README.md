@@ -1,6 +1,6 @@
 # Research Skill Family 使用指南
 
-一套覆盖科研全生命周期的 9 技能组，位于 `my_skills/`。核心理念：**先落地现实再决定验证什么；每个实验必须收敛一个决策相关的不确定性；价值而非成败决定 checkpoint；实验分支永不直接合并；最终交付物永远是一份图文并茂、证据可追溯的 REPORT.md**。
+一套覆盖科研全生命周期的 11 技能组，位于 `my_skills/`。核心理念：**先落地现实再决定验证什么；每个实验必须收敛一个决策相关的不确定性；价值而非成败决定 checkpoint；实验分支永不直接合并；最终交付物永远是一份图文并茂、证据可追溯的 REPORT.md**。
 
 三条收敛主线：
 
@@ -153,6 +153,7 @@ flowchart LR
 | `slide_deck` | 需要横向翻页 HTML 演示（代替 PPT） | 需要纵向滚动报告（那是 write_md 的活） |
 | `research_manager` | 需要初始化项目、归档、状态汇报、管理目录 | 具体实验执行或文献检索 |
 | `skill_rsi` | 使用中暴露了技能组的问题、用户的纠正值得沉淀 | 研究项目本身的产物和决定 |
+| `plain_talk` | 每次会话开始（必加载，不等触发）：禁黑话、说人话 | — |
 
 技能按需加载：基础层 + 1–2 个相关技能即可。报告类任务自动叠加 analysis → write_md（规划）→ visualization → write_md（终检），不需要逐个触发。
 
@@ -160,7 +161,8 @@ flowchart LR
 
 ```
 .kilo/
-├── global.md      # 全局指针层（≤80 行）：目标、四目录索引、backlog
+├── TODO.md        # 项目进展唯一来源：主线 → 阶段 → 当前方案 三层树，带方向文件链接
+├── global.md      # 纯索引备查（≤60 行）：四目录指针，不写目标和规则
 ├── proposal/      # 评估中/阻塞/就绪的方向：proposal/NN-slug/
 ├── project/       # 进行中的方向（只存在于 exp/NN-slug 实验分支上）
 ├── archive/       # 已关闭方向：archive/YYYY-MM-DD-NN-slug/
@@ -168,9 +170,11 @@ flowchart LR
 └── knowledge/     # 文献笔记 + 查询日志
 ```
 
+**会话开始：先读 `AGENTS.md`（有的话）和 `TODO.md`，顺着 TODO 里的链接读对应方向文件**，不整树加载。TODO.md 由 `research_manager` 创建和维护，其他技能只读。
+
 下游科研项目根目录可选 `AGENTS.md`：**只有你维护、Agent 只读**的研究宪法（进展定义、实验纪律、真相层级、上下文纪律）。模板见根目录 `AGENTS_template.md`，复制到项目根并按需裁剪。建议同时在 Kilo 配置中对该路径设 `edit: deny` 并用 Git 跟踪。
 
-真相层级（冲突时从高到低）：`AGENTS.md` → `global.md` → 方向 `00-overview.md` → 已登记实验计划 → 运行报告 → 文献笔记 → 生成的状态快照。会话开始只读前两层中的当前项，按需跟随链接，不整树加载。
+真相层级（冲突时从高到低）：`AGENTS.md` → `global.md` → 方向 `00-overview.md` → 已登记实验计划 → 运行报告 → 文献笔记 → 生成的状态快照。会话开始读法见上面"目录约定"。
 
 ## 典型流程
 
@@ -254,6 +258,9 @@ flowchart LR
 - 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格
 - 不写套话、廉价肯定、重复总结和固定收尾
+- 禁用黑话和自造词（赋能、闭环、抓手、对齐、链路、落地、打磨等），直接说具体那件事
+- 写文件前先经用户确认
+- 只在发现具体的过时或重复内容时才提议清理，不作为固定收尾动作
 
 ## 关键边界
 
@@ -279,5 +286,7 @@ my_skills/
 ├── result_visualization/SKILL.md
 ├── write_md/SKILL.md
 ├── academic-paper-writing/SKILL.md
-└── slide_deck/SKILL.md
+├── slide_deck/SKILL.md
+├── skill_rsi/SKILL.md
+└── plain_talk/SKILL.md               # 禁黑话、说人话（每次会话必加载）
 ```

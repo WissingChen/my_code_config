@@ -12,6 +12,9 @@ requires: research_manager
 - 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
+- 禁用黑话和自造词（赋能、闭环、抓手、对齐、链路、落地、打磨等），直接说具体那件事。
+- 写文件前先经用户确认。
+- 只在发现具体的过时或重复内容时才提议清理，不作为固定收尾动作。
 
 # Knowledge Keeper — 只查一次，查到就存
 
@@ -112,7 +115,6 @@ quality: strong | usable | weak | unassessed   quality-updated: <YYYY-MM-DD>
 
 规则：
 
-- 深度限制说法：只读了摘要最多说"值得读"，不许说"实验扎实"。
 - 会议和名作者救不了弱证据；无名作者和预印本也不等于弱工作。
 - 质量判断可更新：改动时记 `quality-updated` 和原因。
 - 做或改这类判断时加载 `paper-quality.md`。
@@ -137,4 +139,3 @@ quality: strong | usable | weak | unassessed   quality-updated: <YYYY-MM-DD>
 - `knowledge_keeper` 管检索、落库、索引、单篇质量判断。不判断文献空白是否成立、方向值不值得做——那是 `research_progress` 的事。
 - 元数据/搜索实际调 arXiv，引用遍历实际调 Semantic Scholar 或 OpenAlex；绝不编造论文、引用关系或引用内容。
 - 失败要暴露，不要编造得像：API 限流或报错时，验证响应的形状（不只看状态码），报告哪个查询失败了，受影响的结果标未验证——绝不用编的或凭记忆的结果填坑。
-- 写文件前先经用户确认。

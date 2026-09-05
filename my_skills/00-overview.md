@@ -1,15 +1,15 @@
 ---
 title: "技能组总览 — Research Skill Family"
-last_updated: "2026-08-31"
+last_updated: "2026-09-04"
 ---
 
 # 技能组总览
 
-> Related: [research_manager](research_manager/SKILL.md), [research_progress](research_progress/SKILL.md), [knowledge_keeper](knowledge_keeper/SKILL.md), [experiment_manager](experiment_manager/SKILL.md), [result_analysis](result_analysis/SKILL.md), [result_visualization](result_visualization/SKILL.md), [write_md](write_md/SKILL.md), [academic-paper-writing](academic-paper-writing/SKILL.md), [slide_deck](slide_deck/SKILL.md)
+> Related: [research_manager](research_manager/SKILL.md), [research_progress](research_progress/SKILL.md), [knowledge_keeper](knowledge_keeper/SKILL.md), [experiment_manager](experiment_manager/SKILL.md), [result_analysis](result_analysis/SKILL.md), [result_visualization](result_visualization/SKILL.md), [write_md](write_md/SKILL.md), [academic-paper-writing](academic-paper-writing/SKILL.md), [slide_deck](slide_deck/SKILL.md), [plain_talk](plain_talk/SKILL.md)
 
 ## 0. 一句话定位
 
-10 个技能覆盖研究全生命周期：收敛想法、管理知识、执行实验、解析证据、可视化、表达文档、成稿论文、生成展示页，外加一个管技能组自身改进的 `skill_rsi`。总原则：**先落地现实，再决定验证什么；每个实验必须收敛一个决策相关的不确定性。**
+11 个技能覆盖研究全生命周期：收敛想法、管理知识、执行实验、解析证据、可视化、表达文档、成稿论文、生成展示页，外加一个管技能组自身改进的 `skill_rsi`。总原则：**先落地现实，再决定验证什么；每个实验必须收敛一个决策相关的不确定性。**
 
 ## 1. 技能清单
 
@@ -25,6 +25,7 @@ last_updated: "2026-08-31"
 | `academic-paper-writing` | 论文写作 | "写论文"、"润色"、"改 Introduction" |
 | `slide_deck` | HTML 展示页（代替 PPT，仅横向翻页） | "做个展示"、"slides"、"代替 PPT" |
 | `skill_rsi` | 技能组自身的改进提议与沉淀 | "这条纠正记下来"、"改进技能" |
+| `plain_talk` | 说人话、禁黑话，每次会话必加载 | 每次会话开始 |
 
 ## 2. 标准生命周期
 
@@ -42,22 +43,23 @@ last_updated: "2026-08-31"
 
 文档冲突时的优先级：`AGENTS.md`（下游项目根，你手写的目标、工具链、约束与过程政策，Agent 只读；Agent 最多只能把仓库根 `AGENTS_template.md` 复制为项目根 `AGENTS.md`，内容全由你填写）→ `global.md`（纯索引与指针，不含目标和规则）→ 方向 `00-overview.md`（当前状态，含主要矛盾与暂存清单）→ 已登记实验计划（冻结预期）→ 运行报告（观测证据）→ 文献笔记（外部证据）→ 生成的状态快照（一次性视图）。
 
-会话开始只读 `global.md` 和目标方向的 `00-overview.md`，按需跟随链接；不整树加载 `.kilo/`。方向 overview 只记当前状态，历史留在运行报告；新想法默认进暂存清单，不自动激活。
+会话开始先读 `AGENTS.md`（有的话）和 `TODO.md`，顺着 TODO 的链接读对应方向文件；不整树加载 `.kilo/`。方向 overview 只记当前状态，历史留在运行报告；新想法默认进暂存清单，不自动激活。
 
 ## 4. 交叉引用矩阵
 
-| 被引 →<br>引用 ↓ | manager | progress | keeper | experiment | analysis | visualization | write_md | academic | slides | gardener |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| research_manager | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — |
-| research_progress | ✓ | — | handoff | handoff | — | ✓(论证图) | — | — | — | — |
-| knowledge_keeper | ✓ | ✓(别人做到了哪) | — | — | — | — | — | — | — | — |
-| experiment_manager | ✓ | ✓ | — | — | ✓ | ✓ | ✓(两次) | — | ✓(§4a 截图) | — |
-| result_analysis | ✓ | ✓(§1 退回) | — | ✓ | — | handoff | — | — | — | — |
-| result_visualization | ✓ | ✓ | — | ✓ | — | — | — | — | — | — |
-| write_md | — | — | — | ✓ | ✓ | handoff | — | ✓ | — | — |
-| academic-paper-writing | ✓ | — | ✓(citation) | — | — | ✓ | ✓(边界) | — | — | — |
-| slide_deck | ✓ | — | — | — | handoff | handoff | — | — | — | — |
-| skill_rsi | ✓ | — | — | — | — | — | — | — | — | — |
+| 被引 →<br>引用 ↓ | manager | progress | keeper | experiment | analysis | visualization | write_md | academic | slides | skill_rsi | plain |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| research_manager | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — |
+| research_progress | ✓ | — | handoff | handoff | — | ✓(论证图) | — | — | — | — | — |
+| knowledge_keeper | ✓ | ✓(别人做到了哪) | — | — | — | — | — | — | — | — | — |
+| experiment_manager | ✓ | ✓ | — | — | ✓ | ✓ | ✓(两次) | — | ✓(§4a 截图) | — | — |
+| result_analysis | ✓ | ✓(§1 退回) | — | ✓ | — | handoff | — | — | — | — | — |
+| result_visualization | ✓ | ✓ | — | ✓ | — | — | — | — | — | — | — |
+| write_md | — | — | — | ✓ | ✓ | handoff | — | ✓ | — | — | — |
+| academic-paper-writing | ✓ | — | ✓(citation) | — | — | ✓ | ✓(边界) | — | — | — | — |
+| slide_deck | ✓ | — | — | — | handoff | handoff | — | — | — | — | — |
+| skill_rsi | ✓ | — | — | — | — | — | — | — | — | — | — |
+| plain_talk | — | — | — | — | — | — | — | — | — | — | — |
 
 ## 5. 委托指南
 
@@ -73,6 +75,7 @@ last_updated: "2026-08-31"
 | 论文写作、稿件打磨 | `academic-paper-writing` |
 | 项目展示、HTML 幻灯片 | `slide_deck` |
 | 技能组自身的改进（新 reference、改规则） | `skill_rsi` |
+| 每次会话的输出风格（禁黑话） | `plain_talk`（必加载，不等触发） |
 
 报告任务自动叠加：`experiment_manager` + `result_analysis` + `write_md`（视觉规划）+ `result_visualization` + `write_md`（最终检查），不需要用户逐个触发。
 
@@ -86,7 +89,7 @@ last_updated: "2026-08-31"
 1. **Baseline → expectation → actual is the analysis loop**: 新方案必须在实验前写明相对 baseline 的预期结果、机制假设和可观测中间信号；实验后先定位哪条因果边成立或断裂（实验有效性→干预→机制→目标→价值），再解释偏差。表面指标变差不能直接证明方向无效，也不能据此进行没有新机制假设的 v2/v3 迭代。
 1. **Convergence accounting every run**: 每轮实验必须缩小活跃解释集或更新主要矛盾；新发现默认进暂存清单；局部异常只有能解释主要偏差时才能升级为主问题。信息增加 ≠ 进展，判断改变才是进展。
 1. **Visual audit is mandatory, figure count is not**: 每份长报告必须执行视觉需求审计（可以考虑后选择纯文本并记录理由），被选中图必须实际产出、嵌入并渲染验证。图的数量不是质量指标。
-1. **Output contract is duplicated by design**: 直白表达契约逐字内嵌在每个 SKILL.md 中（agent 只加载单个技能，共 10 个）；修改契约必须同步全部 10 处。
+1. **Output contract is duplicated by design**: 直白表达契约逐字内嵌在每个 SKILL.md 中（agent 只加载单个技能，共 11 个）；修改契约必须同步全部 11 处。
 1. **Experiment value, not success, determines checkpoints**: 价值为 `有信息` 或 `可复用` 才存档；`无价值` 只记录排除原因。
 1. **Experiment branches are never merged directly**: 失败方向只返回最终报告包；成功方向通过干净的 `promote/NN-slug` 分支进入主线。
 1. **Progressive disclosure via references/**: SKILL.md ≤150 行是硬约束。详细示例、模板、走查下沉到技能目录的 `references/`（一层深，不建子目录），正文在使用点留一行内联指向；一个技能有多个 reference 文件时在文末加 References 索引。语义色板等跨技能事实只保留单一事实源（色板在 `result_visualization/plotting-reference.md` §3），他处只指向不复述。

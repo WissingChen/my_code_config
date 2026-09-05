@@ -11,6 +11,9 @@ description: Research project skeleton and file lifecycle. Load when initializin
 - 外部事实、论文结论和数字附来源；不确定的直接写"尚未验证"或"我推测"，不给每句话机械加事实/猜测标签。
 - 一段能说清就不用表格；独立要点用列表；只有横向比较才用表格。
 - 不写套话、廉价肯定、重复总结和固定收尾。
+- 禁用黑话和自造词（赋能、闭环、抓手、对齐、链路、落地、打磨等），直接说具体那件事。
+- 写文件前先经用户确认。
+- 只在发现具体的过时或重复内容时才提议清理，不作为固定收尾动作。
 
 # Research Manager — 管目录、状态和归档
 
@@ -21,7 +24,7 @@ description: Research project skeleton and file lifecycle. Load when initializin
 ```
 .kilo/
 ├── global.md          # 纯索引（→ 进度 + TODO.md）；不写目标和规则
-├── TODO.md            # 项目待办；单一来源，链接到各模块 TODO
+├── TODO.md            # 项目进展唯一来源；三层树（主线→阶段→方案）
 ├── proposal/          # 评估中、卡住、已通过还没开工的方向
 ├── project/           # 正在实验分支上跑的方向
 ├── archive/           # 已结束的方向
@@ -53,7 +56,13 @@ description: Research project skeleton and file lifecycle. Load when initializin
 
 这里不写目标、规则、解释——那些由项目所有者写在 `AGENTS.md`（见 §4）。
 
-`TODO.md`（同目录）放项目待办，链接到模块级 TODO（如 `tto_pp/TODO.md`），不复制内容。≤150 行。
+`TODO.md`（同目录）是项目进展的唯一来源，由 `research_manager` 创建和维护，其他技能只读。三层树：
+
+1. 主线：一句话中心问题（锁定，只有用户能改）
+2. 大阶段：来自 proposal 的确定阶段（如 SFR / TTO / RL），proposal 状态变化时才更新
+3. 实现方案：每个阶段的当前做法（不确定），随实验证据增删换，每次改动在回复里说明原因
+
+方向状态一有变化（阶段推进、方案更换、主线调整）就更新。主线和大阶段后面带指向方向文件的链接（如 `project/03-physcene3d/00-overview.md`），有就指，没有不指；也可链接模块级 TODO（如 `tto_pp/TODO.md`），不复制内容。≤150 行。
 
 ## 4. 概览文件和谁说了算
 
@@ -108,21 +117,8 @@ description: Research project skeleton and file lifecycle. Load when initializin
 
 ## 8. 读文件的规矩
 
-会话开始时读：`AGENTS.md`（有的话）、`global.md`、`TODO.md`、目标方向的 `00-overview.md`。只顺着和当前任务相关的链接走，不整树加载 `.kilo/`。
+会话开始时先读 `AGENTS.md`（有的话）和 `TODO.md`，再顺着 TODO 里的链接读对应方向的文件。`global.md` 只是索引备查。不整树加载 `.kilo/`。
 
 ## 9. 找哪个技能
 
-| 需求 | 加载 |
-|---|---|
-| 生成状态汇报 | `research_manager`（§6） |
-| 收敛一个研究想法 | `research_progress` |
-| 查文献、存知识库 | `knowledge_keeper` |
-| 开始/跟进/结束实验 | `experiment_manager` |
-| 分析实验证据 | `result_analysis` |
-| 画图、画图表 | `result_visualization` |
-| 排版 Markdown、规划报告配图、渲染 HTML 版 | `write_md` |
-| 写或改论文 | `academic-paper-writing` |
-| 做 HTML 幻灯片 | `slide_deck` |
-| 技能组自身的改进（新 reference、改规则） | `skill_rsi` |
-
-长报告任务自动串起来：`experiment_manager` 组织 `result_analysis`（证据 + 视觉检查）→ `write_md`（配图规划）→ `result_visualization`（制作）→ `experiment_manager`（嵌入 + 渲染验证）→ `write_md`（最终可读性）。
+请求领域 → 技能 的对照表、长报告任务的串联顺序，单一事实源在技能组总览 `my_skills/00-overview.md` §5，这里不复制。
