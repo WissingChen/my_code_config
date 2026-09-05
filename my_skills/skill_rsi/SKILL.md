@@ -47,7 +47,7 @@ requires: research_manager
 ## 3. 告知与落地
 
 - 记录后**立刻告知**用户：当前有几条待审提议、各是什么。不在会话里默默攒着。
-- 用户批准后才可以改技能文件。改动时同步核对：Output Contract 各处逐字一致、references 链接有效、SKILL.md ≤150 行、00-overview 和 README 是否受影响。改完跑 `my_skills/check_skills.sh`。
+- 用户批准后才可以改技能文件。改动时同步核对：Output Contract 各处逐字一致、references 链接有效、SKILL.md ≤150 行、00-overview 和仓库根 README 是否受影响。改完跑 `my_skills/check_skills.sh`。
 - 落地后把那条标 `已落地 + 日期`；被拒绝的标 `已拒绝 + 原因`。拒绝记录不删——防止下次又提同一条。
 
 ## 4. 什么值得记

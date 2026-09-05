@@ -29,13 +29,7 @@ last_updated: "2026-09-04"
 
 ## 2. 标准生命周期
 
-| 状态 | 位置 | 所有者 | 转换事件 |
-|---|---|---|---|
-| 评估中 | `proposal/NN-slug/` | `research_progress` 建议 | 现实检查通过或失败 |
-| 卡住 | `proposal/NN-slug/` | `research_progress` 标记 | 数据/接口/代码/资源事实未查清；禁止实验设计 |
-| 通过 | `proposal/NN-slug/` | `research_manager` 记录 | 用户 GO 开始实验 |
-| 进行中 | `project/NN-slug/` on `exp/NN-slug` | `experiment_manager` 执行 | 继续、转向、证伪、验证通过 |
-| 否决/证伪/验证通过/被取代/放弃 | `archive/YYYY-MM-DD-NN-slug/` | `research_manager` 执行 | 终版报告为主要交付物 |
+状态定义和流转表只维护在 `research_manager` §1（单一事实源），这里不复制。
 
 实验循环：每次 `ENN` 绑定**一个主要假设 + 当前主要矛盾**，跑完先形成图文 `ENN-experiment-report.md`（含收敛记录），判过实验价值后再存档。连续两轮未缩小决策相关不确定性 → 停止实验序列，退回 `research_progress` 重新界定问题。关闭方向时综合为一份图文并茂的 `REPORT.md`。需要汇报时由 `research_manager` 生成带日期的状态快照至 `.kilo/reports/YYYY-MM-DD-status.md`，永不手工维护，相邻快照可直接 diff。
 

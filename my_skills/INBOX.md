@@ -39,3 +39,12 @@
 类型: 改正文
 影响面: research_manager、00-overview.md、README.md
 状态: 已落地 2026-09-05
+
+## 2026-09-05 单一事实源修复（四处重复维护）
+
+来源: 用户要求全组审查"多个产物维护一件事"
+证据: 审查发现：生命周期状态表在 overview §2 和 research_manager §1 各一份；实验价值/方向判定定义在 result_analysis §0 和 experiment_manager §2 各一份；"报告需要哪些图"由 result_analysis §9 和 write_md §3 第一遍各自规划；图渲染验收标准写在三个技能里
+建议: 状态表只留 research_manager §1，overview §2 改指针；价值/判定定义收进 result_analysis §0（experiment_manager §2 只留动作）；配图规划合并为 write_md §3 第一遍维护的唯一一份（result_analysis §9 候选汇入、experiment_manager §4a 验收它）；渲染验收标准只留 experiment_manager §4a，result_visualization §3 和 write_md §3 第二遍改为指向
+类型: 改正文
+影响面: 00-overview.md、result_analysis、experiment_manager、write_md、result_visualization、README.md（价值表和报告生产流程同步改指针）
+状态: 已落地 2026-09-05（用户当场批准；check_skills.sh 全过）
