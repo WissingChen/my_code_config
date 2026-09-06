@@ -48,3 +48,39 @@
 类型: 改正文
 影响面: 00-overview.md、result_analysis、experiment_manager、write_md、result_visualization、README.md（价值表和报告生产流程同步改指针）
 状态: 已落地 2026-09-05（用户当场批准；check_skills.sh 全过）
+
+## 2026-09-06 research_progress 加"会话内主线锚定"
+
+来源: 用户直接要求
+证据: 用户反馈：research_progress 要牢记主线，不要把注意力全部放在局部任务中，不要顺着当前局部子任务跑偏。现有"主线任务"一节只规定开场读 TODO、支线提一句，缺少会话进行中被子任务拖走的约束
+建议: 在 `research_progress/SKILL.md` "主线任务"一节加三条：(1) 每个子任务动手前一句话说清它服务主线的哪个判断，说不出就不做；(2) 子任务完成后回答"它推进了主线的哪个判断"，答不上等于跑偏，停下汇报；(3) 子任务不许再嵌套展开子任务，确有必要先回到主线重新确认
+类型: 改正文
+影响面: research_progress
+状态: 已落地 2026-09-06（用户批准后落地；"主线任务"节加三条会话内锚定）
+
+## 2026-09-06 experiment_manager 加"上下文卫生"
+
+来源: 用户直接要求
+证据: 用户反馈：experiment_manager 要管理整个项目的上下文；不是全部文档和内容都重要，关键不是信息多少而是信息干净，这是 harness 的关键。现有技能管分支和产物，但没有规定活跃上下文里放什么、清什么
+建议: 在 `experiment_manager/SKILL.md` §2 运行循环后加一小节：活跃上下文只放四样——主线一句话、当前最主要矛盾、当前运行的冻结预期、最新收敛记录；历史运行细节、被排除的假设、旧日志只留文件指针不进上下文；`00-overview.md` 是当前状态文件，每次运行后改写而不是追加；一条信息留在活跃上下文的标准是"删掉它会改变下一步决定"，答不上就清出去
+类型: 改正文
+影响面: experiment_manager
+状态: 已落地 2026-09-06（用户批准后落地；§2 末尾加"上下文卫生"段）
+
+## 2026-09-06 research_manager 补全文件模板
+
+来源: 用户直接要求
+证据: 用户指出 research_manager 应提供完整参考模板、每个文件都有指导；检查发现 AGENTS_template.md 在仓库根而技能引用的是"仓库根"，对下游项目是悬空路径，且没有任何文件模板
+建议: 新建 `research_manager/references/templates.md`（global.md、TODO.md、方向 00-overview.md、SUMMARY.md、状态快照五份模板，REPORT.md/experiment-plan.md 只留指针）；`AGENTS_template.md` 从仓库根移入 `research_manager/references/` 并修正其 Context Discipline 与 §8 一致；SKILL.md 和 00-overview.md 的引用路径同步修正；SKILL.md 文末加 References 索引
+类型: 新reference + 改正文
+影响面: research_manager、00-overview.md
+状态: 已落地 2026-09-06（用户当场批准，含移动模板到技能下的指示）
+
+## 2026-09-06 check_skills.sh 查不出悬空路径引用
+
+来源: 本次修复 AGENTS_template.md 时发现
+证据: SKILL.md 和 00-overview.md 引用"仓库根 AGENTS_template.md"对下游项目是悬空路径，但 check_skills.sh 第 3 项"references 链接完整"报 ok——只查了特定链接格式，没查正文里提到的文件路径是否真实存在
+建议: 给 check_skills.sh 加一项：扫描 SKILL.md/overview 正文中以反引号标注、带 `/` 的相对路径，验证文件存在
+类型: 卫生检查
+影响面: check_skills.sh
+状态: 待审

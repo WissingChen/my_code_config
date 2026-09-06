@@ -40,7 +40,7 @@
 
 ## Context Discipline
 
-- 会话开始只读 `.kilo/global.md` 和目标方向的 `00-overview.md`，按需跟随链接。
+- 会话开始先读本文件和 `.kilo/TODO.md`，顺着 TODO 的链接读对应方向的 `00-overview.md`，按需跟随链接。
 - 不整树加载 `.kilo/`；归档和 superseded 文档默认不活跃，除非点名。
 - 不从旧报告推断当前政策。
 

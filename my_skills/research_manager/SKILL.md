@@ -70,7 +70,7 @@ description: Research project skeleton and file lifecycle. Load when initializin
 
 - **方向级**：每个 `proposal/NN-slug/` 和 `project/NN-slug/` 都有一个 `00-overview.md` 当入口。只记**当前状态**——状态、主要问题、主要假设、主要矛盾、当前证据、最大不确定性、下一步决定、暂存的问题（不自动激活）、被推翻的假设。历史写在运行报告里，不往这里追加。
 - **集合级**：一个目录超过五个条目后，才建或更新它的 `00-overview.md`。
-- 项目根的 `AGENTS.md` 由项目所有者手写，agent 严格只读。内容是项目目标、不做什么、成功标准、工具链、关键约束、决策约定——绝不放实验结果、论文笔记、进行中的讨论。agent 最多在被要求时把 `AGENTS_template.md` 复制为项目根的 `AGENTS.md`，之后全归所有者维护。
+- 项目根的 `AGENTS.md` 由项目所有者手写，agent 严格只读。内容是项目目标、不做什么、成功标准、工具链、关键约束、决策约定——绝不放实验结果、论文笔记、进行中的讨论。agent 最多在被要求时把 `references/AGENTS_template.md` 复制为项目根的 `AGENTS.md`，之后全归所有者维护。
 
 ## 5. 归档规则和终版报告
 
@@ -122,3 +122,9 @@ description: Research project skeleton and file lifecycle. Load when initializin
 ## 9. 找哪个技能
 
 请求领域 → 技能 的对照表、长报告任务的串联顺序，单一事实源在技能组总览 `my_skills/00-overview.md` §5，这里不复制。
+
+## References
+
+- `references/templates.md`：本技能管的每个文件的填写模板（`global.md`、`TODO.md`、方向 `00-overview.md`、`SUMMARY.md`、状态快照）
+- `references/AGENTS_template.md`：项目根 `AGENTS.md` 的模板
+- `references/lifecycle-trace.md`：五种结局的完整走查

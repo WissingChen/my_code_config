@@ -37,6 +37,7 @@ description: Plain-talk output enforcer. MUST be loaded at the start of every se
 | 冒烟测试 | 先跑一遍看通不通 |
 | 对账 | 把两边数字对一遍 |
 | 实验臂 | 一组实验设置 |
+| 备用臂 | 备选设置（如第二套超参，跑不达标时才用） |
 | 沉淀 | 记下来、固化成文件 |
 | 复盘 | 回头看哪错了 |
 | 车轱辘话 | （不写，同义反复直接删） |
