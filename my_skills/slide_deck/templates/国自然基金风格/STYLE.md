@@ -72,6 +72,8 @@
 
 图标（template.html 已有实现，可复用）：clipboard、floorplan、robot-arm、overlap-circles、shield-check、trajectory、split-node、refresh、database、layers、block-arrow。
 
+**图标必须细节丰富，纯文字框堆砌不合格**（2026-09-18 用户纠正）。每个核心节点配插画级图标，三个来源按优先级：① 多部件矢量组合手绘——折角文档、机械臂（描边臂段+关节圆+夹爪+立方体）、档案夹（书脊+环孔+彩色标签页+环绕循环箭头）、放大镜清单、判定单（✓/✗/? 三色行）、靶心带箭；matplotlib 参考实现 `phd_funding/fig11_abstract.py` 的 icon 函数组；② 网络检索素材转内联（注意版权许可）；③ 生图模型输出（裁切干净、统一描边与配色）。24×24 线框图标只用于小 chip；节点主图标用填充式多部件插画。文字保持最少：每节点 = 标题 + 图标 + 一行核心短语，直观说明的职责在图标。
+
 手绘图标规范：`viewBox="0 0 24 24"`、`fill="none"`、`stroke="currentColor"`、`stroke-width="1.8"`、round caps/joins；不用 emoji。照片类素材用 `<img>` base64，标注用绝对定位的红圈（`border:2.5px solid #c00000; border-radius:50%`）与黄色小箭头。
 
 ## 6. QA 坑点记录（实测踩过）
@@ -85,3 +87,4 @@
 - 红色只给关键问题/目标文字；红字超过两行就失去强调作用，拆回黑字。
 - 照片标注的红圈/黄箭头数量 ≤3 处/张，多了像 PPT 涂鸦。
 - 同页混用模式时，面板编号标题的字号字重必须全局一致，否则树形层级读不出来。
+- 短箭头（栏间隙很窄时）的箭头头必须随箭长缩小，否则糊成三角色块（SVG 调 markerWidth/markerHeight，matplotlib 调 mutation_scale）。

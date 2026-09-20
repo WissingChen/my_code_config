@@ -48,6 +48,7 @@ requires: research_manager
 - 句子长短交错。贡献用主动语态；既定事实偶尔用被动。
 - 每个符号首次出现就定义。每个公式和图都在正文里引用。
 - 避开 AI 腔的标点：拿破折号和冒号当戏剧性转折滥用。
+- 一段只讲一件事，段首句即该段论点。写完一节做反向提纲：从成稿倒推每段论点，对不上论文主张的段落改掉或删掉。
 
 ## 5. 证据上限与可追溯
 
@@ -106,6 +107,15 @@ Related Work 按想法综合，不按编年。别把所有相关工作等权重�
 | 文件 | 何时加载 |
 |---|---|
 | `references/reviewer-walkthrough.md` | 投稿前自查（§9 四个测试的完整走查） |
+| `references/self-review-checklist.md` | 终稿前自审拒稿风险（五维问题 + 拒稿信号，与 walkthrough 互补） |
+| `references/sections/abstract.md` | 写或改摘要 |
+| `references/sections/introduction.md` | 写或改引言 |
+| `references/sections/method.md` | 写或改方法节 |
+| `references/sections/experiments.md` | 写或改实验节 |
+| `references/sections/related-work.md` | 写或改相关工作 |
+| `references/sections/conclusion.md` | 写或改结论 |
 | `references/scenario-conf-main.md` | CV/ML 主会（CVPR / NeurIPS / ICML 等） |
+| `references/scenario-iclr-benchmark.md` | ICLR 基准/环境/评测类论文（章节骨架、摘要句式、贡献形式、反 AI 腔清单） |
+| `references/iclr-benchmark-papers.md` | 需要 ICLR 摘要原文句式、章节骨架实例时（场景文件的模板来源） |
 | `references/scenario-journal.md` | 期刊或会议扩展版（TPAMI / IJCV 等） |
 | `references/scenario-short.md` | workshop / 短文（≤4 页） |
