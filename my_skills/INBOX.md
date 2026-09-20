@@ -84,3 +84,39 @@
 类型: 卫生检查
 影响面: check_skills.sh
 状态: 待审
+
+## 2026-09-18 iclr_write 并入 academic-paper-writing
+
+来源: 用户直接要求
+证据: WorldAgent-Benchmark 项目内的 `paper/skill/iclr_write/` 是单项目技能，内容为 ICLR 基准论文模板（章节骨架、摘要七句式、反 AI 腔清单、5 篇模板论文句式库），属于 academic-paper-writing 的场景差异，应进技能库复用。同次使用中用户两条纠正一并并入：成稿 prose 禁用冒号/分号/破折号（原规则只是"两个以上重写"）；"判官"类拟人化隐喻禁用
+建议: 新建 `academic-paper-writing/references/scenario-iclr-benchmark.md`（场景文件，含升级后的反 AI 腔清单第 1、7 条）；模板来源论文库移为 `references/iclr-benchmark-papers.md`；SKILL.md References 表加两行；项目内技能目录删除，ch_v1.md 模板指针改指全局技能
+类型: 新reference + 改正文
+影响面: academic-paper-writing、WorldAgent-Benchmark 项目
+状态: 已落地 2026-09-18（用户当场指示；check_skills.sh 全过）
+
+## 2026-09-18 国自然示意图禁止纯文字框，必须配细节丰富的图标
+
+来源: result_visualization（phd_funding 项目摘要示意图）
+证据: 第一版用纯几何图形+文字堆叠，用户两次纠正："全是字"、"参考这种样式"（给出插画级参考图：机械臂、档案夹、放大镜清单等多部件图标，深青/青/橙配色，正箭头深青、回流橙色）
+建议: plotting-reference.md §4 后加小节：基金/项目示意图必须配插画级图标，三个来源（matplotlib 多部件矢量组合 / 网络检索素材内联 / 生图模型输出），附 fig11_abstract.py 为参考实现
+类型: 改正文
+影响面: result_visualization
+状态: 已落地 2026-09-18（用户当场指示"更新技能"）；同日用户纠正归属——国自然示意图归 slide_deck 国自然基金风格模板，该小节已从 result_visualization 撤除，内容并入 `slide_deck/templates/国自然基金风格/STYLE.md` §5 图标段与 §6 QA 坑点
+
+## 2026-09-20 数据结果报告缺统计图（write_md 没把配图变成硬要求）
+
+来源: write_md（WorldAgent-Benchmark 模式 B 报告更新）
+证据: 更新 mode_b/report.md 时全文只有表格没有一张统计图，用户纠正"你得补上相关统计图，参考 mode a 的方式""写报告都不喜欢创建合理的统计图以更直观的方式可视化数据特点"。write_md §2 只写了"不许硬塞图"的防御面，没有"数值报告默认配图"的要求，§3 配图规划在实践中被整体跳过
+建议: write_md/SKILL.md §2 加硬规则：含跨组比较/分布/趋势的数值报告默认配统计图，纯表格按缺件处理；§3 第一遍标为必做，候选图绑定要凸显的现象，给出最小图集模式（总览合成图 + 差异热图 + 排序比较图）
+类型: 改正文
+影响面: write_md
+状态: 已落地 2026-09-20（用户当场指示"先更新我提及的两个技能"）
+
+## 2026-09-20 结果图信息密度低、凸显不出现象（result_visualization）
+
+来源: result_visualization（同一场景）
+证据: 用户指出"提及到画图但是又只会画折线图，信息密度太小""没够直观与美观，凸显不出现象，这个是结果可视化的技能的不足"；模式 A 的 plot_compare.py 曾把四张折线图重做成三张高密度图（总览合成/差异热图/组件热图），这个教训没有沉淀进技能
+建议: result_visualization/SKILL.md §1 表补"矩阵比较、报告级总览、配对下降"三类形式，加"折线只用于有序变量趋势"限制和"现象优先"设计规则；plotting-reference.md §1 同步补行，新增现象优先设计条目（按效应排序、参考线、直接标注差距与离群、对比组高饱和其余压灰、热图 cell 带数值、多面板合成）与报告图三件套模式
+类型: 改正文
+影响面: result_visualization、plotting-reference.md
+状态: 已落地 2026-09-20（用户当场指示）

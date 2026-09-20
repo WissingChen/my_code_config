@@ -7,14 +7,34 @@ Reference-only: load when `result_visualization` needs to produce a chart or dia
 | Analytical question | Form | Notes |
 |---|---|---|
 | Distribution of one variable | histogram, KDE, box, violin, strip | Show raw points when n is small |
-| Paired or repeated observations | paired points/lines, slope graph, before-after dot | Preserve observational unit |
+| Paired or repeated observations | paired points/lines, slope graph, dumbbell | Preserve observational unit |
 | Trend over steps | line | Mark uncertainty unit (std, stderr, CI) explicitly |
 | Comparison across groups | dot plot, small multiples, ordered bar | Avoid aggregate bars when distribution matters |
+| Cases × conditions matrix | annotated heatmap; diverging cmap centered at 0 for differences | Print values in cells; one metric per heatmap |
+| Report-level overview of one claim | multi-panel composite (distribution + paired comparison + trend) | One claim per figure; shared axes, shared legend, panel labels |
 | Relationship between two variables | scatter, heatmap, contour | Avoid dual y-axes |
 | Calibration or residuals | reliability diagram, residual plot, Q-Q | Include reference line |
 | Sensitivity / ablation | ordered dot/bar, interaction plot | Sort by magnitude or logical order |
 | Composition or proportion | stacked bar, treemap, or table | Pie only when the story is explicitly part-to-whole |
 | Multi-panel comparison | subplots with consistent scales | One comparison per panel |
+
+**Line charts are for ordered variables only** (step, round, time, epoch). Cross-sectional group comparisons go on dot plots, bars, heatmaps, or slope graphs — never a line drawn between unordered categories.
+
+**Phenomenon-first rules** (every evidence figure):
+
+1. Write the one-sentence claim before coding the figure; the encoding must make it visible at first glance.
+2. Sort categories by effect size or a meaningful order, not alphabetical accident.
+3. Add reference lines: baseline, canon, ceiling/floor, or the identity line y = x for paired scatter.
+4. Annotate the decisive gaps and outliers directly on the panel; do not make readers infer them from coordinates.
+5. Highlight the contrast: the compared group gets the saturated color, supporting context goes gray.
+6. Overlay raw points (distribution) with aggregation (mean bars) so heterogeneity is not hidden.
+7. Report figures default to high information density: annotated heatmap cells, multi-panel composites. A single bare line plot is a diagnostic, not report evidence.
+
+**Report figure trio** (a proven minimum set for benchmark / evaluation reports — adapt to the claim, never force):
+
+1. Overview composite — per-unit distributions + paired scatter (with r) + trend panel, one row per headline metric.
+2. Difference heatmap — group × condition matrix of deltas, diverging colormap centered at 0, values printed.
+3. Structure heatmap — score/pass-rate matrix over components or cases, sequential colormap, values printed, group separators.
 
 ## 2. matplotlib / seaborn Best Practices
 
