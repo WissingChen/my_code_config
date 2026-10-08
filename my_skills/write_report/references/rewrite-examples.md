@@ -1,4 +1,4 @@
-# Rewrite Examples — write_md §1–§2 Companion
+# Rewrite Examples — write_report §1–§2 Companion
 
 Reference-only: before/after pairs for the language and structure rules. Each pair shows the rule applied, not just stated.
 

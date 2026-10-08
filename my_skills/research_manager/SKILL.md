@@ -1,6 +1,6 @@
 ---
 name: research_manager
-description: Research project skeleton and file lifecycle. Load when initializing a `.kilo/` project, migrating or archiving documents, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md index layer, archive SUMMARY.md rules, and final REPORT.md requirements. It does not run experiments (experiment_manager) or judge whether an idea is worth pursuing (research_progress).
+description: 元目录（.kilo/）与工作区的骨架和文件生命周期。Load when 初始化元目录、建文档、归档、清理元目录（报告先行、确认后执行）、把旧版元目录迁移到新版, or deciding where to put a new research note. Defines the four-directory layout (proposal/project/archive/knowledge), two-digit numeric prefixes, the global.md index layer, archive SUMMARY.md rules, and final REPORT.md requirements. It does not run experiments (experiment_manager) or judge whether an idea is worth pursuing (research_progress).
 ---
 
 ## Output Contract
@@ -20,6 +20,8 @@ description: Research project skeleton and file lifecycle. Load when initializin
 轻量骨架：四个目录、数字编号、一层索引。`research_manager` 负责目录搬动、归档命名、状态流转。不跑实验，不产出内容。
 
 ## 1. 目录结构和状态
+
+术语：整个项目文件夹叫**工作区**，里面的 `.kilo/` 叫**元目录**。下面的树都在元目录里。
 
 ```
 .kilo/
@@ -115,11 +117,26 @@ description: Research project skeleton and file lifecycle. Load when initializin
 
 只在发现具体的过时或重复内容时才提议归档/删除/合并。过时：描述的状态已不再成立、且被更高优先级的文件取代。重复：同一事实在两个文件里维护——保留归口技能负责的那份，另一份换成指针。原始科学证据保留，除非它的保留规则允许删。
 
-## 8. 读文件的规矩
+## 8. 清理（报告先行，确认后执行）
 
-会话开始时先读 `AGENTS.md`（有的话）和 `TODO.md`，再顺着 TODO 里的链接读对应方向的文件。`global.md` 只是索引备查。不整树加载 `.kilo/`。
+用户说"清理"时分两阶段，不许直接动手：
 
-## 9. 找哪个技能
+1. **清理报告**（发在对话里，不落文件）：逐项列出候选——路径、为什么该清（过时/重复见 §7；孤儿 = 没有任何 TODO、overview 或报告引用它）、拟处置（归档 / 删除 / 合并 / 保留）。
+2. **逐项确认后才执行**。删除需逐项明确批准；原始科学证据（运行报告、数据、图）默认保留。
+
+未经确认的清理等于没授权。
+
+## 9. 元目录版本与迁移
+
+元目录的版本标记：`global.md` frontmatter 的 `meta_version`（无标记视为 v1）。各版本的结构差异和迁移步骤只维护在 `references/meta-migrations.md`。
+
+把旧版元目录升级到新版本：先出迁移计划（检测到的旧结构 → 目标结构，逐步列出搬动/新建/改名），用户确认后按步执行。迁移只加不删——旧文件先搬后验，删除走 §8 的清理流程，不在迁移里顺手删。
+
+## 10. 读文件的规矩
+
+会话开始时先读 `AGENTS.md`（有的话）和 `TODO.md`，再顺着 TODO 里的链接读对应方向的文件。`global.md` 只是索引备查。不整树加载元目录。
+
+## 11. 找哪个技能
 
 请求领域 → 技能 的对照表、长报告任务的串联顺序，单一事实源在技能组总览 `my_skills/00-overview.md` §5，这里不复制。
 
@@ -128,3 +145,4 @@ description: Research project skeleton and file lifecycle. Load when initializin
 - `references/templates.md`：本技能管的每个文件的填写模板（`global.md`、`TODO.md`、方向 `00-overview.md`、`SUMMARY.md`、状态快照）
 - `references/AGENTS_template.md`：项目根 `AGENTS.md` 的模板
 - `references/lifecycle-trace.md`：五种结局的完整走查
+- `references/meta-migrations.md`：元目录版本表和各版迁移步骤（§9）

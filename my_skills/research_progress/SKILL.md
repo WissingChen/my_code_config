@@ -1,6 +1,6 @@
 ---
 name: research_progress
-description: Research idea convergence advisor. Load when the user proposes a new research direction, asks "is this idea worth pursuing", requests literature search / gap analysis, or needs stop criteria for a study. Grounds ideas in reality — implementation closure, related-work facts, speculation tracking, decision-driven experiments — before any formal experiment design. Experiment execution itself belongs to experiment_manager.
+description: Research idea convergence advisor. Load when the user 提出新想法/新方向、问"这个方向怎么样/值不值得做", requests literature search / gap analysis, or needs stop criteria for a study. Grounds ideas in reality — implementation closure, related-work facts, speculation tracking, decision-driven experiments — before any formal experiment design. Experiment execution itself belongs to experiment_manager.
 requires: research_manager
 ---
 
@@ -22,12 +22,9 @@ requires: research_manager
 
 ## 主线任务
 
-- 主线一句话在 `.kilo/TODO.md` 里（`research_manager` 创建维护，本技能只读）。接到方向先读它；不存在或主线不清，交给 `research_manager` 先建，自己不写。
-- 之后每个判断、每段输出都对准这句话；todo 树里"当前阶段 → 当前方案"就是此刻该干的事。
-- 每个子任务动手前，一句话说清它服务主线的哪个判断，说不出来就不做；完成后回答它推进了哪个判断，答不上等于跑偏，停下汇报。
-- 子任务不许再嵌套展开子任务；确有必要先回到主线重新确认。
-- 优化任何环节前先问：不改它，主线能推进吗？能，就不改（§6 防跑偏）。
-- 支线发现最多提一句"另外注意到 X"，然后停；不展开、不修复、不追加建议清单。
+- 主线一句话在元目录的 `TODO.md` 里（`research_manager` 维护，本技能只读）。接到方向先读它；没有或主线不清，交给 `research_manager` 先建，自己不写。之后每个判断、每段输出都对准这句话；todo 树里"当前阶段 → 当前方案"就是此刻该干的事。
+- 每个子任务动手前，一句话说清它服务主线的哪个判断，说不出就不做；完成后说清推进了哪个判断，答不上就是跑偏，停下汇报。子任务不许再嵌套展开。
+- 优化任何环节前先问：不改它，主线能推进吗？能就不改。支线发现最多提一句"另外注意到 X"，然后停；不展开、不修复、不追加建议清单。
 - 连续两轮没有推进主线 → 停手，一句话回报：主线是什么、卡在哪。
 
 ## 1. 先分清大小问题
@@ -43,6 +40,8 @@ requires: research_manager
 | 假设 | 依赖了但没验证的说法 | 进猜想清单（§5） |
 | 预期 | 从想法推出的可证伪预测 | 运行前必须写下预期区间 |
 | 证据 | 可溯源的观测结果（运行/产物/落库来源） | 可以引用 |
+
+四标签只是用词。跟踪它们的账本只有一本——§5 猜想清单；§4 链上每个箭头的状态就是账本里对应那条的状态，不另立一套。
 
 ## 2. 值不值得做
 
@@ -98,7 +97,7 @@ input → obtainable data/signals → concrete modules → tensors/structures pa
 
 数据本身的质量（错误率、碰撞率这类）往往是最便宜的决定性验证，先于任何方法设计。先算数据，再谈方法。
 
-链图（及相关工作对齐图、猜想风险图、决策图）在"图能暴露文字藏住的缺口"时委托 `result_visualization` 画。
+实现链有两个以上非 `已验证` 箭头时，必须把链图画出来（委托 `result_visualization`，不许手绘）；相关工作对齐图、猜想风险图、决策图同样委托。
 
 ## 5. 猜想清单
 
@@ -143,7 +142,7 @@ input → obtainable data/signals → concrete modules → tensors/structures pa
 
 ## 9. 默认输出
 
-每次讨论只输出六项：结论（否决/卡住/评估中/通过）、实际价值、相关工作现实、实现链条（哪一步断着）、最大猜想、下一项决策证据（不同结果各导致什么动作）。现实条件没查清之前，不生成实验矩阵和"可以试试"清单。评估写入 `proposal/NN-slug/experiment-plan.md`。一个方向完整走过四步、六项填好的实例：`references/walkthrough.md`。
+每次讨论结束，必须能回答六问：结论（否决/卡住/评估中/通过）、实际价值、相关工作现实、实现链条断在哪、最大猜想、下一项决策证据（不同结果各导致什么动作）。答不出的那问就是当前缺口，直接说缺口。这六问是必须能答的问题，不是必须摆的章节——能三句说清就不摆六节。现实条件没查清之前，不生成实验矩阵和"可以试试"清单。评估写入 `proposal/NN-slug/experiment-plan.md`。一个方向完整走过四步、六问答全的实例：`references/walkthrough.md`。
 
 ## 10. 交接与约束
 

@@ -1,6 +1,6 @@
 ---
 name: result_visualization
-description: Charts, evidence tables, process/argument diagrams, and figure validation for research reports and direction discussions. Load when producing or reviewing any long report, when a direction discussion needs implementation-chain/risk/decision diagrams, or when the user asks to plot data, draw diagrams, or produce publication-ready figures. Delegates statistical analysis and verdicts to result_analysis.
+description: 图表与论证图 — Charts, evidence figures, and process/decision diagrams. Load when the user says 画图、出图、可视化、图表、流程图, whenever a report contains numeric comparisons (mandatory: data goes in high-density figures, not bare tables), or when a direction discussion needs an implementation-chain/risk/decision diagram. Delegates statistical analysis and verdicts to result_analysis.
 requires: research_manager
 ---
 
@@ -78,7 +78,7 @@ requires: research_manager
 
 ## 5. 交接约定
 
-来自 `result_analysis` 或 `write_md` 的交接要有：用途/问题、源数据和版本、观测单位和设计、变量/分组/分面/排序、汇总/变换方式、合法的不确定度表示、主张或对比、目标媒介和渲染器、产物类别和去留建议。只负责把图画出来；不许改动统计结论。
+来自 `result_analysis` 或 `write_report` 的交接要有：用途/问题、源数据和版本、观测单位和设计、变量/分组/分面/排序、汇总/变换方式、合法的不确定度表示、主张或对比、目标媒介和渲染器、产物类别和去留建议。只负责把图画出来；不许改动统计结论。
 
 来自 `research_progress` 的交接要有：带逐箭头状态标签的实现链、对齐目标（最近的工作）、或决策分支。只负责画论证图；不许改动"通过与否"的判断。
 

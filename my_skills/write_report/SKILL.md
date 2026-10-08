@@ -1,6 +1,6 @@
 ---
-name: write_md
-description: Markdown readability, visual planning, and report HTML rendering. Load for any long research report (two passes: visual planning before figures, final readability after), when the user asks to improve readability or format a document, or when a report needs a self-contained HTML reading version. Handles language, structure, and a renderer-aware presentation layer. Horizontal slide decks belong to slide_deck.
+name: write_report
+description: 报告写作与可读性 — Report readability, figure planning, and self-contained HTML rendering. Load for any long report or when the user says 写报告、改报告、排版、可读性差、出 HTML 报告. Two mandatory passes per long report: figure planning before figures exist, final readability after. Numeric evidence defaults to high-density charts, not bare tables. Horizontal slide decks belong to slide_deck.
 requires: research_manager
 ---
 
@@ -16,7 +16,7 @@ requires: research_manager
 - 写文件前先经用户确认。
 - 只在发现具体的过时或重复内容时才提议清理，不作为固定收尾动作。
 
-# write_md — 让 Markdown 好读，让图有规划
+# write_report — 让报告好读，让图有规划
 
 ## 1. 语言层
 
@@ -28,7 +28,7 @@ requires: research_manager
 - **首次出现就解释**：引入的每个概念都要能用大白话解释。
 - **直说**：每段第一句带观点；是抽象名词的标题改写成陈述句；内部流程名（评审、通过与否、交接、生命周期）不许糊到读者脸上——直接说什么确认了、什么缺、下一步是什么。
 
-**精度例外**：论文手稿里必要的技术术语保留——先用大白话解释意思，再给准确术语。手稿的起草和论证结构本身归 `academic-paper-writing`；在手稿上 `write_md` 只套用这一层语言规则。
+**精度例外**：论文手稿里必要的技术术语保留——先用大白话解释意思，再给准确术语。手稿的起草和论证结构本身归 `academic-paper-writing`；在手稿上 `write_report` 只套用这一层语言规则。
 
 ## 2. 结构层
 
@@ -37,17 +37,21 @@ requires: research_manager
 - **30 秒扫读测试**：疲惫的读者 30 秒内必须抓到要点。
 - **图文节奏**：长文档不许整屏文字墙，用表格、图、提示块打断。每个非文字元素必须携带信息——短文档或一目了然的文档不许硬塞图。
 - **数值报告默认配图**：报告含跨组比较、分布或随序趋势的数值证据时，统计图是默认件不是装饰——每类现象至少一张图，纯表格加文字的数值报告按缺件处理。表格给精确数，图给形态与现象；最小图集模式见 §3。
+- **数据默认进图，正文只留关键数字**：会改变决定的数字才进正文并加粗；成组的数值证据进图，不在正文罗列——读者要的是形态和差距，不是数字墙。
+- **图按信息密度选形式**：多面板合成图、带数值的热图、按效应量排序的点图优先；裸折线和罗列式表格是兜底，不是默认。形式选择规则在 `result_visualization` §1，这里不重复。
 
 ## 3. 报告要过两遍
 
-每份长报告 `write_md` 过两遍——绝不只在结尾过一遍：
+每份长报告 `write_report` 过两遍——绝不只在结尾过一遍：
 
-1. **配图规划（图还不存在时，必做）**：读草稿结构，找出图/表比文字更能说清的位置，产出该报告**唯一的一份**配图规划：位置、用途、主张、产物类别，并汇总 `result_analysis` §9 从证据角度提出的候选图；每张候选记录选中/拒绝及原因，每行一条：`| 候选图 | 选中/拒绝 | 原因 |`。规划交给 `experiment_manager` 验收，由它委托 `result_visualization`。这一遍打破"得先有图 write_md 才能动"的死锁。数值报告的最小图集模式（按主张选，不凑数）：**总览合成图**（一张图承载主张：分布 + 配对比较 + 趋势多面板）、**差异热图**（组 × 条件矩阵，cell 带数值）、**排序比较图**（按效应量排序的组间点图/哑铃图）。每张候选必须写明要凸显的现象；一张候选都没有时要给出理由。
+1. **配图规划（图还不存在时，必做）**：读草稿结构，找出图/表比文字更能说清的位置，产出该报告**唯一的一份**配图规划：位置、用途、主张、产物类别，并汇总 `result_analysis` §9 从证据角度提出的候选图；每张候选记录选中/拒绝及原因，每行一条：`| 候选图 | 选中/拒绝 | 原因 |`。规划交给 `experiment_manager` 验收，由它委托 `result_visualization`。这一遍打破"得先有图 write_report 才能动"的死锁。数值报告的最小图集模式（按主张选，不凑数）：**总览合成图**（一张图承载主张：分布 + 配对比较 + 趋势多面板）、**差异热图**（组 × 条件矩阵，cell 带数值）、**排序比较图**（按效应量排序的组间点图/哑铃图）。每张候选必须写明要凸显的现象；一张候选都没有时要给出理由。
 2. **最终可读性（图已嵌入后）**：结论先行、术语一致、图表引用、图注位置、30 秒扫读路径，并按 `experiment_manager` §4a 的标准逐张验收被引用的图。不许改动统计结论、证据判定和去留决定。
 
 ## 4. 呈现层
 
 提示块预算：**每篇 ≤3 个**。一个块不改变读者第一眼看到什么，就别用。选元素：并列比较用表格；有出处的引述用引用块；只有必须改变读者第一注视点时才用提示块（警告、决定、关键数字）。
+
+**区块色带**是另一回事：长报告用固定色带标记功能区（结论 / 方法 / 数据 / 风险与局限 / 附录），让读者扫一眼就定位。色带是导航不是警示——不计入提示块预算，但全篇一个功能一个色，取语义色板（`result_visualization/plotting-reference.md` §3）：结论用 emphasis 紫、数据用 info 蓝、方法用 framework 深灰、风险与局限用 caution 橙。
 
 按渲染器选格式（默认目标：VS Code / Typora / Obsidian 本地阅读）：
 
@@ -56,8 +60,11 @@ requires: research_manager
 - **论文手稿**：默认不用 UI 式提示块。
 
 ```html
-<!-- 本地渲染器默认用；GitHub 目标时去掉 -->
+<!-- 提示块：本地渲染器默认用；GitHub 目标时去掉 -->
 <div style="background:#3498db1a; border-left:4px solid #3498db; padding:8px 12px; margin:8px 0;">...</div>
+
+<!-- 区块色带：功能区标题条，全篇固定配色 -->
+<div style="background:#9b59b61a; border-left:6px solid #9b59b6; padding:6px 12px; margin:16px 0 8px; font-weight:600;">结论</div>
 ```
 
 ## 5. 语义色板
@@ -66,7 +73,7 @@ requires: research_manager
 
 ## 6. 图表分工
 
-标准流程图、时序图、架构图、数据图由 `result_visualization` 制作。`write_md` 负责需要判断（§3 第一遍）和整合：位置、引用、图注上下文。
+标准流程图、时序图、架构图、数据图由 `result_visualization` 制作。`write_report` 负责需要判断（§3 第一遍）和整合：位置、引用、图注上下文。
 
 ## 7. 报告渲染成 HTML
 
@@ -77,7 +84,7 @@ requires: research_manager
 - 图带图注嵌入、点击放大；Mermaid 预渲染或换成内联 SVG，保证离线可用。
 - 打印友好：浏览器打印出干净文档。
 - 内容变了从源文件重新生成；绝不手维护一份平行的 HTML。
-- 默认路径：报告旁边，或 `.kilo/reports/YYYY-MM-DD-<slug>-report.html`。
+- 默认路径：报告旁边，或元目录的 `reports/YYYY-MM-DD-<slug>-report.html`。
 
 默认不把短的或一次性的文档转 HTML：快速讨论留在 Markdown；完整方向报告出 Markdown + HTML；正式演示给 `slide_deck`；手稿留 Markdown/LaTeX 配 PDF/SVG 图。
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 技能组卫生检查：行数预算、Output Contract 一致性、references 链接完整性。
+# 技能组卫生检查：行数预算、Output Contract 一致性、references 链接完整性、正文引用路径存在性。
 # 用法：my_skills/check_skills.sh（从仓库根运行）
 set -u
 cd "$(dirname "$0")"
@@ -29,6 +29,20 @@ for f in */SKILL.md; do
   done
   for extra in paper-quality.md plotting-reference.md; do
     grep -q "\`$extra\`" "$f" && [ ! -e "$d/$extra" ] && echo "  悬空: $f -> $extra"
+  done
+done
+echo "  检查完成"
+
+echo "== 4. 正文引用路径存在性（反引号包裹、含 / 的相对路径）"
+for f in */SKILL.md 00-overview.md; do
+  d=$(dirname "$f")
+  grep -o '`[A-Za-z0-9._-][A-Za-z0-9._/-]*`' "$f" | tr -d '`' | sort -u | while read -r p; do
+    case "$p" in *NN*|*YYYY*|*ENN*|*'<'*|*/) continue ;; esac
+    first=${p%%/*}
+    if [ "$first" = "references" ]; then tgt="$d/$p"
+    elif [ -d "$first" ]; then tgt="$p"
+    else continue; fi
+    [ -e "$tgt" ] || echo "  悬空: $f -> $p"
   done
 done
 echo "  检查完成"

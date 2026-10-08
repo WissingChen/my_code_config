@@ -1,6 +1,6 @@
 # Research Skill Family 使用指南
 
-一套覆盖科研全生命周期的 11 技能组，位于 `my_skills/`。核心理念：**先落地现实再决定验证什么；每个实验必须收敛一个决策相关的不确定性；价值而非成败决定 checkpoint；实验分支永不直接合并；最终交付物永远是一份图文并茂、证据可追溯的 REPORT.md**。
+一套覆盖科研全生命周期的 12 技能组，位于 `my_skills/`。核心理念：**先落地现实再决定验证什么；每个实验必须收敛一个决策相关的不确定性；价值而非成败决定 checkpoint；实验分支永不直接合并；最终交付物永远是一份图文并茂、证据可追溯的 REPORT.md**。
 
 三条收敛主线：
 
@@ -26,9 +26,9 @@ flowchart LR
     end
 
     subgraph 表达阶段
-        WM[write_md<br/>视觉规划+可读性+HTML报告]
+        WM[write_report<br/>视觉规划+可读性+HTML报告]
         SD[slide_deck<br/>横向HTML演示页]
-        AP[academic-paper-writing<br/>论文写作]
+        PE[pdf_export<br/>定稿Markdown→A4 PDF]
     end
 
     RP -->|通过| EM
@@ -91,7 +91,7 @@ flowchart LR
   <text x="810" y="60" text-anchor="middle" fill="#2c3e50" font-weight="600" font-size="15">表达阶段</text>
 
   <rect x="700" y="76" width="220" height="46" rx="6" fill="#fff" stroke="#9b59b6" stroke-width="1"/>
-  <text x="810" y="95" text-anchor="middle" fill="#2c3e50" font-weight="500" font-size="13">write_md</text>
+  <text x="810" y="95" text-anchor="middle" fill="#2c3e50" font-weight="500" font-size="13">write_report</text>
   <text x="810" y="112" text-anchor="middle" fill="#7f8c8d" font-size="11">视觉规划 + 可读性 + HTML报告</text>
 
   <rect x="700" y="134" width="105" height="46" rx="6" fill="#fff" stroke="#9b59b6" stroke-width="1"/>
@@ -128,7 +128,7 @@ flowchart LR
   <!-- ===== Arrows: visual delegation (dashed orange) ===== -->
   <!-- RA -> WM (visual planning, clean L-path) -->
   <path d="M 422 180 L 422 270 L 810 270 L 810 210" fill="none" stroke="#e67e22" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrO)"/>
-  <text x="616" y="262" text-anchor="middle" fill="#e67e22" font-size="10">视觉规划 → write_md 委托 → result_visualization 出图</text>
+  <text x="616" y="262" text-anchor="middle" fill="#e67e22" font-size="10">视觉规划 → write_report 委托 → result_visualization 出图</text>
 
   <!-- RV -> EM (deliverable back, shorter path) -->
   <path d="M 537 180 L 537 300 L 480 300 L 480 210" fill="none" stroke="#95a5a6" stroke-width="1.2" marker-end="url(#arr)"/>
@@ -148,16 +148,19 @@ flowchart LR
 | `experiment_manager` | 用户说"开始实验"、跑 ENN、关闭方向 | 还在讨论想法、没有通过的提案 |
 | `result_analysis` | 有实验数据需要解读、需要 停/转向/继续 判断 | 数据还没产生、只需要可视化 |
 | `result_visualization` | 需要出图（数据图/流程图/论证图）、渲染验证 | 纯文本足够、没有数据或结构需要编码 |
-| `write_md` | 长报告需要视觉规划或最终可读性检查、需要 HTML 报告 | 短文档、初稿内容还没定 |
+| `write_report` | 长报告需要视觉规划或最终可读性检查、需要 HTML 报告 | 短文档、初稿内容还没定 |
 | `academic-paper-writing` | 需要写论文、润色稿件 | 实验还没产生可写的结果 |
-| `slide_deck` | 需要横向翻页 HTML 演示（代替 PPT） | 需要纵向滚动报告（那是 write_md 的活） |
+| `slide_deck` | 需要横向翻页 HTML 演示（代替 PPT） | 需要纵向滚动报告（那是 write_report 的活） |
+| `pdf_export` | 需要把定稿 Markdown/报告导成 A4 PDF（含 mermaid） | 只是要阅读用 HTML（那是 write_report 的活） |
 | `research_manager` | 需要初始化项目、归档、状态汇报、管理目录 | 具体实验执行或文献检索 |
 | `skill_rsi` | 使用中暴露了技能组的问题、用户的纠正值得沉淀 | 研究项目本身的产物和决定 |
 | `plain_talk` | 每次会话开始（必加载，不等触发）：禁黑话、说人话 | — |
 
-技能按需加载：基础层 + 1–2 个相关技能即可。报告类任务自动叠加 analysis → write_md（规划）→ visualization → write_md（终检），不需要逐个触发。
+技能按需加载：基础层 + 1–2 个相关技能即可。报告类任务自动叠加 analysis → write_report（规划）→ visualization → write_report（终检），不需要逐个触发。
 
-## 目录约定（`.kilo/`）
+## 目录约定：元目录（`.kilo/`）
+
+术语：整个项目文件夹叫**工作区**，里面的 `.kilo/` 叫**元目录**。
 
 ```
 .kilo/
@@ -218,10 +221,10 @@ flowchart LR
 长报告（ENN 报告、REPORT.md）按固定编排生产：
 
 1. `result_analysis` 确定证据与主张，从证据角度提出候选图（可以考虑后选择纯文本，但必须记录理由）
-2. `write_md` 第一次调用：产出该报告唯一的一份**配图规划**（汇总候选，确定图的位置、目的、产物类别，记录选/拒及理由）
+2. `write_report` 第一次调用：产出该报告唯一的一份**配图规划**（汇总候选，确定图的位置、目的、产物类别，记录选/拒及理由）
 3. `result_visualization` 生成图（matplotlib 数据图 / Mermaid、SVG 流程图），保留可复现 `.py` 源 + `.svg/.pdf` + `.png` 预览
 4. `experiment_manager` 嵌入报告并做**视觉验收**：链接可解析、图实际渲染、图注含比较对象/观测单位/不确定性/结论
-5. `write_md` 第二次调用：最终可读性检查（30 秒扫描路径、无整屏文字墙）
+5. `write_report` 第二次调用：最终可读性检查（30 秒扫描路径、无整屏文字墙）
 
 **没有完成视觉审计和渲染验证，不宣布长报告完成。** 图的数量不是质量指标。
 
@@ -241,7 +244,7 @@ flowchart LR
 
 ### 7. HTML 产物：报告 vs 演示
 
-- **纵向滚动 HTML 报告**（阅读用）：`write_md` 从最终 REPORT.md 生成，自包含、目录锚点、图片可放大、离线可读、可打印，内容变更后重新生成而非手工维护副本
+- **纵向滚动 HTML 报告**（阅读用）：`write_report` 从最终 REPORT.md 生成，自包含、目录锚点、图片可放大、离线可读、可打印，内容变更后重新生成而非手工维护副本
 - **横向翻页 HTML 展示页**（汇报用，代替 PPT）：`slide_deck` 生成单个自包含文件，`←`/`→` 翻页、页码、打印即 PDF 讲义；每页数字页脚标注来源工件，结尾附来源清单；新图表委托 `result_visualization`，统计结论委托 `result_analysis`——展示页不创造内容，只重编码已批准的证据；样式集中在 `:root` CSS 变量块，已存风格模板（国自然基金风格、瑞士国际主义风格）可点名复用
 
 ## 输出契约（所有技能共同遵守）
@@ -278,9 +281,10 @@ my_skills/
 ├── experiment_manager/SKILL.md
 ├── result_analysis/SKILL.md
 ├── result_visualization/SKILL.md
-├── write_md/SKILL.md
+├── write_report/SKILL.md
 ├── academic-paper-writing/SKILL.md
 ├── slide_deck/SKILL.md
+├── pdf_export/SKILL.md       # 定稿 Markdown → A4 PDF（headless Chromium）
 ├── skill_rsi/SKILL.md
 └── plain_talk/SKILL.md               # 禁黑话、说人话（每次会话必加载）
 ```

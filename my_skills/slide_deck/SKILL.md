@@ -1,6 +1,6 @@
 ---
 name: slide_deck
-description: Self-contained HTML slide decks as a PPT replacement. Load when the user asks to present the project (or a subset such as motivation, contributions, methods, experiment results) as a horizontal-paging HTML file. Scrolling HTML report rendering belongs to write_md.
+description: Self-contained HTML slide decks as a PPT replacement. Load when the user asks to present the project (or a subset such as motivation, contributions, methods, experiment results) as a horizontal-paging HTML file. Scrolling HTML report rendering belongs to write_report.
 requires: research_manager
 ---
 
@@ -24,7 +24,7 @@ requires: research_manager
 
 - 完整 deck 的小节：动机 → 贡献 → 方法 → 实验结果 → 结论/下一步。
 - 部分 deck：只生成用户点名的小节。回复里说清包含了哪些小节、各取自哪些产物。
-- 边界：本技能只做横向演示 deck。滚动式自包含 HTML **报告**归 `write_md`（§7）；不许把 deck 拉成报告，也不许反过来。
+- 边界：本技能只做横向演示 deck。滚动式自包含 HTML **报告**归 `write_report`（§7）；不许把 deck 拉成报告，也不许反过来。
 
 ## 2. 内容从哪来
 

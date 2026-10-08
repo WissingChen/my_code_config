@@ -32,7 +32,7 @@ requires: research_manager
 
 ## 2. 提议格式
 
-追加到 `my_skills/INBOX.md`，一条一个块：
+插到 `my_skills/INBOX.md` 头部（顺序：最新在前），一条一个块：
 
 ```
 ## <YYYY-MM-DD> <标题>

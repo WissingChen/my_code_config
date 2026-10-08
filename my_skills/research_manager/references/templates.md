@@ -10,9 +10,13 @@
 
 ## 2. .kilo/global.md（≤60 行）
 
-纯索引：只放目录和指针。不写目标、规则、解释——那些归项目根 `AGENTS.md`。
+纯索引：只放目录和指针。不写目标、规则、解释——那些归项目根 `AGENTS.md`。frontmatter 的 `meta_version` 是元目录结构版本标记（见 `references/meta-migrations.md`）。
 
 ```markdown
+---
+meta_version: 1
+---
+
 # 项目索引
 
 ## 方向

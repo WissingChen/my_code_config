@@ -18,7 +18,7 @@ requires: research_manager
 
 # Knowledge Keeper — 只查一次，查到就存
 
-知识库在项目 `.kilo/knowledge/papers/`。存在理由：同一次检索不许花第二遍钱。
+知识库在元目录（`.kilo/knowledge/papers/`）。存在理由：同一次检索不许花第二遍钱。
 
 ## 1. 先查本地
 

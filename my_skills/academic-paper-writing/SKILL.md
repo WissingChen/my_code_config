@@ -1,6 +1,6 @@
 ---
 name: academic-paper-writing
-description: Top-tier CS/AI/Robotics manuscript writing taste. Load when drafting, revising, or polishing academic papers in computer vision, machine learning, robotics, image processing, and related fields. Not for research reports or slides — those belong to write_md and slide_deck.
+description: Top-tier CS/AI/Robotics manuscript writing taste. Load when drafting, revising, or polishing academic papers in computer vision, machine learning, robotics, image processing, and related fields. Not for research reports or slides — those belong to write_report and slide_deck.
 requires: research_manager
 ---
 
@@ -96,7 +96,7 @@ Related Work 按想法综合，不按编年。别把所有相关工作等权重�
 
 ## 11. 手稿存放
 
-进行中的手稿放在方向的 `manuscript/` 目录，或方向概览里链接的外部仓库。生成的手稿不受 150 行运营文档预算限制。与 `write_md` 的边界：它管报告可读性和 HTML 渲染；在手稿上它只套用语言层——起草、结构、面向审稿人的论证留在本技能。
+进行中的手稿放在方向的 `manuscript/` 目录，或方向概览里链接的外部仓库。生成的手稿不受 150 行运营文档预算限制。与 `write_report` 的边界：它管报告可读性和 HTML 渲染；在手稿上它只套用语言层——起草、结构、面向审稿人的论证留在本技能。
 
 ## 12. 最后打磨
 
