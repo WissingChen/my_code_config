@@ -49,7 +49,19 @@ requires: research_manager
 
 ## 4. 呈现层
 
-提示块预算：**每篇 ≤3 个**。一个块不改变读者第一眼看到什么，就别用。选元素：并列比较用表格；有出处的引述用引用块；只有必须改变读者第一注视点时才用提示块（警告、决定、关键数字）。
+提示块预算：**每篇 ≤3 个**。一个块不改变读者第一眼看到什么，就别用。选元素：并列比较用表格；有出处的引述用引用块；只有必须改变读者第一眼看到什么时才用提示块（警告、决定、关键数字）。
+
+**提示块分型**：颜色取语义色板（§5），一色一义；块内首行放同色粗体小标题，读者扫一眼就知道块的类型和轻重：
+
+| 型 | 语义色 | 用在 |
+|---|---|---|
+| 警告 | Danger 红 | 会导致失败、数据丢失或结论失效的坑；配一句真实事故 |
+| 注意 | Caution 橙 | 易错点、隐含前提 |
+| 结论 / 决定 | Emphasis 紫 | 决定性判断、核心原则 |
+| 信息 | Info 蓝 | 背景与补充说明 |
+| 框架 | Framework 深灰 | 章节导语、设计理由 |
+
+**行内标记**（列表级语义记号，不占提示块预算）：禁止事项用 ❌ 前缀；可勾选的行动/检查清单用 `- [ ]`；正误做法对比用两列表格（正确 \| 错误）；文档状态用 frontmatter 标记（`status: 🟢 Stable / 🟡 Drafting / 🔴 Deprecated`，配 `last_updated`）。
 
 **区块色带**是另一回事：长报告用固定色带标记功能区（结论 / 方法 / 数据 / 风险与局限 / 附录），让读者扫一眼就定位。色带是导航不是警示——不计入提示块预算，但全篇一个功能一个色，取语义色板（`result_visualization/plotting-reference.md` §3）：结论用 emphasis 紫、数据用 info 蓝、方法用 framework 深灰、风险与局限用 caution 橙。
 
@@ -60,8 +72,11 @@ requires: research_manager
 - **论文手稿**：默认不用 UI 式提示块。
 
 ```html
-<!-- 提示块：本地渲染器默认用；GitHub 目标时去掉 -->
-<div style="background:#3498db1a; border-left:4px solid #3498db; padding:8px 12px; margin:8px 0;">...</div>
+<!-- 提示块：型见上表，背景用同色 8% 透明度；GitHub 目标时去掉 -->
+<div style="background:#e74c3c1a; border-left:4px solid #e74c3c; padding:8px 12px; margin:8px 0;">
+  <div style="color:#e74c3c; font-weight:600; margin-bottom:4px;">警告</div>
+  会导致结论失效的坑：<一句话 + 真实事故>。
+</div>
 
 <!-- 区块色带：功能区标题条，全篇固定配色 -->
 <div style="background:#9b59b61a; border-left:6px solid #9b59b6; padding:6px 12px; margin:16px 0 8px; font-weight:600;">结论</div>

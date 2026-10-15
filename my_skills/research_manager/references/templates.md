@@ -8,6 +8,8 @@
 
 模板是独立文件 `references/AGENTS_template.md`。复制为项目根 `AGENTS.md`，由项目所有者填写维护，agent 严格只读。
 
+模板同时覆盖科研与工具仓两类项目：核心章节（目标、工具链、分工授权、禁止事项、检查清单）通用；实验纪律 / 真相层级是科研章节，运行与部署纪律是工具仓章节，实例化时删除不适用的部分。工具仓细则的单一事实源在 `my-cyber-brain/.kilo/project/01-tool-development-standard.md`，模板只收摘要。
+
 ## 2. .kilo/global.md（≤60 行）
 
 纯索引：只放目录和指针。不写目标、规则、解释——那些归项目根 `AGENTS.md`。frontmatter 的 `meta_version` 是元目录结构版本标记（见 `references/meta-migrations.md`）。
